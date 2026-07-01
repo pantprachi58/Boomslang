@@ -1,0 +1,33 @@
+.zone {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-bg-dark);
+}
+
+.bgImage {
+  object-fit: cover;
+  object-position: top center;
+  z-index: -2;
+}
+
+.zone.green .bgImage {
+  object-position: center 35%;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.overlay.red {
+  background: var(--overlay-red-soft);
+}
+
+.overlay.green {
+  background: var(--overlay-green-soft);
+}
+
+.content {
+  position: relative;
+}

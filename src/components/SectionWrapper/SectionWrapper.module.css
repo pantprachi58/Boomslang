@@ -1,0 +1,30 @@
+.section {
+  width: 100%;
+  padding-block: var(--space-80);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark {
+  background-color: var(--color-bg-dark);
+}
+
+.darker {
+  background-color: #060606;
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+@media (max-width: 992px) {
+  .section {
+    padding-block: var(--space-64);
+  }
+}
+
+@media (max-width: 576px) {
+  .section {
+    padding-block: var(--space-48);
+  }
+}
