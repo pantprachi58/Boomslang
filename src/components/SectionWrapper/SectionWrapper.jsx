@@ -3,22 +3,18 @@ import styles from "./SectionWrapper.module.css";
 
 export default function SectionWrapper({
   children,
-  id,
+  background = "light",
   className = "",
   containerClassName = "",
-  background = "transparent",
-  noContainer = false,
+  as: Tag = "section",
+  ...rest
 }) {
   return (
-    <section
-      id={id}
+    <Tag
       className={`${styles.section} ${styles[background]} ${className}`}
+      {...rest}
     >
-      {noContainer ? (
-        children
-      ) : (
-        <Container className={containerClassName}>{children}</Container>
-      )}
-    </section>
+      <Container className={containerClassName}>{children}</Container>
+    </Tag>
   );
 }

@@ -1,4 +1,4 @@
-export const navItems = [
+const navItems = [
   {
     label: "Home",
     href: "/",
@@ -8,11 +8,11 @@ export const navItems = [
     href: "/shop",
     children: [
       {
-        label: "GOKU GAINZ",
+        label: "Goku Gainz",
         href: "/shop/goku-gainz",
       },
       {
-        label: "STRYCNNINE Pre-Workout",
+        label: "Strycnnine Pre-Workout",
         href: "/shop/strycnnine",
       },
     ],
@@ -26,3 +26,5 @@ export const navItems = [
     href: "/faqs",
   },
 ];
+
+export default navItems;

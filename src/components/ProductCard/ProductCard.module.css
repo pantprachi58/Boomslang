@@ -1,0 +1,40 @@
+.card {
+  background-color: var(--color-white);
+  border-radius: 0;
+  padding: 16px 8px;
+  text-align: left;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+}
+
+.imageWrap {
+  width: 100%;
+  max-width: 410px;
+  margin: 24px auto 28px;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  margin-bottom: 5px;
+  padding-left: 13px;
+}
+
+.description {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.25;
+  color: #000;
+  margin-bottom: 12px;
+  flex-grow: 1;
+  padding-left: 13px;
+}

@@ -1,40 +1,31 @@
 import Header from "@/components/Header/Header";
-import Hero from "@/components/Hero/Hero";
-import TrustStrip from "@/components/TrustStrip/TrustStrip";
-import MeetProduct from "@/components/MeetProduct/MeetProduct";
-import WhyChoose from "@/components/WhyChoose/WhyChoose";
-import FlavourShowcase from "@/components/FlavourShowcase/FlavourShowcase";
-import NaturalSupport from "@/components/NaturalSupport/NaturalSupport";
-import WeightGainStory from "@/components/WeightGainStory/WeightGainStory";
-import ArticlesGrid from "@/components/ArticlesGrid/ArticlesGrid";
-import FAQAccordion from "@/components/FAQAccordion/FAQAccordion";
-import GalleryCta from "@/components/GalleryCta/GalleryCta";
-import Newsletter from "@/components/Newsletter/Newsletter";
 import Footer from "@/components/Footer/Footer";
-import TexturedZone from "@/components/TexturedZone/TexturedZone";
+import Hero from "@/components/Hero/Hero";
+import MeetProduct from "@/components/sections/MeetProduct/MeetProduct";
+import PreWorkoutFlavours from "@/components/sections/PreWorkoutFlavours/PreWorkoutFlavours";
+import NaturalSupport from "@/components/sections/NaturalSupport/NaturalSupport";
+import JourneySupport from "@/components/sections/JourneySupport/JourneySupport";
+import BlogSection from "@/components/sections/BlogSection/BlogSection";
+import FaqSection from "@/components/sections/FaqSection/FaqSection";
+import CtaBanner from "@/components/sections/CtaBanner/CtaBanner";
+import Newsletter from "@/components/sections/Newsletter/Newsletter";
 
-export default function HomePage() {
+export default function Home() {
   return (
     <>
       <Header />
       <main>
-        <TexturedZone tone="red">
-          <Hero />
-          <TrustStrip />
-          <MeetProduct />
-          <WhyChoose />
-          <FlavourShowcase />
-          <NaturalSupport />
-          <WeightGainStory />
-          <ArticlesGrid />
-          <FAQAccordion />
-        </TexturedZone>
-        <GalleryCta />
-      </main>
-      <TexturedZone tone="green">
+        <Hero />
+        <MeetProduct />
+        <PreWorkoutFlavours />
+        <NaturalSupport />
+        <JourneySupport />
+        <BlogSection />
+        <FaqSection />
+        <CtaBanner />
         <Newsletter />
-        <Footer />
-      </TexturedZone>
+      </main>
+      <Footer />
     </>
   );
 }

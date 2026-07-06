@@ -3,15 +3,14 @@ import "./globals.css";
 
 const anybody = Anybody({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
   variable: "--font-anybody",
   display: "swap",
 });
 
 export const metadata = {
-  title: "Boomslang Nutrition | Ayurvedic Supplements for Weight Gain",
+  title: "Boomslang Nutrition | Ayurvedic Supplements For Weight Gain",
   description:
-    "GOKU GAINZ is Boomslang Nutrition's Ayurvedic weight gain supplement, crafted with herbal ingredients to support healthy weight gain, improve appetite, and enhance nutrient absorption.",
+    "Boomslang Nutrition offers ayurvedic supplements for healthy weight gain, pre-workout formulas and natural muscle support.",
 };
 
 export default function RootLayout({ children }) {

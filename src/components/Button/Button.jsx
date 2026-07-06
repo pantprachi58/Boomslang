@@ -2,19 +2,24 @@ import Link from "next/link";
 import styles from "./Button.module.css";
 
 export default function Button({
-  children,
   href,
-  onClick,
-  type = "button",
+  children,
   variant = "primary",
-  size = "md",
+  size,
   fullWidth = false,
   className = "",
+  type = "button",
   ...rest
 }) {
-  const classes = `${styles.btn} ${styles[variant]} ${styles[size]} ${
-    fullWidth ? styles.fullWidth : ""
-  } ${className}`;
+  const classes = [
+    styles.btn,
+    styles[variant],
+    size === "small" ? styles.small : "",
+    fullWidth ? styles.full : "",
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   if (href) {
     return (
@@ -25,7 +30,7 @@ export default function Button({
   }
 
   return (
-    <button type={type} className={classes} onClick={onClick} {...rest}>
+    <button type={type} className={classes} {...rest}>
       {children}
     </button>
   );

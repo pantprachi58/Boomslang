@@ -3,20 +3,28 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { navItems } from "@/data/navigation";
+import navItems from "@/data/navigation";
 import Button from "@/components/Button/Button";
+import {
+  ChevronDownIcon,
+  HamburgerIcon,
+  CloseIcon,
+  SearchIcon,
+  UserIcon,
+  CartIcon,
+} from "@/components/icons/Icons";
 import styles from "./Header.module.css";
 
 export default function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
-  const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState(null);
   const headerRef = useRef(null);
 
   useEffect(() => {
-    document.body.classList.toggle("no-scroll", isMobileMenuOpen);
-    return () => document.body.classList.remove("no-scroll");
-  }, [isMobileMenuOpen]);
+    document.body.classList.toggle("noScroll", mobileOpen);
+    return () => document.body.classList.remove("noScroll");
+  }, [mobileOpen]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -32,240 +40,216 @@ export default function Header() {
     function handleEscape(event) {
       if (event.key === "Escape") {
         setOpenDropdown(null);
-        setIsMobileMenuOpen(false);
+        setMobileOpen(false);
       }
     }
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+  const toggleMobileExpanded = (label) => {
+    setMobileExpanded((prev) => (prev === label ? null : label));
+  };
+
   const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-    setOpenMobileSubmenu(null);
+    setMobileOpen(false);
+    setMobileExpanded(null);
   };
 
   return (
     <header className={styles.header} ref={headerRef}>
-      <div className={styles.inner}>
-        <Link href="/" className={styles.logo} aria-label="Boomslang Nutrition home">
+      <div className={styles.bar}>
+        <Link href="/" className={styles.logoLink} aria-label="Boomslang Nutrition home">
           <Image
             src="/images/logo.png"
             alt="Boomslang Nutrition"
-            width={160}
-            height={80}
+            width={200}
+            height={100}
             className={styles.logoImg}
             priority
           />
+          
         </Link>
 
-        <nav className={styles.nav} aria-label="Primary">
+        <nav className={styles.nav} aria-label="Primary navigation">
           <ul className={styles.navList}>
-            {navItems.map((item) => (
-              <li
-                key={item.label}
-                className={styles.navItem}
-                onMouseEnter={() => item.children && setOpenDropdown(item.label)}
-                onMouseLeave={() => item.children && setOpenDropdown(null)}
-              >
-                {item.children ? (
-                  <>
+            {navItems.map((item) => {
+              const hasChildren = Boolean(item.children?.length);
+              const isOpen = openDropdown === item.label;
+              return (
+                <li
+                  key={item.label}
+                  className={styles.navItem}
+                  onMouseEnter={() => hasChildren && setOpenDropdown(item.label)}
+                  onMouseLeave={() => hasChildren && setOpenDropdown(null)}
+                >
+                  {hasChildren ? (
                     <button
                       type="button"
                       className={styles.navLink}
-                      aria-expanded={openDropdown === item.label}
+                      aria-expanded={isOpen}
                       aria-haspopup="true"
-                      aria-controls={`dropdown-${item.label}`}
-                      onClick={() =>
-                        setOpenDropdown((prev) =>
-                          prev === item.label ? null : item.label
-                        )
-                      }
+                      onClick={() => setOpenDropdown(isOpen ? null : item.label)}
                     >
                       {item.label}
-                      <span className={styles.chevron} aria-hidden="true" />
+                      <ChevronDownIcon
+                        className={`${styles.chevron} ${isOpen ? styles.chevronOpen : ""}`}
+                      />
                     </button>
+                  ) : (
+                    <Link href={item.href} className={styles.navLink}>
+                      {item.label}
+                    </Link>
+                  )}
+
+                  {hasChildren && (
                     <ul
-                      id={`dropdown-${item.label}`}
-                      className={`${styles.dropdown} ${
-                        openDropdown === item.label ? styles.dropdownOpen : ""
-                      }`}
+                      className={`${styles.dropdown} ${isOpen ? styles.dropdownOpen : ""}`}
+                      role="menu"
                     >
                       {item.children.map((child) => (
-                        <li key={child.label}>
-                          <Link href={child.href} className={styles.dropdownLink}>
+                        <li key={child.label} role="none">
+                          <Link
+                            href={child.href}
+                            className={styles.dropdownLink}
+                            role="menuitem"
+                          >
                             {child.label}
                           </Link>
                         </li>
                       ))}
                     </ul>
-                  </>
-                ) : (
-                  <Link href={item.href} className={styles.navLink}>
-                    {item.label}
-                  </Link>
-                )}
-              </li>
-            ))}
+                  )}
+                </li>
+              );
+            })}
           </ul>
         </nav>
 
         <div className={styles.actions}>
-          <div className={styles.searchBox}>
-            <svg
-              className={styles.searchIcon}
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              aria-hidden="true"
-            >
-              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-              <line
-                x1="21"
-                y1="21"
-                x2="16.65"
-                y2="16.65"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
-            <input type="search" placeholder="Search for..." aria-label="Search products" />
-          </div>
-
-          <button
-            type="button"
-            className={styles.iconBtn}
-            aria-label="Account"
+          <form
+            className={styles.searchBox}
+            role="search"
+            onSubmit={(event) => event.preventDefault()}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
-              <path
-                d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-            </svg>
+            <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+            <input
+              type="search"
+              name="q"
+              placeholder="Search Products"
+              className={styles.searchInput}
+              aria-label="Search products"
+            />
+          </form>
+          <button type="button" className={styles.iconBtn} aria-label="Account">
+            <UserIcon />
           </button>
-
-          <button type="button" className={styles.iconBtn} aria-label="Cart, 0 items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <circle cx="10" cy="21" r="1.4" fill="currentColor" />
-              <circle cx="17" cy="21" r="1.4" fill="currentColor" />
-            </svg>
-            <span className={styles.cartBadge}>0</span>
+          <button type="button" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
+            <CartIcon />
+            <span className={styles.cartBadge} aria-hidden="true">
+              0
+            </span>
           </button>
-
-          <Button href="/shop" size="sm" className={styles.shopNowBtn}>
+          <Button href="/shop" className={styles.shopBtn}>
             Shop Now
           </Button>
-
           <button
             type="button"
-            className={`${styles.hamburger} ${isMobileMenuOpen ? styles.hamburgerOpen : ""}`}
-            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isMobileMenuOpen}
+            className={styles.hamburgerBtn}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
             aria-controls="mobile-menu"
-            onClick={toggleMobileMenu}
+            onClick={() => setMobileOpen((prev) => !prev)}
           >
-            <span></span>
-            <span></span>
-            <span></span>
+            {mobileOpen ? <CloseIcon /> : <HamburgerIcon />}
           </button>
         </div>
       </div>
 
       <div
         id="mobile-menu"
-        className={`${styles.mobileMenu} ${isMobileMenuOpen ? styles.mobileMenuOpen : ""}`}
+        className={`${styles.mobileMenu} ${mobileOpen ? styles.mobileMenuOpen : ""}`}
+        aria-hidden={!mobileOpen}
       >
-        <div className={styles.mobileSearchBox}>
-          <svg
-            className={styles.searchIcon}
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-            <line
-              x1="21"
-              y1="21"
-              x2="16.65"
-              y2="16.65"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-          <input type="search" placeholder="Search for..." aria-label="Search products" />
-        </div>
-
         <ul className={styles.mobileNavList}>
-          {navItems.map((item) => (
-            <li key={item.label} className={styles.mobileNavItem}>
-              {item.children ? (
-                <>
-                  <button
-                    type="button"
+          {navItems.map((item) => {
+            const hasChildren = Boolean(item.children?.length);
+            const isExpanded = mobileExpanded === item.label;
+            return (
+              <li key={item.label} className={styles.mobileNavItem}>
+                <div className={styles.mobileNavRow}>
+                  <Link
+                    href={item.href}
                     className={styles.mobileNavLink}
-                    aria-expanded={openMobileSubmenu === item.label}
-                    onClick={() =>
-                      setOpenMobileSubmenu((prev) =>
-                        prev === item.label ? null : item.label
-                      )
-                    }
+                    onClick={closeMobileMenu}
                   >
                     {item.label}
-                    <span
-                      className={`${styles.chevron} ${
-                        openMobileSubmenu === item.label ? styles.chevronOpen : ""
-                      }`}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  <ul
-                    className={`${styles.mobileSubList} ${
-                      openMobileSubmenu === item.label ? styles.mobileSubListOpen : ""
+                  </Link>
+                  {hasChildren && (
+                    <button
+                      type="button"
+                      className={styles.mobileExpandBtn}
+                      aria-expanded={isExpanded}
+                      aria-label={`Toggle ${item.label} submenu`}
+                      onClick={() => toggleMobileExpanded(item.label)}
+                    >
+                      <ChevronDownIcon
+                        className={isExpanded ? styles.mobileExpandBtnOpen : ""}
+                      />
+                    </button>
+                  )}
+                </div>
+                {hasChildren && (
+                  <div
+                    className={`${styles.mobileChildren} ${
+                      isExpanded ? styles.mobileChildrenOpen : ""
                     }`}
                   >
                     {item.children.map((child) => (
-                      <li key={child.label}>
-                        <Link
-                          href={child.href}
-                          className={styles.mobileSubLink}
-                          onClick={closeMobileMenu}
-                        >
-                          {child.label}
-                        </Link>
-                      </li>
+                      <Link
+                        key={child.label}
+                        href={child.href}
+                        className={styles.mobileChildLink}
+                        onClick={closeMobileMenu}
+                      >
+                        {child.label}
+                      </Link>
                     ))}
-                  </ul>
-                </>
-              ) : (
-                <Link
-                  href={item.href}
-                  className={styles.mobileNavLink}
-                  onClick={closeMobileMenu}
-                >
-                  {item.label}
-                </Link>
-              )}
-            </li>
-          ))}
+                  </div>
+                )}
+              </li>
+            );
+          })}
         </ul>
 
-        <Button href="/shop" size="lg" fullWidth onClick={closeMobileMenu}>
+        <form
+          className={styles.mobileSearchBox}
+          role="search"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+          <input
+            type="search"
+            name="q"
+            placeholder="Search Products"
+            className={styles.searchInput}
+            aria-label="Search products"
+          />
+        </form>
+
+        <div className={styles.mobileActions}>
+          <button type="button" className={styles.iconBtn} aria-label="Account">
+            <UserIcon />
+          </button>
+          <button type="button" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
+            <CartIcon />
+            <span className={styles.cartBadge} aria-hidden="true">
+              0
+            </span>
+          </button>
+        </div>
+
+        <Button href="/shop" className={styles.mobileShopBtn} onClick={closeMobileMenu}>
           Shop Now
         </Button>
       </div>

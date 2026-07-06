@@ -1,0 +1,45 @@
+.section {
+ 
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 62px;
+}
+
+.title {
+  font-size: 30px;
+  line-height: 1;
+  font-weight: var(--fw-black);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+}
+
+.imageWrap {
+  order: -1;
+  width: 430px;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 992px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) 520px minmax(0, 1fr);
+  }
+
+  .imageWrap {
+    order: 0;
+    width: 520px;
+    max-width: none;
+  }
+}

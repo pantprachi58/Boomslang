@@ -1,33 +1,28 @@
 import styles from "./SectionHeading.module.css";
 
 export default function SectionHeading({
-  eyebrow,
   title,
-  description,
-  align = "center",
-  withLines = false,
-  wide = false,
+  highlight,
+  subtitle,
+  theme = "default",
   className = "",
 }) {
+  const parts = highlight ? title.split(highlight) : [title];
+
   return (
-    <div className={`${styles.heading} ${styles[align]} ${className}`}>
-      {eyebrow && (
-        <div className={styles.eyebrowRow}>
-          {withLines && <span className={styles.line} aria-hidden="true" />}
-          {title ? (
-            <span className={styles.eyebrow}>{eyebrow}</span>
-          ) : (
-            <h2 className={`${styles.eyebrow} ${styles.eyebrowLarge}`}>{eyebrow}</h2>
-          )}
-          {withLines && <span className={styles.line} aria-hidden="true" />}
-        </div>
-      )}
-      {title && <h2 className={styles.title}>{title}</h2>}
-      {description && (
-        <p className={`${styles.description} ${wide ? styles.wide : ""}`}>
-          {description}
-        </p>
-      )}
+    <div className={`${styles.wrap} ${theme === "light" ? styles.light : ""} ${className}`}>
+      <h2 className={styles.title}>
+        {highlight ? (
+          <>
+            {parts[0]}
+            <span className={styles.highlight}>{highlight}</span>
+            {parts[1]}
+          </>
+        ) : (
+          title
+        )}
+      </h2>
+      {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
     </div>
   );
 }

@@ -1,75 +1,45 @@
 "use client";
 
 import { useState } from "react";
-import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
-import SectionHeading from "@/components/SectionHeading/SectionHeading";
-import Button from "@/components/Button/Button";
-import { faqs } from "@/data/faqs";
-import styles from "./FAQAccordion.module.css";
+import { ChevronDownIcon } from "@/components/icons/Icons";
+import styles from "./FaqAccordion.module.css";
 
-export default function FAQAccordion() {
+export default function FaqAccordion({ items }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   const toggle = (index) => {
-    setOpenIndex((prev) => (prev === index ? -1 : index));
+    setOpenIndex((prev) => (prev === index ? null : index));
   };
 
   return (
-    <SectionWrapper>
-      <SectionHeading eyebrow="Frequently" title="Asked Questions" withLines />
-
-      <div className={styles.list}>
-        {faqs.map((faq, index) => {
-          const isOpen = openIndex === index;
-          const panelId = `faq-panel-${index}`;
-          const buttonId = `faq-button-${index}`;
-
-          return (
-            <div key={faq.question} className={styles.item}>
-              <h3 className={styles.itemHeading}>
-                <button
-                  type="button"
-                  id={buttonId}
-                  className={styles.trigger}
-                  aria-expanded={isOpen}
-                  aria-controls={panelId}
-                  onClick={() => toggle(index)}
-                >
-                  {faq.question}
-                  <span
-                    className={`${styles.icon} ${isOpen ? styles.iconOpen : ""}`}
-                    aria-hidden="true"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M6 9l6 6 6-6"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </h3>
-              <div
-                id={panelId}
-                role="region"
-                aria-labelledby={buttonId}
-                className={`${styles.panel} ${isOpen ? styles.panelOpen : ""}`}
+    <div className={styles.list}>
+      {items.map((item, index) => {
+        const isOpen = openIndex === index;
+        return (
+          <div className={styles.item} key={item.question}>
+            <h3>
+              <button
+                type="button"
+                className={styles.question}
+                aria-expanded={isOpen}
+                aria-controls={`faq-answer-${index}`}
+                onClick={() => toggle(index)}
               >
-                <p>{faq.answer}</p>
-              </div>
+                {item.question}
+                <span className={`${styles.icon} ${isOpen ? styles.iconOpen : ""}`}>
+                  <ChevronDownIcon />
+                </span>
+              </button>
+            </h3>
+            <div
+              id={`faq-answer-${index}`}
+              className={`${styles.answerWrap} ${isOpen ? styles.answerWrapOpen : ""}`}
+            >
+              <p className={styles.answer}>{item.answer}</p>
             </div>
-          );
-        })}
-      </div>
-
-      <div className={styles.ctaRow}>
-        <Button href="/shop/goku-gainz" size="lg">
-          Shop GOKU GAINZ
-        </Button>
-      </div>
-    </SectionWrapper>
+          </div>
+        );
+      })}
+    </div>
   );
 }
