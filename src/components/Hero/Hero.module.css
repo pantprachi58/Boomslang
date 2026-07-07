@@ -42,11 +42,12 @@
 }
 
 .title {
-  font-size:  45px;
-  font-weight: 800;
-  line-height: 1.1;
-  color: var(--color-white);
-  margin-bottom: 24px;
+   font-size: 45px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 12px;
+ 
+  color: #fff;
   letter-spacing: -0.02em;
 }
 
