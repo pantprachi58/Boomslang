@@ -1,9 +1,15 @@
-import { Anybody } from "next/font/google";
+import { Anybody, Inter } from "next/font/google";
 import "./globals.css";
 
 const anybody = Anybody({
   subsets: ["latin"],
   variable: "--font-anybody",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -18,7 +24,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={anybody.variable}>
+    <html lang="en" className={`${anybody.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

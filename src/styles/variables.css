@@ -16,6 +16,7 @@
 
   /* Font */
   --font-main: var(--font-anybody), "Anybody", sans-serif;
+  --font-paragraph: var(--font-inter), "Inter", sans-serif;
 
   /* Font sizes (even px only) */
   --font-size-xs: 10px;

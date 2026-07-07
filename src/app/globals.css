@@ -55,6 +55,10 @@ p {
   margin: 0;
 }
 
+p {
+  font-family:"Inter", sans-serif;
+}
+
 .container {
   max-width: var(--container-max);
 }
