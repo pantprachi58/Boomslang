@@ -125,7 +125,7 @@ export default function Footer() {
               <li className={styles.contactItem}>
                 <MailIcon className={styles.contactIcon} />
                 <a href="mailto:support@boomslangnutrition.com" className={styles.link}>
-                  support@boomslangnutrition.com
+                   support@boomslangnutrition.com
                 </a>
               </li>
             </ul>
