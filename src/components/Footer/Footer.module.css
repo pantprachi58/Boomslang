@@ -28,7 +28,7 @@
 }
 
 .tagline {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 300;
   line-height: 1.4;
   color: #fff;
@@ -74,8 +74,9 @@
 }
 
 .link {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 300;
+  font-family:"Inter", sans-serif;
   line-height: 1.3;
   color: #fff;
 }
@@ -95,6 +96,7 @@
   align-items: flex-start;
   gap: 8px;
   font-size: 15px;
+  font-family:"Inter", sans-serif;
   font-weight: 300;
   line-height: 1.3;
   color: #fff;

@@ -60,12 +60,14 @@
 }
 
 .subtitle {
-   font-size: 16px;
-  font-weight:300;
-  font-family: "Inter", sans-serif;
-  line-height: 1.34;
   color: #fff;
   margin-bottom: 22px;
+  font-family: 'Inter', sans-serif;
+font-size: 16px;
+font-weight: 400;
+line-height: 1.6;
+letter-spacing: 0;
+word-spacing: 0;
 }
 
 .features {

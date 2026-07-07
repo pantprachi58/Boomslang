@@ -67,8 +67,12 @@
 }
 
 .subtitle {
-  font-size: 15px;
-  line-height: 1.32;
+   font-family: 'Inter', sans-serif;
+font-size: 16px;
+font-weight: 400;
+line-height: 1.6;
+letter-spacing: 0;
+word-spacing: 0;
   color: #fff;
   max-width: 50%;
   margin: 0;
