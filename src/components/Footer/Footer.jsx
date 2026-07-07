@@ -23,10 +23,10 @@ const productLinks = [
 
 const supportLinks = [
   { label: "Shipping Policy", href: "/shipping-policy" },
-  { label: "Return & Refund Policy", href: "/refund-policy" },
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms & Conditions", href: "/terms" },
-  { label: "Disclaimer", href: "/disclaimer" },
+  { label: "Return & Refund Policy", href: "/return-refund-policy" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Terms & Conditions", href: "/terms-condition" },
+  // { label: "Disclaimer", href: "/disclaimer" },
 ];
 
 const socials = [
@@ -134,7 +134,7 @@ export default function Footer() {
 
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            &copy; {new Date().getFullYear()} Boomslang Nutrition. All rights reserved.
+            &copy; {new Date().getFullYear()} Boomslang Nutrition. All Rights Reserved. Crafted with ❤️ by VD Infotech – Web Development | Digital Marketing | App & Software | Branding
           </p>
         </div>
       </Container>
