@@ -81,7 +81,7 @@ word-spacing: 0;
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24px;
+  gap: 18px;
 }
 
 @media (min-width: 576px) {

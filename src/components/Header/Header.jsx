@@ -47,7 +47,7 @@ export default function Header() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const toggleMobileExpanded = (label) => {
+  const toggleMobileExpanded = (lAel) => {
     setMobileExpanded((prev) => (prev === label ? null : label));
   };
 

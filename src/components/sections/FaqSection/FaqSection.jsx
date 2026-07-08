@@ -5,34 +5,34 @@ import styles from "./FaqSection.module.css";
 
 const faqs = [
   {
-    question: "What is GOKU GAINZ?",
+    question: "What Is GOKU GAINZ?",
     answer:
-      "Goku Gainz is an ayurvedic mass and strength formula designed to support healthy weight gain, muscle support and stamina, made using natural ayurvedic herbs.",
+      "GOKU GAINZ is an Ayurvedic supplement for weight gain formulated with herbal ingredients that help support healthy weight gain, improve appetite, enhance nutrient absorption, and promote natural strength.",
+  },
+  {
+    question: "Who Can Use GOKU GAINZ?",
+    answer:
+      "GOKU GAINZ is suitable for adults who find it difficult to gain healthy body weight or are looking for additional nutritional support as part of a balanced lifestyle.",
   },
   {
     question: "How Should I Take GOKU GAINZ?",
     answer:
-      "Take one capsule daily with a meal, or as directed by your healthcare practitioner, alongside a balanced diet.",
+      "Take GOKU GAINZ exactly as directed on the product label or as recommended by your healthcare professional.",
   },
   {
-    question: "What is GOKU GAINZ?",
+    question: ": How Long Does It Take to See Results?",
     answer:
-      "It is made for daily wellness support and healthy nutrition routines.",
+      "Results may vary depending on factors such as diet, metabolism, lifestyle, and consistency. Following a balanced diet and healthy routine can help support your progress.",
   },
   {
-    question: "How Long Does It Take To See Results?",
+    question: " Can I Take GOKU GAINZ Along with Exercise?",
     answer:
-      "Most users begin to notice improvements in appetite and energy within 3-4 weeks of consistent daily use.",
+      "Yes. Combining regular exercise, balanced nutrition, quality sleep, and consistent supplement use can support your overall wellness and weight gain goals.",
   },
   {
-    question: "Can I Take GOKU GAINZ Along With Exercise?",
+    question: "What Makes GOKU GAINZ Different?",
     answer:
-      "Yes. Goku Gainz is designed to complement an active lifestyle and pairs well with a structured exercise routine.",
-  },
-  {
-    question: "Can I Take GOKU GAINZ Along With Exercise?",
-    answer:
-      "Yes. It fits best alongside regular meals, training and a consistent routine.",
+      "GOKU GAINZ is formulated with carefully selected Ayurvedic herbs that work together to support healthy weight gain, appetite, digestion, and overall vitality. It is designed to complement a balanced diet and an active lifestyle.",
   },
 ];
 
