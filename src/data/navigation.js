@@ -3,6 +3,10 @@ const navItems = [
     label: "Home",
     href: "/",
   },
+   {
+    label: "All Product",
+    href: "/shop",
+  },
   {
     label: "Shop",
     href: "/shop",

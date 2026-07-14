@@ -92,3 +92,11 @@ word-spacing: 0;
     padding: 56px 20px;
   }
 }
+@media (min-width: 480px){
+  .titleTop{
+    font-size: 30px;
+  }
+  .title{
+    font-size: 30px;
+  }
+} 

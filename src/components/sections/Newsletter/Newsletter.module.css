@@ -140,3 +140,10 @@ word-spacing: 0;
     grid-template-columns: 1fr;
   }
 }
+@media (min-width: 576px) {
+  .form{
+    max-width:375px !important;
+    flex-direction: unset !important;
+  }
+  
+}

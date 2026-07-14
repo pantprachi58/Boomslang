@@ -20,7 +20,7 @@ const faqs = [
       "Take GOKU GAINZ exactly as directed on the product label or as recommended by your healthcare professional.",
   },
   {
-    question: ": How Long Does It Take to See Results?",
+    question: "How Long Does It Take to See Results?",
     answer:
       "Results may vary depending on factors such as diet, metabolism, lifestyle, and consistency. Following a balanced diet and healthy routine can help support your progress.",
   },

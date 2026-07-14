@@ -57,7 +57,7 @@
 
 .name {
   font-family: var(--font-main);
-  font-size: var(--font-size-lg);
+  font-size: 20px;
   font-weight: var(--fw-bold);
   color: var(--color-black);
   margin-bottom: var(--space-6);
@@ -66,7 +66,7 @@
 
 .description {
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-sm);
+  font-size: 15px;
   color: var(--color-gray-600);
   margin-bottom: var(--space-16);
   line-height: 1.4;
@@ -86,20 +86,20 @@
   padding: var(--space-4) var(--space-8);
   border-radius: var(--radius-sm);
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-xs);
+  font-size: 15px;
   font-weight: var(--fw-bold);
 }
-
+ 
 .originalPrice {
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-sm);
+  font-size: 20px;
   color: var(--color-gray-500);
   text-decoration: line-through;
 }
 
 .discountedPrice {
   font-family: var(--font-main);
-  font-size: var(--font-size-xl);
+  font-size: 20px;
   font-weight: var(--fw-bold);
   color: var(--color-black);
 }
@@ -113,10 +113,10 @@
 .addToCart,
 .shopNow {
   flex: 1;
-  padding: var(--space-12) var(--space-16);
+  padding: 10px;
   border-radius: var(--radius-sm);
   font-family: var(--font-main);
-  font-size: var(--font-size-base);
+  font-size: 14px;
   font-weight: var(--fw-semibold);
   text-align: center;
   cursor: pointer;

@@ -111,3 +111,15 @@ word-spacing: 0;
     padding: 48px 20px;
   }
 }
+@media (max-width: 480px) {
+  .title{
+    font-size: 40px;
+  }
+  .title .highlight{
+    font-size: 30px;
+  }
+  .subtitle{
+    max-width: unset;
+    
+  }
+}
