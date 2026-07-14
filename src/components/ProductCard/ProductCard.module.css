@@ -1,13 +1,39 @@
 .card {
   background-color: var(--color-white);
   border-radius: 0;
-  padding: 16px 8px;
+  /* padding: 16px 8px; */
   text-align: left;
   box-shadow: none;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   height: 100%;
+  position: relative;
+}
+
+.addButton {
+  position: absolute;
+  top: 24px;
+  right: 18px;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #F4E066;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  z-index: 10;
+}
+
+.addButton:hover {
+  background-color: #e6d255;
+}
+
+.addButton svg {
+  color: #fff;
 }
 
 .imageWrap {
@@ -40,4 +66,31 @@ word-spacing: 0;
   margin-bottom: 12px;
   flex-grow: 1;
   padding-left: 13px;
+}
+
+.pricing {
+  padding-left: 13px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.percentOff {
+  font-size: 18px;
+  font-weight: 700;
+  color: #7AB54A;
+}
+
+.originalPrice {
+  font-size: 20px;
+  font-weight: 400;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.discountedPrice {
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
 }

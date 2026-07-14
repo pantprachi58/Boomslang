@@ -1,0 +1,72 @@
+.writeReview {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-8) var(--space-16);
+  font-family: var(--font-main);
+  font-size: var(--font-size-sm);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.writeReview:hover {
+  background: var(--color-primary-dark);
+}
+
+.subheading {
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+  margin-bottom: var(--space-16);
+}
+
+.reviewCard {
+  display: flex;
+  gap: var(--space-16);
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--color-gray-300);
+}
+
+.reviewContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.stars {
+  display: flex;
+  gap: 2px;
+  color: #f5a623;
+}
+
+.star {
+  width: 16px;
+  height: 16px;
+}
+
+.reviewText {
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-base);
+  line-height: 1.5;
+  color: var(--color-gray-700);
+}
+
+.reviewAuthor {
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-sm);
+  font-weight: var(--fw-semibold);
+  font-style: italic;
+  color: var(--color-black);
+}

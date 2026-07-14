@@ -1,0 +1,67 @@
+.card {
+  border: 1px solid #e6ece1;
+  border-radius: var(--radius-lg);
+  background: var(--color-white);
+  padding: var(--space-4) var(--space-20) var(--space-8);
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.collapseHeader {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: none;
+  border: none;
+  padding: var(--space-16) 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.collapseTitle {
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.chevron {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-pill);
+  background: var(--color-offwhite);
+  color: var(--color-primary-dark);
+  border: none;
+  cursor: pointer;
+  transition: transform 0.25s ease;
+  flex-shrink: 0;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.body {
+  padding: var(--space-4) 0 var(--space-16);
+}
+
+@media (max-width: 576px) {
+  .headerRow {
+    flex-wrap: wrap;
+  }
+}

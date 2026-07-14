@@ -1,0 +1,118 @@
+.shopGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-48);
+}
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-24);
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-8);
+  margin-top: var(--space-32);
+}
+
+.pageButton {
+  min-width: 40px;
+  height: 40px;
+  padding: var(--space-8) var(--space-12);
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-base);
+  font-weight: var(--fw-medium);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pageButton:hover:not(.active) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pageButton.active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-white);
+  font-weight: var(--fw-bold);
+}
+
+.navButton {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-sm);
+  color: var(--color-gray-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.navButton:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.navButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.emptyState {
+  text-align: center;
+  padding: var(--space-64) var(--space-24);
+}
+
+.emptyMessage {
+  font-family: var(--font-main);
+  font-size: var(--font-size-xl);
+  font-weight: var(--fw-bold);
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-12);
+}
+
+.emptySubtext {
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-base);
+  color: var(--color-gray-500);
+}
+
+@media (max-width: 992px) {
+  .productGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--space-16);
+  }
+}
+
+@media (max-width: 576px) {
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .pagination {
+    gap: var(--space-4);
+  }
+
+  .pageButton {
+    min-width: 36px;
+    height: 36px;
+    padding: var(--space-6) var(--space-8);
+    font-size: var(--font-size-sm);
+  }
+
+  .navButton {
+    width: 36px;
+    height: 36px;
+  }
+}
