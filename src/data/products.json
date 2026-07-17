@@ -89,10 +89,10 @@
       "/images/man-drinking-shaker.png"
     ],
     "flavours": [
-      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
-      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
-      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
-      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/shop/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/shop/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
       { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
@@ -156,10 +156,10 @@
       "/images/products/strychnine-mango/8.png"
     ],
     "flavours": [
-      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
-      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
-      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
-      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/shop/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/shop/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
       { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
@@ -224,10 +224,10 @@
       "/images/products/strychnine-pineapple/4.png"
     ],
     "flavours": [
-      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
-      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
-      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
-      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/shop/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/shop/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
       { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
@@ -290,10 +290,10 @@
       "/images/man-drinking-shaker.png"
     ],
     "flavours": [
-      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
-      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
-      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
-      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/shop/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/shop/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
       { "id": "250g", "name": "250 g", "price": 1350, "oldPrice": 1499 }

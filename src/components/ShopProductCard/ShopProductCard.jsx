@@ -21,7 +21,7 @@ export default function ShopProductCard({
   const { addItem, decreaseItem, getItemQuantity } = useCart();
   const itemId = cartId || slug || href;
   const quantity = getItemQuantity(itemId);
-  const productHref = href || `/product/${slug}`;
+  const productHref = href || `/shop/${slug}`;
   const cartItem = {
     id: itemId,
     slug,

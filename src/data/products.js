@@ -13,7 +13,7 @@ export function getDefaultProduct() {
 }
 
 export function getProductPath(product) {
-  return `/product/${product.slug}`;
+  return `/shop/${product.slug}`;
 }
 
 export function getShopProducts() {

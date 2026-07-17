@@ -9,14 +9,14 @@ const products = [
     description:
       "Our Ayurvedic weight gain supplement is designed to support healthy weight gain, improve appetite, and support nutrient absorption as part of a balanced lifestyle.",
     image: "/images/about/g.png",
-    href: "/product/goku-gainz",
+    href: "/shop/goku-gainz",
   },
   {
-    name: "STRYCNINE",
+    name: "STRYCHNINE",
     description:
       "Our pre-workout supplement is created to support your workout routine by helping you prepare for training with focus and energy. Together, they help support both your nutrition and your performance.",
     image: "/images/about/s.png",
-    href: "/product/strychnine-mango",
+    href: "/shop/strychnine-mango",
   },
 ];
 
@@ -40,19 +40,11 @@ export default function InspirationBehind() {
               </div>
               <div className={styles.imageWrap}>
                 <Image
-                  src="/images/about/leaves.png"
-                  alt=""
-                  width={220}
-                  height={220}
-                  className={styles.leaf}
-                  aria-hidden="true"
-                />
-                <div className={styles.pedestal}></div>
-                <Image
                   src={product.image}
                   alt={product.name}
-                  width={300}
-                  height={300}
+                  width={700}
+                  height={346}
+                  sizes="(max-width: 767px) 46vw, (max-width: 1199px) 44vw, 300px"
                   className={styles.image}
                 />
               </div>

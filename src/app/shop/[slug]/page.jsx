@@ -26,7 +26,7 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function ProductSlugPage({ params }) {
+export default function ShopProductPage({ params }) {
   const product = getProductBySlug(params.slug);
 
   if (!product) {

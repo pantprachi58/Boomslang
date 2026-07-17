@@ -24,7 +24,7 @@ export default function CtaBanner() {
             <p className={styles.description}>
               Give your body the nutritional support it deserves with GOKU GAINZ, one of Boomslang Nutrition's trusted Ayurvedic supplements for weight gain. Support healthy weight gain, improve appetite, and enhance nutrient absorption as part of your everyday wellness routine.
             </p>
-            <Button href="/product/goku-gainz">Shop GOKU GAINZ</Button>
+            <Button href="/shop/goku-gainz">Shop GOKU GAINZ</Button>
           </div>
         </div>
       </div>

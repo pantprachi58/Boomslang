@@ -6,80 +6,12 @@ import Link from "next/link";
 import Container from "@/components/Container/Container";
 import BlogCard from "@/components/BlogCard/BlogCard";
 import { SearchIcon } from "@/components/icons/Icons";
+import { getAllBlogs, getBlogCategories, getRecentBlogs } from "@/data/blogs";
 import styles from "./BlogContent.module.css";
 
-// Sample blog data - replace with actual data from API/CMS
-const allPosts = [
-  {
-    id: 1,
-    image: "/images/blog-ayurvedic-supplements.png",
-    title: "Ayurvedic Supplements for Weight Gain: Everything You Need To Know",
-    description: "Learn how Ayurvedic ingredients can support healthy weight gain naturally and boost your overall wellness.",
-    date: "16 / 07 / 2026",
-    category: "Ayurveda",
-    author: "Dr. Sarah Johnson",
-    href: "#",
-  },
-  {
-    id: 2,
-    image: "/images/blog-weight-gain-capsules.png",
-    title: "Best Weight Gain Capsules: How to Choose the Right One",
-    description: "Understand the factors to consider before selecting a weight gain supplement that works for you.",
-    date: "15 / 07 / 2026",
-    category: "Supplements",
-    author: "Mike Thompson",
-    href: "#",
-  },
-  {
-    id: 3,
-    image: "/images/blog-healthy-weight-gain-tips.png",
-    title: "Healthy Weight Gain Tips That Actually Work",
-    description: "Discover simple lifestyle and nutrition habits that support sustainable weight gain without compromising health.",
-    date: "14 / 07 / 2026",
-    category: "Nutrition",
-    author: "Emma Davis",
-    href: "#",
-  },
-  {
-    id: 4,
-    image: "/images/blog-improve-appetite.png",
-    title: "How to Improve Appetite Naturally",
-    description: "Explore practical ways to encourage healthy eating habits and better nutrient intake for optimal results.",
-    date: "13 / 07 / 2026",
-    category: "Wellness",
-    author: "John Martinez",
-    href: "#",
-  },
-  {
-    id: 5,
-    image: "/images/blog-ayurvedic-supplements.png",
-    title: "Understanding Pre-Workout Supplements",
-    description: "Everything you need to know about pre-workout formulas and how they can enhance your performance.",
-    date: "12 / 07 / 2026",
-    category: "Supplements",
-    author: "Dr. Sarah Johnson",
-    href: "#",
-  },
-  {
-    id: 6,
-    image: "/images/blog-healthy-weight-gain-tips.png",
-    title: "Building Muscle Mass: A Complete Guide",
-    description: "Learn the science behind muscle growth and the best practices for gaining lean muscle mass.",
-    date: "11 / 07 / 2026",
-    category: "Fitness",
-    author: "Mike Thompson",
-    href: "#",
-  },
-];
-
-const categories = [
-  { name: "All", count: 12 },
-  { name: "Ayurveda", count: 5 },
-  { name: "Supplements", count: 4 },
-  { name: "Nutrition", count: 6 },
-  { name: "Wellness", count: 3 },
-  { name: "Fitness", count: 4 },
-];
+const allPosts = getAllBlogs();
+const categories = getBlogCategories();
+const recentPosts = getRecentBlogs(3);
 
 export default function BlogContent() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -90,8 +22,12 @@ export default function BlogContent() {
   // Filter posts based on category and search
   const filteredPosts = allPosts.filter((post) => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
-    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         post.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const search = searchQuery.toLowerCase();
+    const matchesSearch =
+      post.title.toLowerCase().includes(search) ||
+      post.description.toLowerCase().includes(search) ||
+      post.category.toLowerCase().includes(search) ||
+      post.tags.some((tag) => tag.toLowerCase().includes(search));
     return matchesCategory && matchesSearch;
   });
 
@@ -99,9 +35,6 @@ export default function BlogContent() {
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
   const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
-
-  // Recent posts for sidebar (last 3)
-  const recentPosts = allPosts.slice(0, 3);
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -252,7 +185,7 @@ export default function BlogContent() {
                       </div>
                       <div className={styles.recentInfo}>
                         <h4 className={styles.recentTitle}>{post.title}</h4>
-                        <span className={styles.recentDate}>{post.date}</span>
+                        <span className={styles.recentDate}>{post.displayDate}</span>
                       </div>
                     </Link>
                   </li>

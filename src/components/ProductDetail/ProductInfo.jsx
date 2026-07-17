@@ -28,7 +28,7 @@ export default function ProductInfo({ product }) {
   const currentWeight = product.weights?.find((weight) => weight.id === selectedWeight);
   const displayPrice = currentWeight?.price || product.price;
   const displayOldPrice = currentWeight?.oldPrice || product.oldPrice;
-  const productHref = `/product/${product.slug}`;
+  const productHref = `/shop/${product.slug}`;
   const itemId = currentWeight ? `${product.slug}:${currentWeight.id}` : product.slug;
   const quantity = getItemQuantity(itemId);
   const cartItem = {
