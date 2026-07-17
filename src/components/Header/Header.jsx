@@ -47,7 +47,7 @@ export default function Header() {
     return () => document.removeEventListener("keydown", handleEscape);
   }, []);
 
-  const toggleMobileExpanded = (lAel) => {
+  const toggleMobileExpanded = (label) => {
     setMobileExpanded((prev) => (prev === label ? null : label));
   };
 
@@ -150,8 +150,8 @@ export default function Header() {
               0
             </span>
           </button>
-          <Button href="/contact" className={styles.shopBtn}>
-            Contact
+          <Button href="/shop" className={styles.shopBtn}>
+            Shop Now
           </Button>
           <button
             type="button"
@@ -250,7 +250,7 @@ export default function Header() {
         </div>
 
         <Button href="/shop" className={styles.mobileShopBtn} onClick={closeMobileMenu}>
-          Book Now
+          Shop Now
         </Button>
       </div>
     </header>

@@ -1,0 +1,5 @@
+.blogPage {
+  background-color: var(--color-offwhite);
+  min-height: 100vh;
+  padding-bottom: var(--space-64);
+}
