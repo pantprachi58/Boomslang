@@ -150,8 +150,8 @@ export default function Header() {
               0
             </span>
           </button>
-          <Button href="/shop" className={styles.shopBtn}>
-            Shop Now
+          <Button href="/contact" className={styles.shopBtn}>
+            Contact
           </Button>
           <button
             type="button"
@@ -250,7 +250,7 @@ export default function Header() {
         </div>
 
         <Button href="/shop" className={styles.mobileShopBtn} onClick={closeMobileMenu}>
-          Shop Now
+          Book Now
         </Button>
       </div>
     </header>

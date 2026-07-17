@@ -61,7 +61,7 @@ export default function PreWorkoutFlavours() {
             originalPrice={flavour.originalPrice}
             discountedPrice={flavour.discountedPrice}
             percentOff={flavour.percentOff}
-            href="/shop/strycnnine"
+            href="/product1"
           />
         ))}
       </div>

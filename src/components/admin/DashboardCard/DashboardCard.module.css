@@ -1,0 +1,94 @@
+.card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-top: 3px solid #7cb729;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(124, 183, 41, 0.15);
+  transform: translateY(-2px);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #666;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(124, 183, 41, 0.1);
+  color: #7cb729;
+}
+
+.icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.change {
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+}
+
+.change.positive {
+  color: #10b981;
+  background: #d1fae5;
+}
+
+.change.negative {
+  color: #ef4444;
+  background: #fee2e2;
+}
+
+.change.neutral {
+  color: #6b7280;
+  background: #f3f4f6;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.25rem;
+  }
+
+  .value {
+    font-size: 1.75rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+}

@@ -2,6 +2,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Newsletter from "@/components/sections/Newsletter/Newsletter";
 import ProductDetail from "@/components/ProductDetail/ProductDetail";
+import PageBanner from "@/components/PageBanner/PageBanner";
 
 export const metadata = {
   title: "GOKU GAINZ – Herbal Weight Gain Capsules | Boomslang Nutrition",
@@ -68,6 +69,7 @@ export default function ProductPage() {
   return (
     <>
       <Header />
+      <PageBanner src="/images/banner/Product.png" alt="Product Banner" />
       <ProductDetail product={product} />
       <Newsletter />
       <Footer />

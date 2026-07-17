@@ -1,0 +1,30 @@
+.section {
+  padding: var(--space-64) 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-32);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-main);
+  font-size: var(--font-size-3xl);
+  font-weight: var(--fw-black);
+  color: var(--color-offwhite);
+  line-height: 1.15;
+  max-width: 700px;
+}
+
+@media (min-width: 992px) {
+  .section {
+    padding: var(--space-96) 0;
+  }
+
+  .title {
+    font-size: var(--font-size-4xl);
+  }
+}

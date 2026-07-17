@@ -1,8 +1,28 @@
+/* Banner styles */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.bannerImage {
+  object-fit: cover;
+  object-position: center;
+}
+
 .shopContent {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: var(--space-32);
-  padding-top: var(--space-32);
+}
+
+@media (min-width: 768px) {
+  
+}
+
+@media (min-width: 1200px) {
+  
 }
 
 .sidebar {

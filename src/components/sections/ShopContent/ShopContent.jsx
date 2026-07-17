@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Container from "@/components/Container/Container";
 import ShopFilters from "@/components/ShopFilters/ShopFilters";
 import ShopGrid from "@/components/ShopGrid/ShopGrid";
@@ -117,24 +118,39 @@ export default function ShopContent() {
   };
 
   return (
-    <Container>
-      <div className={styles.shopContent}>
-        <aside className={styles.sidebar}>
-          <ShopFilters 
-            filters={filters} 
-            onFilterChange={handleFilterChange}
-            productsCount={filteredProducts.length}
-          />
-        </aside>
-        <div className={styles.mainContent}>
-          <ShopGrid 
-            products={currentProducts}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </div>
+    <>
+      {/* Banner Section */}
+      <div className={styles.banner}>
+        <Image
+          src="/images/banner/product.png"
+          alt="Shop Banner"
+          fill
+          className={styles.bannerImage}
+          priority
+          sizes="100vw"
+        />
       </div>
-    </Container>
+
+      {/* Shop Content */}
+      <Container>
+        <div className={styles.shopContent}>
+          <aside className={styles.sidebar}>
+            <ShopFilters 
+              filters={filters} 
+              onFilterChange={handleFilterChange}
+              productsCount={filteredProducts.length}
+            />
+          </aside>
+          <div className={styles.mainContent}>
+            <ShopGrid 
+              products={currentProducts}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </div>
+        </div>
+      </Container>
+    </>
   );
 }
