@@ -9,7 +9,7 @@ const navItems = [
   },
   {
     label: "Blogs",
-    href: "/blogs",
+    href: "/blog",
   },
   {
     label: "Goku Gainz",
