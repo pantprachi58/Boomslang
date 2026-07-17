@@ -1,13 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
 import styles from "./OurVision.module.css";
 
 export default function OurVision() {
   return (
     <SectionWrapper className={styles.section}>
-      <div className={styles.grid}>
+      <div className={styles.contentWrapper}>
         <div className={styles.content}>
           <h2 className={styles.title}>Our Mission</h2>
           <p className={styles.description}>
@@ -23,15 +22,6 @@ export default function OurVision() {
             BOOMSLANG isn't just about supplements—it's about building a community of strong,
             confident individuals who believe in doing things the right way. The natural way.
           </p>
-        </div>
-        <div className={styles.imageWrap}>
-          <Image
-            src="/images/about/1.png"
-            alt="Man with fitness supplement"
-            fill
-            className={styles.image}
-            sizes="(max-width: 992px) 100vw, 50vw"
-          />
         </div>
       </div>
     </SectionWrapper>

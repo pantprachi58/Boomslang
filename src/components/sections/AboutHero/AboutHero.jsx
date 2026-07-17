@@ -25,7 +25,7 @@ export default function AboutHero() {
           <div className={styles.imageWrap}>
             <div className={styles.glow} aria-hidden="true" />
             <Image
-              src="/images/1.png"
+              src="/images/about/7.png"
               alt="GOKU GAINZ Supplement Bottle"
               fill
               className={styles.image}

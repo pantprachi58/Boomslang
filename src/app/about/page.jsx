@@ -8,9 +8,8 @@ import WhatMakesUsDifferent from "@/components/sections/WhatMakesUsDifferent/Wha
 import WhatYouCanExpect from "@/components/sections/WhatYouCanExpect/WhatYouCanExpect";
 import InspirationBehind from "@/components/sections/InspirationBehind/InspirationBehind";
 import QualityCleansPure from "@/components/sections/QualityCleansPure/QualityCleansPure";
-import WhatOurCustomers from "@/components/sections/WhatOurCustomers/WhatOurCustomers";
 import FaqSection from "@/components/sections/FaqSection/FaqSection";
-import CtaBanner from "@/components/sections/CtaBanner/CtaBanner";
+
 
 export const metadata = {
   title: "About Us | BOOMSLANG Nutrition",
@@ -31,9 +30,9 @@ export default function AboutPage() {
         <WhatYouCanExpect />
         <InspirationBehind />
         <QualityCleansPure />
-        <WhatOurCustomers />
+        
         <FaqSection />
-        <CtaBanner />
+        
       </main>
       <Footer />
     </>

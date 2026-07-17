@@ -1,55 +1,63 @@
 "use client";
 
 import Image from "next/image";
-import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
-import Button from "@/components/Button/Button";
 import styles from "./InspirationBehind.module.css";
 
 const products = [
   {
     name: "GOKU GAINZ",
     description:
-      "Our Ayurvedic weight gain formula, crafted to support healthy weight gain and improve appetite naturally.",
-    image: "/images/1.png",
-    href: "/product",
+      "Our Ayurvedic weight gain supplement is designed to support healthy weight gain, improve appetite, and support nutrient absorption as part of a balanced lifestyle.",
+    image: "/images/about/g.png",
   },
   {
-    name: "STRYCHNINE",
+    name: "STRYCNINE",
     description:
-      "Our pre-workout supplement, created to support energy and performance before every training session.",
-    image: "/images/strycnnine-mango.png",
-    href: "/shop",
+      "Our pre-workout supplement is created to support your workout routine by helping you prepare for training with focus and energy. Together, they help support both your nutrition and your performance.",
+    image: "/images/about/s.png",
   },
 ];
 
 export default function InspirationBehind() {
   return (
-    <SectionWrapper background="dark" className={styles.section}>
-      <h2 className={styles.mainTitle}>Supporting Different Fitness Goals</h2>
-      <p className={styles.subtitle}>
-        Every fitness journey is different. That's why Boomslang Nutrition offers products
-        designed to support a range of your fitness goals.
-      </p>
-      <div className={styles.grid}>
-        {products.map((product) => (
-          <div className={styles.card} key={product.name}>
-            <div className={styles.imageWrap}>
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                className={styles.image}
-                sizes="(max-width: 768px) 90vw, 45vw"
-              />
+    <section className={styles.section}>
+      <div className={styles.container}>
+        <h2 className={styles.mainTitle}>Supporting Different Fitness Goals</h2>
+        <p className={styles.subtitle}>
+          Every fitness journey has different needs.
+          <br />
+          That&apos;s why Boomslang Nutrition offers products designed to support different stages of your routine.
+        </p>
+        <div className={styles.grid}>
+          {products.map((product) => (
+            <div className={styles.card} key={product.name}>
+              <div className={styles.content}>
+                <h3 className={styles.cardTitle}>{product.name}</h3>
+                <p className={styles.description}>{product.description}</p>
+                <div className={styles.divider}></div>
+              </div>
+              <div className={styles.imageWrap}>
+                <Image
+                  src="/images/about/leaves.png"
+                  alt=""
+                  width={220}
+                  height={220}
+                  className={styles.leaf}
+                  aria-hidden="true"
+                />
+                <div className={styles.pedestal}></div>
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={300}
+                  height={300}
+                  className={styles.image}
+                />
+              </div>
             </div>
-            <h3 className={styles.cardTitle}>{product.name}</h3>
-            <p className={styles.description}>{product.description}</p>
-            <Button href={product.href} size="small">
-              Learn More
-            </Button>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

@@ -80,10 +80,13 @@
 }
 
 .description {
-  font-family: var(--font-paragraph);
-  font-size: var(--font-size-md);
-  font-weight: var(--fw-regular);
-  color: #000;
+ font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.6;
+    letter-spacing: 0;
+    word-spacing: 0;
+    color: #000;
 }
 
 @media (min-width: 992px) {
@@ -104,7 +107,5 @@
     font-size: 35px;
   }
 
-  .description {
-    font-size: 15px;
-  }
+  
 }

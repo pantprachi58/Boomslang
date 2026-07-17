@@ -1,10 +1,33 @@
 .section {
+  position: relative;
   padding: var(--space-80) 0;
+  background-color: #2f7a19; /* fallback solid green like the reference */
+  background-image: url('/images/natural-support-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(38, 92, 20, 0.9);
+  z-index: 1;
+}
+
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-20);
 }
 
 .mainTitle {
   font-family: var(--font-main);
-  font-size: var(--font-size-3xl);
+  font-size: clamp(1.75rem, 4vw, 3rem);
   font-weight: var(--fw-black);
   color: var(--color-offwhite);
   line-height: 1.1;
@@ -16,58 +39,125 @@
   font-family: var(--font-paragraph);
   font-size: var(--font-size-md);
   font-weight: var(--fw-regular);
-  color: var(--color-gray-300);
+  color: var(--color-gray-200);
   line-height: 1.6;
   text-align: center;
-  max-width: 640px;
-  margin: 0 auto var(--space-48);
+  max-width: 800px;
+  margin: 0 auto var(--space-64);
 }
 
+/* --- Grid: stacked on mobile, side-by-side on desktop --- */
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-32);
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  padding: var(--space-32);
+  position: relative;
+  background: rgba(40, 100, 20, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  text-align: center;
+  padding: var(--space-32);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  gap: var(--space-24);
+  overflow: hidden;
 }
 
-.imageWrap {
-  position: relative;
-  width: 100%;
-  max-width: 220px;
-  height: 220px;
-  margin-bottom: var(--space-20);
-}
-
-.image {
-  object-fit: contain;
+.content {
+  flex: 1;
+  text-align: left;
+  z-index: 2;
 }
 
 .cardTitle {
   font-family: var(--font-main);
   font-size: var(--font-size-2xl);
   font-weight: var(--fw-bold);
-  color: var(--color-primary);
+  color: var(--color-offwhite);
   line-height: 1.2;
-  margin-bottom: var(--space-12);
+  margin-bottom: var(--space-16);
+  letter-spacing: 0.5px;
 }
 
 .description {
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-base);
   font-weight: var(--fw-regular);
   color: var(--color-offwhite);
-  line-height: 1.6;
-  margin-bottom: var(--space-24);
+  line-height: 1.7;
+  margin-bottom: var(--space-20);
+}
+
+/* short accent bar instead of a full-width line, matching the reference */
+.divider {
+  width: 56px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--color-offwhite);
+}
+
+/* --- Image area with leaf decoration + white pedestal --- */
+.imageWrap {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 220px;
+  padding: var(--space-20) 0 0;
+}
+
+.leaf {
+  position: absolute;
+  top: -30px;
+  right: -10px;
+  width: 160px;
+  height: auto;
+  opacity: 0.9;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.pedestal {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 130px;
+  height: 34px;
+  background: var(--color-offwhite);
+  border-radius: 50%;
+  z-index: 1;
+  filter: blur(0.3px);
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  height: auto;
+  max-width: 220px;
+  object-fit: contain;
+  z-index: 2;
+}
+
+@media (min-width: 768px) {
+  .card {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-32);
+  }
+
+  .content {
+    flex: 1.1;
+  }
+
+  .imageWrap {
+    flex: 1;
+    padding: 0;
+  }
 }
 
 @media (min-width: 992px) {
@@ -75,16 +165,39 @@
     padding: var(--space-96) 0;
   }
 
-  .mainTitle {
-    font-size: var(--font-size-4xl);
+  .container {
+    padding: 0 var(--space-32);
   }
 
   .subtitle {
     font-size: var(--font-size-lg);
   }
 
+  /* two cards side by side, like the reference */
   .grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-48);
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-40);
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--space-40);
+  }
+
+  .cardTitle {
+    font-size: clamp(1.75rem, 2vw, 2.25rem);
+  }
+
+  .description {
+    font-size: var(--font-size-md);
+  }
+
+  .imageWrap {
+    min-height: 260px;
+  }
+
+  .image {
+    max-width: 260px;
   }
 }

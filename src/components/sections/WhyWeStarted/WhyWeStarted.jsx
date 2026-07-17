@@ -26,7 +26,7 @@ export default function WhyWeStarted() {
         </div>
         <div className={styles.imageWrap}>
           <Image
-            src="/images/about/5.png"
+            src="/images/about/11.png"
             alt="Fitness Motivation"
             fill
             className={styles.image}
