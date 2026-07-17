@@ -13,12 +13,14 @@ const quickLinks = [
 ];
 
 const productLinks = [
-  { label: "GOKU GAINZ", href: "/shop/goku-gainz" },
-  { label: "STRYCNNINE Pre-Workout", href: "/shop/strycnnine" },
-  { label: "STRYCNNINE Mango", href: "/shop/strycnnine" },
-  { label: "STRYCNNINE Mix Fruit", href: "/shop/strycnnine" },
-  { label: "STRYCNNINE Pineapple", href: "/shop/strycnnine" },
-  { label: "STRYCNNINE Electric Blood Orange", href: "/shop/strycnnine" },
+  { label: "GOKU GAINZ", href: "/product/goku-gainz" },
+  { label: "STRYCNNINE Mango", href: "/product/strychnine-mango" },
+  { label: "STRYCNNINE Mix Fruit", href: "/product/strychnine-mix-fruit" },
+  { label: "STRYCNNINE Pineapple", href: "/product/strychnine-pineapple" },
+  {
+    label: "STRYCNNINE Electric Blood Orange",
+    href: "/product/strychnine-electric-blood-orange",
+  },
 ];
 
 const supportLinks = [

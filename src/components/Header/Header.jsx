@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import navItems from "@/data/navigation";
 import Button from "@/components/Button/Button";
+import { useCart } from "@/components/CartProvider/CartProvider";
 import {
   ChevronDownIcon,
   HamburgerIcon,
@@ -19,6 +20,7 @@ export default function Header() {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
+  const { totals } = useCart();
   const headerRef = useRef(null);
 
   useEffect(() => {
@@ -144,12 +146,12 @@ export default function Header() {
           <button type="button" className={styles.iconBtn} aria-label="Account">
             <UserIcon />
           </button>
-          <button type="button" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
+          <Link href="/cart" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
             <CartIcon />
             <span className={styles.cartBadge} aria-hidden="true">
-              0
+              {totals.totalQuantity}
             </span>
-          </button>
+          </Link>
           <Button href="/shop" className={styles.shopBtn}>
             Shop Now
           </Button>
@@ -241,12 +243,17 @@ export default function Header() {
           <button type="button" className={styles.iconBtn} aria-label="Account">
             <UserIcon />
           </button>
-          <button type="button" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
+          <Link
+            href="/cart"
+            className={`${styles.iconBtn} ${styles.cartBtn}`}
+            aria-label="Cart"
+            onClick={closeMobileMenu}
+          >
             <CartIcon />
             <span className={styles.cartBadge} aria-hidden="true">
-              0
+              {totals.totalQuantity}
             </span>
-          </button>
+          </Link>
         </div>
 
         <Button href="/shop" className={styles.mobileShopBtn} onClick={closeMobileMenu}>

@@ -13,7 +13,7 @@ const navItems = [
   },
   {
     label: "Goku Gainz",
-    href: "/product",
+    href: "/product/goku-gainz",
   },
    {
     label: "All Product",

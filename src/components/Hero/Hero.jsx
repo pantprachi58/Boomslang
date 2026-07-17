@@ -46,7 +46,7 @@ export default function Hero() {
                 </span>
               ))}
             </div>
-            <Button href="/shop/goku-gainz" size="small">
+            <Button href="/product/goku-gainz" size="small">
               Shop GOKU GAINZ
             </Button>
           </div>

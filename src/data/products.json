@@ -1,0 +1,334 @@
+[
+  {
+    "id": 1,
+    "slug": "goku-gainz",
+    "name": "GOKU GAINZ",
+    "subtitle": "Herbal Weight Gain Capsules",
+    "tagline": "Natural Weight Gain | Strength | Stamina | Healthy Appetite Support",
+    "category": "GOKU GAINZ",
+    "type": "weight-gain",
+    "description": "GOKU GAINZ by Boomslang Nutrition is a carefully formulated Ayurvedic supplement featuring Herbal Weight Gain Capsules designed to support healthy and natural weight gain. Created for individuals looking to improve body nourishment, appetite, strength, stamina, and overall wellness, these Weight Gain Capsules help complement your daily nutrition and fitness routine. If you're searching for the Best Weight Gain Capsules with an Ayurvedic herbal approach, GOKU GAINZ offers a thoughtfully crafted formula to support your wellness goals. For optimal results, use it alongside a balanced diet and regular exercise.",
+    "metaTitle": "Buy Herbal Weight Gain Capsules | GOKU GAINZ",
+    "metaDescription": "Goku Gainz Herbal Weight Gain Capsules with a natural Ayurvedic formula to support healthy weight gain, energy, strength, and overall wellness.",
+    "discountLabel": "20% Off",
+    "oldPrice": 999,
+    "price": 799,
+    "percentOff": 20,
+    "availability": "In Stock",
+    "image": "/images/5.png",
+    "images": [
+      "/images/5.png",
+      "/images/goku-gainz-three-bottles.png",
+      "/images/goku-gainz-lifestyle-collage.png",
+      "/images/man-drinking-shaker.png"
+    ],
+    "highlights": [
+      "Helps support healthy and gradual weight gain",
+      "Encourages improved appetite and food intake",
+      "Supports efficient digestion and nutrient absorption",
+      "Promotes better strength and physical stamina",
+      "Enriched with natural Ayurvedic herbal extracts",
+      "Free from steroids, hormones, and synthetic additives"
+    ],
+    "review": {
+      "author": "Anuj Sharma",
+      "location": "Delhi",
+      "text": "I gained decent weight after using GOKU GAINZ. I trust this product a lot and many people ask me about my transformation. I recommend this to everyone."
+    },
+    "ingredients": [
+      { "name": "Ashwagandha Extract", "image": "/images/productDetail/1.png" },
+      { "name": "Shatavari Extract", "image": "/images/productDetail/6.png" },
+      { "name": "Safed Musli Extract", "image": "/images/productDetail/7.png" },
+      { "name": "Kaunch Beej Extract", "image": "/images/productDetail/8.png" },
+      { "name": "Gokshura Extract", "image": "/images/productDetail/2.png" },
+      { "name": "Vidarikand Extract", "image": "/images/productDetail/3.png" },
+      { "name": "Pippali Extract", "image": "/images/productDetail/4.png" },
+      { "name": "Amla Extract", "image": "/images/productDetail/5.png" }
+    ],
+    "whyChooseTitle": "Why Choose GOKU GAINZ?",
+    "whyChoose": "Inspired by the principles of traditional Ayurveda, GOKU GAINZ Herbal Weight Gain Capsules are formulated to support natural body nourishment and overall wellness. The carefully selected herbal ingredients work in harmony with your body's natural processes to help support healthy metabolism, energy levels, appetite, and overall physical development, without the use of artificial chemicals or synthetic hormones.",
+    "howToUseTitle": "How to Use",
+    "howToUse": "Take one Weight Gain Capsule daily, or as recommended by a qualified healthcare practitioner. For the best results, use these Weight Gain Capsules alongside a nutrient-rich diet, adequate hydration, and regular physical activity.",
+    "howToUseImage": "/images/productDetail/9.png",
+    "whoCanUseTitle": "Who Can Use It?",
+    "whoCanUseLead": "Suitable for adults who:",
+    "whoCanUse": [
+      "Are looking to naturally increase body weight",
+      "Experience low appetite or irregular eating habits",
+      "Want to improve strength, stamina, and energy levels",
+      "Maintain an active or fitness-focused lifestyle"
+    ],
+    "storageTitle": "Storage & Care",
+    "storage": "Keep the container tightly closed and store it in a cool, dry environment away from direct heat, moisture, and sunlight. Ensure the product is kept out of reach of children.",
+    "storageImage": "/images/productDetail/10.png",
+    "disclaimerTitle": "Disclaimer",
+    "disclaimer": "GOKU GAINZ Herbal Weight Gain Capsules are an Ayurvedic dietary supplement and should not be considered a medicine. This product is not intended to diagnose, treat, cure, or prevent any disease. Individual results may vary based on body type, dietary habits, lifestyle, and consistency of use."
+  },
+  {
+    "id": 2,
+    "slug": "strychnine-electric-blood-orange",
+    "name": "Strychnine Electric Blood Orange",
+    "subtitle": "Orange Pre Workout Supplement",
+    "tagline": "Energy Activation | Endurance Support | Performance Drive",
+    "category": "STRYCHNINE",
+    "type": "pre-workout",
+    "flavour": "Electric Blood Orange",
+    "selectedFlavourId": "electric-blood-orange",
+    "description": "Power up your training with Strychnine Electric Blood Orange, a premium Orange Pre Workout Supplement from Boomslang Nutrition. Formulated to support energy, focus, endurance, and workout performance, this gym pre workout helps you prepare for intense training sessions. Whether you're lifting weights, performing HIIT, or pushing through challenging workouts, it delivers the support you need before every session.",
+    "metaTitle": "Strychnine Electric Blood Orange | Gym Pre Workout",
+    "metaDescription": "Strychnine Electric Blood Orange gym pre workout helps support energy, focus, endurance, and workout performance with every serving.",
+    "discountLabel": "10% Off",
+    "oldPrice": 1499,
+    "price": 1350,
+    "percentOff": 10,
+    "availability": "In Stock",
+    "image": "/images/1.png",
+    "images": [
+      "/images/1.png",
+      "/images/strycnnine-mango.png",
+      "/images/man-drinking-shaker.png"
+    ],
+    "flavours": [
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+    ],
+    "weights": [
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+    ],
+    "highlights": [
+      "Helps support strong workout energy output",
+      "Promotes better mental alertness during training",
+      "Supports longer training endurance and reduced fatigue",
+      "Enhances workout intensity and overall performance",
+      "Refreshing citrus-inspired flavor profile",
+      "Quick-mixing formula for easy preparation"
+    ],
+    "review": {
+      "author": "Rohit Verma",
+      "location": "Mumbai",
+      "text": "The flavour is refreshing and it helps me feel ready before heavy training sessions."
+    },
+    "whyChooseTitle": "Why Choose Strychnine Electric Blood Orange?",
+    "whyChoose": "Strychnine Electric Blood Orange is made for healthy adults who want focused pre-workout support before strength training, HIIT, bodybuilding, and endurance sessions.",
+    "howToUseTitle": "How to Take",
+    "howToUse": "Blend one scoop (approx. 10 g) into 200-250 ml of chilled water. Consume shortly before your workout session to prepare your body for training. If you are new to pre-workouts, start with a smaller serving to understand your tolerance level before moving to a full scoop.",
+    "howToUseImage": "/images/1.png",
+    "whoCanUseTitle": "Who Should Use It",
+    "whoCanUseLead": "",
+    "whoCanUse": [
+      "Gym beginners and regular fitness users",
+      "Strength training and bodybuilding athletes",
+      "HIIT and high-intensity workout enthusiasts",
+      "Individuals focusing on stamina and endurance improvement"
+    ],
+    "storageTitle": "Product Care Instructions",
+    "storage": "Keep the container tightly closed after use. Store it in a dry and cool place away from excess heat or moisture to maintain freshness and quality over time.",
+    "storageImage": "/images/1.png",
+    "disclaimerTitle": "Important Advisory",
+    "disclaimer": "This gym pre workout is intended for healthy adults who participate in fitness and training activities. Individuals who are pregnant, breastfeeding, taking medication, or receiving medical treatment should consult a qualified healthcare professional before use. For best results, use this product alongside a balanced diet and regular exercise."
+  },
+  {
+    "id": 3,
+    "slug": "strychnine-mango",
+    "name": "Strychnine Mango",
+    "subtitle": "Mango Pre Workout Supplement",
+    "tagline": "Power | Focus | Workout Support",
+    "category": "STRYCHNINE",
+    "type": "pre-workout",
+    "flavour": "Mango",
+    "selectedFlavourId": "mango",
+    "description": "Power up your workouts with Strychnine Mango, a premium Mango Pre Workout Supplement from Boomslang Nutrition. Formulated to support energy, focus, endurance, and workout performance, this workout supplement helps you stay prepared for intense training sessions. Whether you're lifting weights, performing HIIT, or pushing your limits in the gym, its refreshing mango flavor and easy-to-mix formula make it the perfect pre-workout companion.",
+    "metaTitle": "Buy Strychnine Mango Workout Supplement",
+    "metaDescription": "Fuel your training with Strychnine Mango workout supplement from Boomslang Nutritions. Supports energy, focus, endurance, and an active fitness routine.",
+    "discountLabel": "10% Off",
+    "oldPrice": 1499,
+    "price": 1350,
+    "percentOff": 10,
+    "availability": "In Stock",
+    "image": "/images/2.png",
+    "images": [
+      "/images/2.png",
+      "/images/products/strychnine-mango/5.png",
+      "/images/products/strychnine-mango/6.png",
+      "/images/products/strychnine-mango/7.png",
+      "/images/products/strychnine-mango/8.png"
+    ],
+    "flavours": [
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+    ],
+    "weights": [
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+    ],
+    "highlights": [
+      "Helps prepare your body for demanding training sessions",
+      "Supports concentration throughout your workout",
+      "Assists with exercise endurance and stamina",
+      "Encourages consistent workout performance",
+      "Refreshing mango flavour",
+      "Fast-dissolving powder for convenient mixing"
+    ],
+    "review": {
+      "author": "Karan Singh",
+      "location": "Pune",
+      "text": "Mango mixes quickly and feels easy to drink before training."
+    },
+    "whyChooseTitle": "Why Choose Strychnine Mango?",
+    "whyChoose": "Strychnine Mango is a refreshing pre-workout companion for gym sessions, strength training, functional training, cardio, and HIIT routines.",
+    "howToUseTitle": "Directions",
+    "howToUse": "Combine one scoop (10 g) with 200-250 ml of chilled water and mix thoroughly until dissolved. Consume shortly before exercise. If you are using this product for the first time, begin with half a scoop to evaluate your individual tolerance.",
+    "howToUseImage": "/images/2.png",
+    "whoCanUseTitle": "Recommended For",
+    "whoCanUseLead": "",
+    "whoCanUse": [
+      "Gym members",
+      "Strength athletes",
+      "Fitness enthusiasts",
+      "Functional training",
+      "Cardio and HIIT participants"
+    ],
+    "storageTitle": "Storage Advice",
+    "storage": "Close the lid securely after every use. Keep the container in a dry area at normal room temperature and protect it from moisture, heat, and prolonged exposure to sunlight.",
+    "storageImage": "/images/2.png",
+    "disclaimerTitle": "Before You Use",
+    "disclaimer": "Consume only the recommended serving of this workout supplement. Intended for healthy adults only. If you have a medical condition, are taking prescription medication, or are pregnant or breastfeeding, seek advice from a qualified healthcare professional before use. For optimal results, combine it with a balanced diet and regular physical activity."
+  },
+  {
+    "id": 4,
+    "slug": "strychnine-pineapple",
+    "name": "Strychnine Pineapple",
+    "subtitle": "Pineapple Pre Workout Supplement",
+    "tagline": "Fuel Your Training | Stay Focused | Perform Stronger",
+    "category": "STRYCHNINE",
+    "type": "pre-workout",
+    "flavour": "Pineapple",
+    "selectedFlavourId": "pineapple",
+    "description": "Power up your training sessions with Strychnine Pineapple, a premium Pineapple Pre Workout Supplement from Boomslang Nutrition. Designed for athletes and fitness enthusiasts, this high-performance pre workout powder helps support energy, focus, endurance, and overall workout intensity. With its refreshing pineapple flavor and easy-to-mix formula, it makes every workout more energized and enjoyable. Whether you're hitting heavy lifts, pushing through HIIT, or training for endurance, this pre-workout is built to help you perform at your peak.",
+    "metaTitle": "Buy Strychnine Pineapple Pre Workout Powder",
+    "metaDescription": "Train with Strychnine Pineapple pre workout powder from Boomslang Nutritions. Designed to support energy, focus, endurance, and performance.",
+    "discountLabel": "10% Off",
+    "oldPrice": 1499,
+    "price": 1350,
+    "percentOff": 10,
+    "availability": "In Stock",
+    "image": "/images/3.png",
+    "images": [
+      "/images/3.png",
+      "/images/products/strychnine-pineapple/1.png",
+      "/images/products/strychnine-pineapple/2.png",
+      "/images/products/strychnine-pineapple/3.png",
+      "/images/products/strychnine-pineapple/4.png"
+    ],
+    "flavours": [
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+    ],
+    "weights": [
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+    ],
+    "highlights": [
+      "Helps prepare your body for demanding workouts",
+      "Supports concentration throughout exercise",
+      "Assists with workout stamina and training capacity",
+      "Encourages consistent exercise performance",
+      "Refreshing pineapple flavour",
+      "Dissolves quickly for convenient mixing"
+    ],
+    "review": {
+      "author": "Arjun Mehta",
+      "location": "Bengaluru",
+      "text": "Pineapple has a strong, fresh taste and is easy to mix before workouts."
+    },
+    "whyChooseTitle": "Why Choose Strychnine Pineapple?",
+    "whyChoose": "Strychnine Pineapple is created for individuals who want to get the most out of every training session. Its refreshing pineapple flavour and performance-focused formula help prepare your body and mind for weight training, functional fitness, cardio, and high-intensity workouts.",
+    "howToUseTitle": "Directions for Use",
+    "howToUse": "Combine one scoop (10 g) with 200-250 ml of chilled water and mix until completely dissolved. Consume before beginning your workout. If this is your first time using a pre-workout supplement, begin with half a scoop to understand your personal tolerance.",
+    "howToUseImage": "/images/3.png",
+    "whoCanUseTitle": "Suitable For",
+    "whoCanUseLead": "",
+    "whoCanUse": [
+      "Fitness enthusiasts",
+      "Gym members",
+      "Bodybuilders",
+      "Strength training",
+      "Cardio and functional fitness"
+    ],
+    "storageTitle": "Storage",
+    "storage": "After each use, close the lid securely and keep the container in a clean, dry location protected from excess heat, humidity, and direct sunlight.",
+    "storageImage": "/images/3.png",
+    "disclaimerTitle": "Directions & Precautions",
+    "disclaimer": "Use only the recommended serving of this pre workout powder. Intended for healthy adults. Individuals who are pregnant, breastfeeding, taking prescription medicines, or managing a medical condition should seek medical advice before use. For optimal results, combine this supplement with a balanced diet and regular exercise."
+  },
+  {
+    "id": 5,
+    "slug": "strychnine-mix-fruit",
+    "name": "Strychnine Mix Fruit Energy Pre Workout",
+    "subtitle": "Mix Fruit Pre Workout Supplement",
+    "tagline": "Train Harder | Endurance | Go Beyond",
+    "category": "STRYCHNINE",
+    "type": "pre-workout",
+    "flavour": "Mix Fruit",
+    "selectedFlavourId": "mix-fruit",
+    "description": "Power up your training sessions with Strychnine Mix Fruit, a premium Mix Fruit Pre Workout Supplement from Boomslang Nutrition. Specially formulated as an energy pre workout, it helps support explosive energy, focus, endurance, and overall workout performance. With a refreshing mixed fruit flavor and fast-dissolving formula, it is designed to keep your workouts intense, productive, and enjoyable. Whether you're lifting heavy, training for endurance, or pushing through HIIT sessions, this pre-workout helps you stay ready for peak performance.",
+    "metaTitle": "Buy Strychnine Mix Fruit Energy Pre Workout",
+    "metaDescription": "Power your workouts with Strychnine Mix Fruit energy pre workout from Boomslang Nutritions. Supports energy, focus, endurance, and performance.",
+    "discountLabel": "10% Off",
+    "oldPrice": 1499,
+    "price": 1350,
+    "percentOff": 10,
+    "availability": "In Stock",
+    "image": "/images/4.png",
+    "images": [
+      "/images/4.png",
+      "/images/strycnnine-mango.png",
+      "/images/man-drinking-shaker.png"
+    ],
+    "flavours": [
+      { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/product/strychnine-electric-blood-orange" },
+      { "id": "mango", "name": "Mango", "available": true, "href": "/product/strychnine-mango" },
+      { "id": "pineapple", "name": "Pineapple", "available": true, "href": "/product/strychnine-pineapple" },
+      { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/product/strychnine-mix-fruit" }
+    ],
+    "weights": [
+      { "id": "250g", "name": "250 g", "price": 1350, "oldPrice": 1499 }
+    ],
+    "highlights": [
+      "Helps prepare the body for intense training",
+      "Supports concentration throughout exercise",
+      "Assists with stamina during demanding workouts",
+      "Encourages consistent training performance",
+      "Refreshing mixed fruit flavour",
+      "Dissolves quickly for convenient mixing"
+    ],
+    "review": {
+      "author": "Nikhil Rao",
+      "location": "Hyderabad",
+      "text": "Mix Fruit is smooth and works well as my pre-workout drink."
+    },
+    "whyChooseTitle": "Why Choose Strychnine Mix Fruit?",
+    "whyChoose": "Strychnine Mix Fruit is designed to support intense, productive, and enjoyable training sessions for lifting, endurance training, and HIIT routines.",
+    "howToUseTitle": "Directions for Use",
+    "howToUse": "Mix one scoop (10 g) with 200-250 ml of chilled water until completely dissolved. Consume before your workout. If you're using a pre-workout supplement for the first time, begin with half a scoop to evaluate your personal tolerance.",
+    "howToUseImage": "/images/4.png",
+    "whoCanUseTitle": "Recommended For",
+    "whoCanUseLead": "",
+    "whoCanUse": [
+      "Gym members",
+      "Fitness enthusiasts",
+      "Bodybuilders",
+      "Strength-focused training",
+      "Cardio and HIIT workouts"
+    ],
+    "storageTitle": "Storage Advice",
+    "storage": "After each use, close the lid firmly and keep the container in a clean, dry location protected from heat, moisture, and prolonged exposure to sunlight.",
+    "storageImage": "/images/4.png",
+    "disclaimerTitle": "Safety Information",
+    "disclaimer": "Consume this energy pre workout only according to the recommended serving size. Designed for healthy adults, it should be used with caution by individuals who are pregnant, breastfeeding, taking medication, or under medical supervision. To maximize its benefits, combine it with a balanced diet, proper hydration, and a consistent fitness routine."
+  }
+]

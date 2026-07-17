@@ -99,7 +99,7 @@ export default function MeetProduct() {
               </li>
             ))}
           </ul>
-          <Button href="/product">Shop GOKU GAINZ</Button>
+          <Button href="/product/goku-gainz">Shop GOKU GAINZ</Button>
         </div>
 
       </div>

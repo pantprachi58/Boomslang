@@ -1,4 +1,5 @@
 import { Anybody, Inter } from "next/font/google";
+import { CartProvider } from "@/components/CartProvider/CartProvider";
 import "./globals.css";
 
 const anybody = Anybody({
@@ -25,7 +26,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${anybody.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <CartProvider>{children}</CartProvider>
+      </body>
     </html>
   );
 }

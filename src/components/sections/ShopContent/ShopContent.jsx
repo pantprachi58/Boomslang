@@ -1,100 +1,78 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Container from "@/components/Container/Container";
 import ShopFilters from "@/components/ShopFilters/ShopFilters";
 import ShopGrid from "@/components/ShopGrid/ShopGrid";
+import { CloseIcon } from "@/components/icons/Icons";
+import { getShopProducts } from "@/data/products";
 import styles from "./ShopContent.module.css";
 
-// Sample product data - replace with actual data from API/database
-const allProducts = [
-  {
-    id: 1,
-    name: "GOKU GAINZ",
-    description: "Herbal Weight Gain Capsules 1000mg",
-    category: "GOKU GAINZ",
-    image: "/images/5.png",
-    originalPrice: 999,
-    discountedPrice: 799,
-    percentOff: 20,
-    availability: "In Stock",
-  },
-  {
-    id: 2,
-    name: "STRYCNNINE",
-    description: "Electric Blood Orange",
-    category: "STRYCNNINE",
-    image: "/images/1.png",
-    originalPrice: 1499,
-    discountedPrice: 1350,
-    percentOff: 10,
-    availability: "In Stock",
-  },
-  {
-    id: 3,
-    name: "STRYCNNINE",
-    description: "Mango",
-    category: "STRYCNNINE",
-    image: "/images/2.png",
-    originalPrice: 1499,
-    discountedPrice: 1350,
-    percentOff: 10,
-    availability: "In Stock",
-  },
-  {
-    id: 4,
-    name: "STRYCNNINE",
-    description: "Pineapple",
-    category: "STRYCNNINE",
-    image: "/images/3.png",
-    originalPrice: 1499,
-    discountedPrice: 1350,
-    percentOff: 10,
-    availability: "In Stock",
-  },
-  {
-    id: 5,
-    name: "STRYCNNINE",
-    description: "Mix Fruit",
-    category: "STRYCNNINE",
-    image: "/images/4.png",
-    originalPrice: 1499,
-    discountedPrice: 1350,
-    percentOff: 10,
-    availability: "In Stock",
-  },
-];
+const allProducts = getShopProducts();
+const priceMax = Math.ceil(
+  Math.max(...allProducts.map((product) => product.discountedPrice)) / 500
+) * 500;
+const defaultFilters = {
+  search: "",
+  categories: [],
+  priceRange: [0, priceMax],
+  discount: [0, 100],
+};
 
 export default function ShopContent() {
-  const [filters, setFilters] = useState({
-    categories: [],
-    availability: [],
-    priceRange: [0, 5000],
-    discount: [0, 100],
-  });
-
+  const [filters, setFilters] = useState(defaultFilters);
   const [currentPage, setCurrentPage] = useState(1);
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const productsPerPage = 6;
 
-  // Filter products based on selected filters
+  const categories = useMemo(() => {
+    const counts = allProducts.reduce((result, product) => {
+      result[product.category] = (result[product.category] || 0) + 1;
+      return result;
+    }, {});
+
+    return [
+      { name: "All Products", count: allProducts.length },
+      ...Object.entries(counts).map(([name, count]) => ({ name, count })),
+    ];
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = filtersOpen ? "hidden" : "";
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [filtersOpen]);
+
   const filteredProducts = allProducts.filter((product) => {
-    // Category filter
-    if (filters.categories.length > 0 && !filters.categories.includes(product.category)) {
+    const search = filters.search.trim().toLowerCase();
+
+    if (
+      search &&
+      ![product.name, product.description, product.category]
+        .join(" ")
+        .toLowerCase()
+        .includes(search)
+    ) {
       return false;
     }
 
-    // Availability filter
-    if (filters.availability.length > 0 && !filters.availability.includes(product.availability)) {
+    if (
+      filters.categories.length > 0 &&
+      !filters.categories.includes(product.category)
+    ) {
       return false;
     }
 
-    // Price range filter
-    if (product.discountedPrice < filters.priceRange[0] || product.discountedPrice > filters.priceRange[1]) {
+    if (
+      product.discountedPrice < filters.priceRange[0] ||
+      product.discountedPrice > filters.priceRange[1]
+    ) {
       return false;
     }
 
-    // Discount filter
     if (product.percentOff < filters.discount[0] || product.percentOff > filters.discount[1]) {
       return false;
     }
@@ -102,14 +80,18 @@ export default function ShopContent() {
     return true;
   });
 
-  // Pagination
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const startIndex = (currentPage - 1) * productsPerPage;
   const currentProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+  const activeFiltersCount =
+    filters.categories.length +
+    (filters.search ? 1 : 0) +
+    (filters.priceRange[1] !== priceMax ? 1 : 0) +
+    (filters.discount[0] !== 0 ? 1 : 0);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    setCurrentPage(1); // Reset to first page when filters change
+    setCurrentPage(1);
   };
 
   const handlePageChange = (page) => {
@@ -119,7 +101,6 @@ export default function ShopContent() {
 
   return (
     <>
-      {/* Banner Section */}
       <div className={styles.banner}>
         <Image
           src="/images/banner/product.png"
@@ -131,13 +112,55 @@ export default function ShopContent() {
         />
       </div>
 
-      {/* Shop Content */}
-      <Container>
+      <Container className={styles.shopContainer}>
+        <div className={styles.mobileFilterBar}>
+          <button
+            type="button"
+            className={styles.mobileFilterButton}
+            onClick={() => setFiltersOpen(true)}
+          >
+            <span className={styles.filterGlyph} aria-hidden="true" />
+            Filters
+            {activeFiltersCount > 0 && (
+              <span className={styles.filterBadge}>{activeFiltersCount}</span>
+            )}
+          </button>
+          <span className={styles.resultCount}>
+            {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+          </span>
+        </div>
+
+        {filtersOpen && (
+          <button
+            type="button"
+            className={styles.drawerOverlay}
+            aria-label="Close filters"
+            onClick={() => setFiltersOpen(false)}
+          />
+        )}
+
         <div className={styles.shopContent}>
-          <aside className={styles.sidebar}>
+          <aside
+            className={`${styles.sidebar} ${filtersOpen ? styles.sidebarOpen : ""}`}
+            aria-label="Product filters"
+          >
+            <div className={styles.drawerHeader}>
+              <h2>Filters</h2>
+              <button
+                type="button"
+                className={styles.drawerClose}
+                aria-label="Close filters"
+                onClick={() => setFiltersOpen(false)}
+              >
+                <CloseIcon />
+              </button>
+            </div>
             <ShopFilters 
               filters={filters} 
               onFilterChange={handleFilterChange}
+              onApply={() => setFiltersOpen(false)}
+              categories={categories}
+              priceBounds={{ min: 0, max: priceMax }}
               productsCount={filteredProducts.length}
             />
           </aside>

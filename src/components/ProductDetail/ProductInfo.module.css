@@ -59,6 +59,139 @@
   margin-bottom: var(--space-20);
 }
 
+.optionGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.optionLabel {
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.optionButtons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-12);
+}
+
+.optionBtn {
+  position: relative;
+  min-width: 110px;
+  padding: var(--space-16) var(--space-24);
+  border: 2px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-md);
+  font-weight: var(--fw-semibold);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.optionBtn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: var(--color-offwhite);
+  color: var(--color-primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(124, 183, 41, 0.15);
+}
+
+.optionBtn:hover:not(:disabled) .weightPrice {
+  color: var(--color-primary-dark);
+}
+
+.optionBtnActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-weight: var(--fw-bold);
+  box-shadow: 0 4px 12px rgba(124, 183, 41, 0.3);
+  transform: translateY(-1px);
+}
+
+.optionBtnActive::before {
+  content: "✓";
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-white);
+  border-radius: 50%;
+  background: var(--color-primary-dark);
+  color: var(--color-white);
+  font-size: var(--font-size-xs);
+  font-weight: var(--fw-bold);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.optionBtnDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: var(--color-gray-100);
+  color: var(--color-gray-500);
+  border-style: dashed;
+}
+
+.optionBtnDisabled:hover {
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: var(--color-gray-100);
+  border-color: var(--color-gray-300);
+}
+
+.optionBtnDisabled::after {
+  content: "Out of Stock";
+  position: absolute;
+  bottom: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-size-xs);
+  font-weight: var(--fw-medium);
+  color: #dc3545;
+  white-space: nowrap;
+}
+
+.weightBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-width: 130px;
+  padding: var(--space-16) var(--space-20);
+}
+
+.weightName {
+  font-size: var(--font-size-lg);
+  font-weight: var(--fw-bold);
+  line-height: 1;
+}
+
+.weightPrice {
+  font-size: var(--font-size-base);
+  font-weight: var(--fw-semibold);
+  color: var(--color-gray-700);
+}
+
+.weightBtn.optionBtnActive .weightPrice {
+  color: var(--color-white);
+}
+
 .discount {
   font-family: var(--font-main);
   font-size: 20px;
@@ -123,6 +256,16 @@
 .stepBtn:hover {
   background: var(--color-offwhite);
   color: var(--color-primary-dark);
+}
+
+.stepBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepBtn:disabled:hover {
+  background: none;
+  color: var(--color-gray-700);
 }
 
 .quantityValue {

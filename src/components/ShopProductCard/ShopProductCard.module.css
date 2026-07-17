@@ -111,6 +111,7 @@
 }
 
 .addToCart,
+.quantityControl,
 .shopNow {
   flex: 1;
   padding: 10px;
@@ -137,6 +138,40 @@
 .addToCart:hover {
   background-color: var(--color-black);
   color: var(--color-white);
+}
+
+.quantityControl {
+  display: grid;
+  grid-template-columns: 34px 1fr 34px;
+  align-items: center;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--color-primary);
+  background: var(--color-white);
+}
+
+.quantityBtn {
+  height: 100%;
+  min-height: 40px;
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 22px;
+  font-weight: var(--fw-bold);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.quantityBtn:hover {
+  background: var(--color-primary-dark);
+}
+
+.quantityValue {
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  font-weight: var(--fw-bold);
+  color: var(--color-black);
+  text-align: center;
 }
 
 .shopNow {
@@ -168,6 +203,7 @@
   }
 
   .addToCart,
+  .quantityControl,
   .shopNow {
     width: 100%;
   }

@@ -9,12 +9,14 @@ const products = [
     description:
       "Our Ayurvedic weight gain supplement is designed to support healthy weight gain, improve appetite, and support nutrient absorption as part of a balanced lifestyle.",
     image: "/images/about/g.png",
+    href: "/product/goku-gainz",
   },
   {
     name: "STRYCNINE",
     description:
       "Our pre-workout supplement is created to support your workout routine by helping you prepare for training with focus and energy. Together, they help support both your nutrition and your performance.",
     image: "/images/about/s.png",
+    href: "/product/strychnine-mango",
   },
 ];
 

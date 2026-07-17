@@ -2,7 +2,14 @@ import Image from "next/image";
 import Container from "@/components/Container/Container";
 import styles from "./StorageCare.module.css";
 
-export default function StorageCare({ storage, disclaimer, image }) {
+export default function StorageCare({
+  storageTitle = "Storage & Care",
+  storage,
+  disclaimerTitle = "Disclaimer",
+  disclaimer,
+  image,
+  imageAlt = "Product storage",
+}) {
   return (
     <section className={styles.section}>
       <Container>
@@ -10,7 +17,7 @@ export default function StorageCare({ storage, disclaimer, image }) {
           <div className={styles.imageWrap}>
             <Image
               src={image}
-              alt="GOKU GAINZ storage"
+              alt={imageAlt}
               width={500}
               height={500}
               className={styles.image}
@@ -19,11 +26,19 @@ export default function StorageCare({ storage, disclaimer, image }) {
           </div>
 
           <div className={styles.content}>
-            <h2 className={styles.title}>Storage &amp; Care</h2>
-            <p className={styles.description}>{storage}</p>
+            {storage && (
+              <>
+                <h2 className={styles.title}>{storageTitle}</h2>
+                <p className={styles.description}>{storage}</p>
+              </>
+            )}
 
-            <h2 className={styles.title}>Disclaimer</h2>
-            <p className={styles.description}>{disclaimer}</p>
+            {disclaimer && (
+              <>
+                <h2 className={styles.title}>{disclaimerTitle}</h2>
+                <p className={styles.description}>{disclaimer}</p>
+              </>
+            )}
           </div>
         </div>
       </Container>

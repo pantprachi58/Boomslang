@@ -1,9 +1,13 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useCart } from "@/components/CartProvider/CartProvider";
 import styles from "./ShopProductCard.module.css";
 
 export default function ShopProductCard({
-  id,
+  cartId,
+  slug,
   name,
   description,
   image,
@@ -11,7 +15,26 @@ export default function ShopProductCard({
   discountedPrice,
   percentOff,
   availability,
+  href,
+  variant,
 }) {
+  const { addItem, decreaseItem, getItemQuantity } = useCart();
+  const itemId = cartId || slug || href;
+  const quantity = getItemQuantity(itemId);
+  const productHref = href || `/product/${slug}`;
+  const cartItem = {
+    id: itemId,
+    slug,
+    name,
+    description,
+    image,
+    price: discountedPrice,
+    oldPrice: originalPrice,
+    percentOff,
+    href: productHref,
+    variant,
+  };
+
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
@@ -38,8 +61,36 @@ export default function ShopProductCard({
         </div>
 
         <div className={styles.actions}>
-          <button className={styles.addToCart}>Add To Cart</button>
-          <Link href={`/product?id=${id}`} className={styles.shopNow}>
+          {quantity > 0 ? (
+            <div className={styles.quantityControl}>
+              <button
+                type="button"
+                className={styles.quantityBtn}
+                onClick={() => decreaseItem(itemId)}
+                aria-label={`Remove one ${name}`}
+              >
+                -
+              </button>
+              <span className={styles.quantityValue}>{quantity}</span>
+              <button
+                type="button"
+                className={styles.quantityBtn}
+                onClick={() => addItem(cartItem)}
+                aria-label={`Add one ${name}`}
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.addToCart}
+              onClick={() => addItem(cartItem)}
+            >
+              Add To Cart
+            </button>
+          )}
+          <Link href={productHref} className={styles.shopNow}>
             Shop Now
           </Link>
         </div>

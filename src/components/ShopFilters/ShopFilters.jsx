@@ -1,49 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { SearchIcon } from "@/components/icons/Icons";
 import styles from "./ShopFilters.module.css";
 
-const categories = [
-  { name: "All Products", count: 5 },
-  { name: "GOKU GAINZ", count: 1 },
-  { name: "STRYCNNINE", count: 4 },
-];
-
-const availabilityOptions = [
-  { name: "In Stock", count: 4 },
-  { name: "Coming Soon", count: 1 },
-];
-
-export default function ShopFilters({ filters, onFilterChange, productsCount }) {
-  const [searchQuery, setSearchQuery] = useState("");
+export default function ShopFilters({
+  filters,
+  onFilterChange,
+  onApply,
+  categories,
+  priceBounds,
+  productsCount,
+}) {
+  const [searchQuery, setSearchQuery] = useState(filters.search);
   const [priceRange, setPriceRange] = useState(filters.priceRange);
   const [discountRange, setDiscountRange] = useState(filters.discount);
 
+  useEffect(() => {
+    setSearchQuery(filters.search);
+    setPriceRange(filters.priceRange);
+    setDiscountRange(filters.discount);
+  }, [filters]);
+
+  const handleSearchChange = (event) => {
+    const value = event.target.value;
+    setSearchQuery(value);
+    onFilterChange({
+      ...filters,
+      search: value,
+    });
+  };
+
   const handleCategoryChange = (categoryName) => {
+    if (categoryName === "All Products") {
+      onFilterChange({
+        ...filters,
+        categories: [],
+      });
+      return;
+    }
+
     const newCategories = filters.categories.includes(categoryName)
       ? filters.categories.filter((c) => c !== categoryName)
       : [...filters.categories, categoryName];
 
     onFilterChange({
       ...filters,
-      categories: categoryName === "All Products" ? [] : newCategories,
-    });
-  };
-
-  const handleAvailabilityChange = (availability) => {
-    const newAvailability = filters.availability.includes(availability)
-      ? filters.availability.filter((a) => a !== availability)
-      : [...filters.availability, availability];
-
-    onFilterChange({
-      ...filters,
-      availability: newAvailability,
+      categories: newCategories,
     });
   };
 
   const handlePriceRangeChange = (e) => {
     const value = parseInt(e.target.value);
-    const newRange = [filters.priceRange[0], value];
+    const newRange = [priceBounds.min, value];
     setPriceRange(newRange);
     onFilterChange({
       ...filters,
@@ -64,19 +73,21 @@ export default function ShopFilters({ filters, onFilterChange, productsCount }) 
   const handleApplyFilters = () => {
     onFilterChange({
       ...filters,
+      search: searchQuery,
       priceRange,
       discount: discountRange,
     });
+    onApply?.();
   };
 
   const handleClearFilters = () => {
     const defaultFilters = {
+      search: "",
       categories: [],
-      availability: [],
-      priceRange: [0, 5000],
+      priceRange: [priceBounds.min, priceBounds.max],
       discount: [0, 100],
     };
-    setPriceRange([0, 5000]);
+    setPriceRange(defaultFilters.priceRange);
     setDiscountRange([0, 100]);
     setSearchQuery("");
     onFilterChange(defaultFilters);
@@ -90,14 +101,11 @@ export default function ShopFilters({ filters, onFilterChange, productsCount }) 
           type="text"
           placeholder="Search Supplements"
           value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          onChange={handleSearchChange}
           className={styles.searchInput}
         />
-        <button className={styles.searchButton} aria-label="Search">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M15.75 15.75L12.5625 12.5625" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+        <button type="button" className={styles.searchButton} aria-label="Search products">
+          <SearchIcon />
         </button>
       </div>
 
@@ -126,54 +134,26 @@ export default function ShopFilters({ filters, onFilterChange, productsCount }) 
         </div>
       </div>
 
-      {/* Availability Filter */}
-      <div className={styles.filterSection}>
-        <h3 className={styles.filterTitle}>AVAILABILITY</h3>
-        <div className={styles.filterList}>
-          {availabilityOptions.map((option) => (
-            <label key={option.name} className={styles.checkboxLabel}>
-              <input
-                type="checkbox"
-                checked={filters.availability.includes(option.name)}
-                onChange={() => handleAvailabilityChange(option.name)}
-                className={styles.checkbox}
-              />
-              <span className={styles.labelText}>
-                {option.name}
-                <span className={styles.count}>{option.count}</span>
-              </span>
-            </label>
-          ))}
-        </div>
-      </div>
-
       {/* Price Range Filter */}
       <div className={styles.filterSection}>
         <h3 className={styles.filterTitle}>Price Range</h3>
-        <div className={styles.rangeInputs}>
-          <input
-            type="text"
-            value={`₹ ${filters.priceRange[0]}`}
-            readOnly
-            className={styles.rangeDisplay}
-          />
-          <span className={styles.rangeSeparator}>-</span>
-          <input
-            type="text"
-            value={`₹ ${priceRange[1]}`}
-            readOnly
-            className={styles.rangeDisplay}
-          />
+        <div className={styles.priceSummary}>
+          <span>₹ {priceBounds.min}</span>
+          <strong>Up to ₹ {priceRange[1]}</strong>
         </div>
         <input
           type="range"
-          min="0"
-          max="5000"
+          min={priceBounds.min}
+          max={priceBounds.max}
           step="100"
           value={priceRange[1]}
           onChange={handlePriceRangeChange}
           className={styles.rangeSlider}
         />
+        <div className={styles.rangeScale}>
+          <span>₹ {priceBounds.min}</span>
+          <span>₹ {priceBounds.max}</span>
+        </div>
       </div>
 
       {/* Discount Filter */}
@@ -196,10 +176,10 @@ export default function ShopFilters({ filters, onFilterChange, productsCount }) 
 
       {/* Action Buttons */}
       <div className={styles.filterActions}>
-        <button onClick={handleApplyFilters} className={styles.applyButton}>
-          Apply Filters
+        <button type="button" onClick={handleApplyFilters} className={styles.applyButton}>
+          Show {productsCount} {productsCount === 1 ? "Product" : "Products"}
         </button>
-        <button onClick={handleClearFilters} className={styles.clearButton}>
+        <button type="button" onClick={handleClearFilters} className={styles.clearButton}>
           Clear
         </button>
       </div>

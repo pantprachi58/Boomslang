@@ -12,6 +12,11 @@ import StorageCare from "./StorageCare";
 import styles from "./ProductDetail.module.css";
 
 export default function ProductDetail({ product }) {
+  const hasIngredients = product.ingredients?.length > 0;
+  const hasWhyChoose = Boolean(product.whyChoose);
+  const hasHowToUse = Boolean(product.howToUse);
+  const hasStorageCare = Boolean(product.storage || product.disclaimer);
+
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
@@ -32,21 +37,37 @@ export default function ProductDetail({ product }) {
         </Container>
       </section>
 
-      <KeyIngredients ingredients={product.ingredients} />
+      {hasIngredients && <KeyIngredients ingredients={product.ingredients} />}
 
-      <WhyChoose title="Why Choose GOKU GAINZ?" description={product.whyChoose} />
+      {hasWhyChoose && (
+        <WhyChoose
+          title={product.whyChooseTitle || `Why Choose ${product.name}?`}
+          description={product.whyChoose}
+        />
+      )}
 
-      <HowToUse
-        howToUse={product.howToUse}
-        whoCanUse={product.whoCanUse}
-        image={product.howToUseImage}
-      />
+      {hasHowToUse && (
+        <HowToUse
+          title={product.howToUseTitle}
+          howToUse={product.howToUse}
+          whoCanUseTitle={product.whoCanUseTitle}
+          whoCanUseLead={product.whoCanUseLead}
+          whoCanUse={product.whoCanUse}
+          image={product.howToUseImage || product.image}
+          imageAlt={`${product.name} usage`}
+        />
+      )}
 
-      <StorageCare
-        storage={product.storage}
-        disclaimer={product.disclaimer}
-        image={product.storageImage}
-      />
+      {hasStorageCare && (
+        <StorageCare
+          storageTitle={product.storageTitle}
+          storage={product.storage}
+          disclaimerTitle={product.disclaimerTitle}
+          disclaimer={product.disclaimer}
+          image={product.storageImage || product.image}
+          imageAlt={`${product.name} storage`}
+        />
+      )}
     </main>
   );
 }
