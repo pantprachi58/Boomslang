@@ -113,7 +113,7 @@ export default function ContactFormSection() {
                   onChange={handleChange}
                   required
                   className={styles.input}
-                  placeholder="your.email@example.com"
+                  placeholder="Enter your email"
                 />
               </div>
 
@@ -128,7 +128,7 @@ export default function ContactFormSection() {
                   value={formData.phone}
                   onChange={handleChange}
                   className={styles.input}
-                  placeholder="+1 (555) 000-0000"
+                  placeholder="Enter Phone number"
                 />
               </div>
 
@@ -206,9 +206,9 @@ export default function ContactFormSection() {
                 </div>
                 <h3 className={styles.cardTitle}>Our Location</h3>
                 <p className={styles.cardText}>
-                  Boomslang Nutrition Headquarters
+                 G 190, Dilshad Colony, Shop No. 3
                   <br />
-                  Coming Soon
+                 Delhi – 110095
                 </p>
               </div>
 

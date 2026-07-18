@@ -122,7 +122,8 @@ export default function Footer() {
             <ul className={styles.contactList}>
               <li className={styles.contactItem}>
                 <PinIcon className={styles.contactIcon} />
-                <span>India</span>
+                <span>G 190, Dilshad Colony, Shop No. 3
+Delhi – 110095</span>
               </li>
               <li className={styles.contactItem}>
                 <MailIcon className={styles.contactIcon} />
