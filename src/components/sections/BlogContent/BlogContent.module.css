@@ -2,7 +2,7 @@
 .banner {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 220px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -20,7 +20,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+  /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)); */
   display: flex;
   align-items: center;
   justify-content: center;

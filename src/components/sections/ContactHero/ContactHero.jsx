@@ -5,10 +5,8 @@ export default function ContactHero() {
     <section className={styles.contactHero}>
       <div className={styles.overlay}></div>
       <div className={styles.content}>
-        <h1 className={styles.title}>Get In Touch</h1>
-        <p className={styles.subtitle}>
-          We'd love to hear from you. Reach out to us for any questions or support.
-        </p>
+        <h1 className={styles.title}>Contact us</h1>
+        
       </div>
     </section>
   );
