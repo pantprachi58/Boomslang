@@ -57,10 +57,10 @@ export default function WhatWeServe() {
   return (
     <SectionWrapper background="light" className={styles.section}>
       <div className={styles.container}>
-        <h2 className={styles.title}>What We Believe?</h2>
+        {/* <h2 className={styles.title}>What We Believe?</h2>
         <p className={styles.subtitle}>
           A few simple principles guide everything we create and everything we choose.
-        </p>
+        </p> */}
         <div className={styles.grid}>
           {features.map((feature, index) => (
             <div key={index} className={styles.item}>

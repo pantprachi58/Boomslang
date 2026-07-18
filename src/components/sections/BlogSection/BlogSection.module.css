@@ -95,8 +95,13 @@ word-spacing: 0;
 @media (min-width: 480px){
   .titleTop{
     font-size: 30px;
+    text-align: start;
   }
   .title{
     font-size: 30px;
+    text-align: start;
+  }
+  .subtitle{
+    text-align: start;
   }
 } 

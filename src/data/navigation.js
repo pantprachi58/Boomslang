@@ -3,6 +3,14 @@ const navItems = [
     label: "Home",
     href: "/",
   },
+  {
+    label: "Goku Gainz",
+    href: "/shop/goku-gainz",
+  },
+  {
+    label: "All Product",
+    href: "/shop",
+  },
    {
     label: "About",
     href: "/about",
@@ -11,14 +19,7 @@ const navItems = [
     label: "Blogs",
     href: "/blog",
   },
-  {
-    label: "Goku Gainz",
-    href: "/shop/goku-gainz",
-  },
-   {
-    label: "All Product",
-    href: "/shop",
-  },
+   
   {
     label: "Contact",
     href: "/contact",

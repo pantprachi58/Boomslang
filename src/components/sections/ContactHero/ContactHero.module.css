@@ -1,6 +1,6 @@
 .contactHero {
   position: relative;
-  height: 280px;
+  height: 400px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -17,7 +17,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
 
@@ -31,45 +31,91 @@
 }
 
 .title {
-  font-family: var(--font-main);
-  font-size: var(--font-size-5xl);
-  font-weight: var(--fw-black);
-  margin-bottom: var(--space-20);
+  font-family: "Anybody", sans-serif;
+  font-size: 35px;
+  font-weight: 600;
+  margin-bottom: var(--space-16);
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 0.8s ease-out;
 }
 
 .subtitle {
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-xl);
+  font-size: 18px;
   font-weight: var(--fw-regular);
   line-height: 1.6;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  animation: fadeInUp 0.8s ease-out 0.2s backwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 768px) {
   .contactHero {
-    height: 300px;
+    height: 350px;
+    background-position: center center;
+  }
+
+  .content {
+    padding: 0 var(--space-20);
   }
 
   .title {
     font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-12);
+    letter-spacing: 1.5px;
   }
 
   .subtitle {
     font-size: var(--font-size-lg);
+    line-height: 1.5;
   }
 }
 
 @media (max-width: 576px) {
   .contactHero {
-    height: 250px;
+    height: 280px;
+    background-position: center center;
+  }
+
+  .content {
+    padding: 0 var(--space-16);
+    max-width: 100%;
   }
 
   .title {
     font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-10);
+    letter-spacing: 1px;
   }
 
   .subtitle {
     font-size: var(--font-size-md);
+    line-height: 1.4;
+  }
+}
+
+@media (max-width: 375px) {
+  .contactHero {
+    height: 240px;
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
   }
 }

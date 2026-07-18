@@ -7,7 +7,6 @@ import styles from "./WhatMakesUsDifferent.module.css";
 export default function WhatMakesUsDifferent() {
   return (
     <SectionWrapper background="light" className={styles.section}>
-      <h2 className={styles.mainTitle}>What Makes <br/> BOOMSLANG Nutrition Different</h2>
       <div className={styles.grid}>
         <div className={styles.imageWrap}>
           <Image
@@ -20,7 +19,7 @@ export default function WhatMakesUsDifferent() {
         </div>
         <div className={styles.content}>
           <div className={styles.item}>
-            <h3 className={styles.title}>Why Choose BOOMSLANG Nutrition?</h3>
+            <h2 className={styles.mainTitle}>Why Choose BOOMSLANG Nutrition?</h2>
             <p className={styles.description}>
               There are plenty of supplements on the market. We choose a different approach
             </p>

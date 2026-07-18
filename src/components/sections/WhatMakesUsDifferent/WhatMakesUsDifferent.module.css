@@ -3,12 +3,12 @@
 }
 
 .mainTitle {
-  font-family: var(--font-main);
-  font-size: 35px;
+  font-family: "Anybody", sans-serif;
+  font-size: 28px;
   font-weight: 600;
   color: var(--color-black);
   text-align: start;
-  margin-bottom: var(--space-48);
+
 }
 
 .grid {
@@ -43,7 +43,7 @@
 }
 
 .title {
-  font-family: var(--font-main);
+  font-family: "Anybody", sans-serif;
   font-size: var(--font-size-xl);
   font-weight: var(--fw-bold);
   color: var(--color-black);

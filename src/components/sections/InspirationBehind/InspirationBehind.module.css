@@ -26,9 +26,9 @@
 }
 
 .mainTitle {
-  font-family: var(--font-main);
-  font-size: clamp(1.75rem, 4vw, 3rem);
-  font-weight: var(--fw-black);
+  font-family: "Anybody", sans-serif;
+  font-size: 28px;
+  font-weight: 600;
   color: var(--color-offwhite);
   line-height: 1.1;
   text-align: center;
@@ -37,9 +37,9 @@
 
 .subtitle {
   font-family: var(--font-paragraph);
-  font-size: var(--font-size-md);
-  font-weight: var(--fw-regular);
-  color: var(--color-gray-200);
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
   line-height: 1.6;
   text-align: center;
   max-width: 800px;
@@ -89,7 +89,7 @@
 }
 
 .cardTitle {
-  font-family: var(--font-main);
+  font-family: "Anybody", sans-serif;
   font-size: var(--font-size-xl);
   font-weight: var(--fw-bold);
   color: var(--color-offwhite);

@@ -110,6 +110,14 @@ export default function ShopContent() {
           priority
           sizes="100vw"
         />
+        <div className={styles.bannerOverlay}>
+          <div className={styles.bannerContent}>
+            <h1 className={styles.bannerTitle}>Our Products</h1>
+            <p className={styles.bannerSubtitle}>
+              Premium Ayurvedic Supplements for Your Fitness Goals
+            </p>
+          </div>
+        </div>
       </div>
 
       <Container className={styles.shopContainer}>

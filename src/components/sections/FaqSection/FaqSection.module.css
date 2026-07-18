@@ -11,6 +11,7 @@
   font-size: 30px;
   line-height: 1;
   font-weight: var(--fw-black);
+  font-family: "Anybody", sans-serif;
 }
 
 .grid {

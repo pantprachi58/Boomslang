@@ -7,9 +7,9 @@ import styles from "./Footer.module.css";
 const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
-  { label: "About Us", href: "/about" },
+  { label: "About", href: "/about" },
   { label: "FAQs", href: "/faqs" },
-  { label: "Contact Us", href: "/contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const productLinks = [
@@ -54,7 +54,7 @@ export default function Footer() {
             <p className={styles.tagline}>
               From Ayurvedic supplements for weight gain to pre workout supplements, Boomslang Nutrition is committed to supporting your fitness goals with quality nutrition and trusted formulations.
             </p>
-            <h3 className={styles.followTitle}>Follow Us</h3>
+            <h3 className={styles.followTitle}>Follow</h3>
             <div className={styles.socials}>
               {socials.map((social) => (
                 <a

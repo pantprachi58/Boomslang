@@ -4,10 +4,10 @@ import AboutHero from "@/components/sections/AboutHero/AboutHero";
 import WhyWeStarted from "@/components/sections/WhyWeStarted/WhyWeStarted";
 import OurVision from "@/components/sections/OurVision/OurVision";
 import WhatWeServe from "@/components/sections/WhatWeServe/WhatWeServe";
-import WhatMakesUsDifferent from "@/components/sections/WhatMakesUsDifferent/WhatMakesUsDifferent";
+// import WhatMakesUsDifferent from "@/components/sections/WhatMakesUsDifferent/WhatMakesUsDifferent";
 import WhatYouCanExpect from "@/components/sections/WhatYouCanExpect/WhatYouCanExpect";
 import InspirationBehind from "@/components/sections/InspirationBehind/InspirationBehind";
-import QualityCleansPure from "@/components/sections/QualityCleansPure/QualityCleansPure";
+// import QualityCleansPure from "@/components/sections/QualityCleansPure/QualityCleansPure";
 import FaqSection from "@/components/sections/FaqSection/FaqSection";
 
 
@@ -26,10 +26,10 @@ export default function AboutPage() {
         <WhyWeStarted />
         <OurVision />
         <WhatWeServe />
-        <WhatMakesUsDifferent />
+        {/* <WhatMakesUsDifferent /> */}
         <WhatYouCanExpect />
         <InspirationBehind />
-        <QualityCleansPure />
+        {/* <QualityCleansPure /> */}
         
         <FaqSection />
         

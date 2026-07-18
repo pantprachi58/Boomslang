@@ -63,7 +63,7 @@ export default function BlogContent() {
             <div className={styles.bannerContent}>
               <h1 className={styles.bannerTitle}>Our Blog</h1>
               <p className={styles.bannerSubtitle}>
-                Expert insights on weight gain, nutrition, and wellness
+                Insights, Tips & Knowledge About Fitness and Nutrition
               </p>
             </div>
           </Container>

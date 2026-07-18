@@ -1,5 +1,5 @@
 .section {
-  padding: var(--space-80) 0;
+  padding: unset;
 }
 
 .container {
@@ -7,7 +7,7 @@
 }
 
 .title {
-  font-family: var(--font-main);
+  font-family: "Anybody", sans-serif;
           font-size: 35px;
         font-weight: 600;
         text-align: start;
@@ -47,7 +47,7 @@
 }
 
 .itemTitle {
-  font-family: var(--font-main);
+  font-family: "Anybody", sans-serif;
   font-size: 15px;
   font-weight: 500;
   color: var(--color-black);
@@ -62,9 +62,7 @@
 }
 
 @media (min-width: 992px) {
-  .section {
-    padding: var(--space-96) 0;
-  }
+
 
   .title {
             font-size: 35px;

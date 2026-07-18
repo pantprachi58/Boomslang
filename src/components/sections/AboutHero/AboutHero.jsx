@@ -17,6 +17,14 @@ export default function AboutHero() {
           priority
           sizes="100vw"
         />
+        <div className={styles.bannerOverlay}>
+          <div className={styles.bannerContent}>
+            <h1 className={styles.bannerTitle}>About BOOMSLANG Nutrition</h1>
+            <p className={styles.bannerSubtitle}>
+              Ayurvedic Nutrition For Your Fitness Journey
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Content Section */}
@@ -33,7 +41,6 @@ export default function AboutHero() {
             />
           </div>
           <div className={styles.content}>
-            <h1 className={styles.title}>About BOOMSLANG Nutrition</h1>
             <h2 className={styles.subtitle}>
               Ayurvedic Nutrition For People Who Want To Grow Stronger Naturally
             </h2>

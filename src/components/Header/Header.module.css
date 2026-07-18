@@ -47,7 +47,8 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  font-size: 18px;
+  font-size: 16px;
+  font-family: "Anybody", sans-serif;
   font-weight: var(--fw-semibold);
   color: var(--color-white);
   padding: var(--space-8) 0;
@@ -200,6 +201,7 @@
 
 .shopBtn {
   display: none;
+  font-family: "Anybody", sans-serif;
 }
 
 .hamburgerBtn {

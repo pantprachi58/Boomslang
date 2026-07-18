@@ -12,6 +12,7 @@
   width: 100%;
   min-height: 58px;
   display: flex;
+  font-family: "Anybody", sans-serif;
   align-items: center;
   justify-content: space-between;
   gap: 12px;

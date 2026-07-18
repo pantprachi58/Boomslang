@@ -40,7 +40,7 @@
   border-radius: var(--radius-sm);
   background: var(--color-page-green);
   color: var(--color-primary-dark);
-  font-family: var(--font-paragraph);
+  font-family: "Anybody", sans-serif;
   font-size: var(--font-size-xs);
   font-weight: var(--fw-bold);
   text-transform: uppercase;
@@ -49,6 +49,7 @@
 .title {
   font-size: var(--font-size-lg);
   line-height: 1.26;
+  font-family: "Anybody", sans-serif;
   font-weight: var(--fw-bold);
   color: var(--color-black);
   margin-bottom: var(--space-8);
