@@ -121,11 +121,11 @@ export default function CartContent() {
                 <strong>{formatPrice(totals.subtotal)}</strong>
               </div>
               <div className={styles.summaryRow}>
-                <span>CGST (9%)</span>
+                <span>CGST (2.5%)</span>
                 <strong>{formatPrice(totals.cgst)}</strong>
               </div>
               <div className={styles.summaryRow}>
-                <span>SGST (9%)</span>
+                <span>SGST (2.5%)</span>
                 <strong>{formatPrice(totals.sgst)}</strong>
               </div>
             </div>
