@@ -18,9 +18,11 @@
     "image": "/images/5.png",
     "images": [
       "/images/5.png",
-      "/images/goku-gainz-three-bottles.png",
-      "/images/goku-gainz-lifestyle-collage.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/goku-gainz/17.png",
+      "/images/products/goku-gainz/18.png",
+      "/images/products/goku-gainz/19.png",
+      "/images/products/goku-gainz/20.png",
+      "/images/products/goku-gainz/21.png"
     ],
     "highlights": [
       "Helps support healthy and gradual weight gain",
@@ -85,8 +87,10 @@
     "image": "/images/1.png",
     "images": [
       "/images/1.png",
-      "/images/strycnnine-mango.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/strychnine-electric-blood-orange/13.png",
+      "/images/products/strychnine-electric-blood-orange/14.png",
+      "/images/products/strychnine-electric-blood-orange/15.png",
+      "/images/products/strychnine-electric-blood-orange/16.png"
     ],
     "flavours": [
       { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
@@ -286,8 +290,10 @@
     "image": "/images/4.png",
     "images": [
       "/images/4.png",
-      "/images/strycnnine-mango.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/strychnine-mix-fruit/9.png",
+      "/images/products/strychnine-mix-fruit/10.png",
+      "/images/products/strychnine-mix-fruit/11.png",
+      "/images/products/strychnine-mix-fruit/12.png"
     ],
     "flavours": [
       { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
