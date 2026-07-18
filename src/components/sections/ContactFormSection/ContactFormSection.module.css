@@ -315,16 +315,28 @@
   }
 }
 @media (max-width: 480px) {
-  .contentWrapper{
-    grid-template-columns: 1fr 1fr;
+  .container {
+    padding: 0 var(--space-16);
+  }
+
+  .formColumn,
+  .infoColumn {
+    padding: var(--space-20);
   }
 }
 
 /* Small Mobile Responsive */
 @media (max-width: 576px) {
-  
   .contactSection {
     padding: var(--space-40) 0;
+  }
+
+  .container {
+    padding: 0 var(--space-20);
+  }
+
+  .contentWrapper {
+    gap: var(--space-24);
   }
 
   .formColumn,
@@ -340,6 +352,7 @@
   .title,
   .infoTitle {
     font-size: var(--font-size-lg);
+    margin-bottom: var(--space-12);
   }
 
   .description,
@@ -347,9 +360,32 @@
     font-size: var(--font-size-sm);
   }
 
+  .formGroup {
+    margin-bottom: var(--space-16);
+  }
+
+  .label {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-6);
+  }
+
+  .input,
+  .textarea {
+    font-size: var(--font-size-sm);
+    padding: var(--space-12);
+  }
+
+  .textarea {
+    min-height: 100px;
+  }
+
   .submitBtn {
     font-size: var(--font-size-md);
-    padding: var(--space-14) var(--space-24);
+    padding: var(--space-12) var(--space-20);
+  }
+
+  .infoCards {
+    gap: var(--space-16);
   }
 
   .infoCard {
@@ -357,20 +393,64 @@
   }
 
   .iconWrapper {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
+    margin-bottom: var(--space-16);
   }
 
   .iconWrapper svg {
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
   }
 
   .cardTitle {
     font-size: var(--font-size-md);
+    margin-bottom: var(--space-8);
   }
 
   .cardText {
     font-size: var(--font-size-sm);
+    line-height: 1.5;
+  }
+
+  .cardSubtext {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Extra Small Mobile (375px and below) */
+@media (max-width: 375px) {
+  .contactSection {
+    padding: var(--space-32) 0;
+  }
+
+  .container {
+    padding: 0 var(--space-16);
+  }
+
+  .formColumn,
+  .infoColumn {
+    padding: var(--space-20);
+  }
+
+  .title,
+  .infoTitle {
+    font-size: var(--font-size-md);
+  }
+
+  .submitBtn {
+    font-size: var(--font-size-sm);
+    padding: var(--space-12) var(--space-16);
+    letter-spacing: 0.5px;
+  }
+
+  .iconWrapper {
+    width: 45px;
+    height: 45px;
+  }
+
+  .iconWrapper svg {
+    width: 22px;
+    height: 22px;
   }
 }

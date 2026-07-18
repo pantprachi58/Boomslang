@@ -96,7 +96,35 @@ export default function ReturnRefundPolicy() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                4. How to Request a Return
+                4. Product Quality Issue Evidence Requirement
+              </h2>
+              <p className={styles.paragraph}>
+                In case you feel that there is a problem with the quality of the
+                item that you have purchased, then you will need to record a
+                video showing the same before you can ask for a replacement or a
+                refund.
+              </p>
+              <p className={styles.paragraph}>The video should clearly show:</p>
+              <ul className={styles.list}>
+                <li>The product being opened and used, where applicable.</li>
+                <li>The specific quality issue or concern being reported.</li>
+                <li>
+                  The product packaging, batch number, and expiry date (where
+                  applicable).
+                </li>
+              </ul>
+              <p className={styles.paragraph}>
+                This will assist our quality assurance department in evaluating
+                the problem. Boomslang Nutrition reserves the right to demand
+                any further information or evidence if necessary. Claims lacking
+                adequate proof of the stated problem may not be entitled to
+                replacements or refunds.
+              </p>
+            </section>
+
+            <section className={styles.section}>
+              <h2 className={styles.sectionTitle}>
+                5. How to Request a Return
               </h2>
               <p className={styles.paragraph}>
                 To request a return, replacement, or refund, please contact our
@@ -116,7 +144,7 @@ export default function ReturnRefundPolicy() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>5. Return Approval</h2>
+              <h2 className={styles.sectionTitle}>6. Return Approval</h2>
               <p className={styles.paragraph}>
                 Each request is reviewed individually after verification.
               </p>
@@ -132,7 +160,7 @@ export default function ReturnRefundPolicy() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>6. Replacement Policy</h2>
+              <h2 className={styles.sectionTitle}>7. Replacement Policy</h2>
               <p className={styles.paragraph}>
                 Where applicable, we may offer a replacement instead of a
                 refund.
@@ -150,7 +178,7 @@ export default function ReturnRefundPolicy() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>7. Refund Policy</h2>
+              <h2 className={styles.sectionTitle}>8. Refund Policy</h2>
               <p className={styles.paragraph}>
                 Once your request has been approved and, where applicable, the
                 returned product has been received and inspected, the refund
@@ -166,7 +194,7 @@ export default function ReturnRefundPolicy() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>8. Order Cancellation</h2>
+              <h2 className={styles.sectionTitle}>9. Order Cancellation</h2>
               <p className={styles.paragraph}>
                 Orders may be cancelled only before they have been dispatched.
               </p>
@@ -183,7 +211,7 @@ export default function ReturnRefundPolicy() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                9. Order Marked Delivered but Not Received
+                10. Order Marked Delivered but Not Received
               </h2>
               <p className={styles.paragraph}>
                 If your order tracking status shows "Delivered" but you have not
@@ -198,7 +226,7 @@ export default function ReturnRefundPolicy() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                10. Situations Where Refunds May Not Be Approved
+                11. Situations Where Refunds May Not Be Approved
               </h2>
               <p className={styles.paragraph}>
                 Refunds or returns may not be approved in the following
@@ -228,7 +256,7 @@ export default function ReturnRefundPolicy() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>
-                11. Partial Payment Policy
+                12. Partial Payment Policy
               </h2>
               <p className={styles.paragraph}>
                 Where Boomslang Nutrition accepts partial payments for selected
@@ -239,7 +267,7 @@ export default function ReturnRefundPolicy() {
             </section>
 
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>12. Contact Us</h2>
+              <h2 className={styles.sectionTitle}>13. Contact Us</h2>
               <p className={styles.paragraph}>
                 For any questions regarding returns, replacements,
                 cancellations, or refunds, please contact us:
