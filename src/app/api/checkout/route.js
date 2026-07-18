@@ -310,6 +310,7 @@ export async function POST(request) {
     const customerMail = {
       from: `"Boomslang Nutrition" <${fromEmail}>`,
       to: delivery.email,
+      bcc: supportEmail,
       subject: `Your Boomslang Nutrition Order ${orderId}`,
       text: [
         `Thank you, ${delivery.fullName}!`,
