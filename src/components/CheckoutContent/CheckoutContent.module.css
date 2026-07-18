@@ -9,9 +9,11 @@
 }
 
 .title {
-  font-size: var(--font-size-3xl);
+  font-size: 28px;
   color: var(--color-black);
   margin-bottom: var(--space-8);
+  font-weight: 600;
+  font-family: "Anybody", sans-serif;
 }
 
 .subtitle,
@@ -67,7 +69,8 @@
 
 .sectionTitle,
 .summaryTitle {
-  font-size: var(--font-size-xl);
+  font-size: 25px;
+  font-family: "Anybody", sans-serif;
 }
 
 .sectionTitle {
@@ -86,9 +89,9 @@
 }
 
 .label {
-  font-family: var(--font-main);
-  font-size: var(--font-size-md);
-  font-weight: var(--fw-semibold);
+  font-family:"Anybody", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
   line-height: 1.2;
   color: #242824;
 }
@@ -145,8 +148,8 @@ select.input {
 
 .paymentTitle {
   font-family: var(--font-main);
-  font-size: var(--font-size-xl);
-  font-weight: var(--fw-bold);
+  font-size: 20px;
+  font-weight: 500;
   color: var(--color-black);
   margin-bottom: var(--space-8);
 }
@@ -256,7 +259,7 @@ select.input {
 }
 
 .successPopup h2 {
-  font-size: var(--font-size-xl);
+  font-size: 28px;
   color: var(--color-black);
   margin-bottom: var(--space-12);
 }
@@ -309,8 +312,8 @@ select.input {
 .itemName {
   display: block;
   font-family: var(--font-main);
-  font-size: var(--font-size-base);
-  font-weight: var(--fw-bold);
+  font-size: 12px;
+  font-weight:500;
   color: var(--color-black);
   line-height: 1.3;
   margin-bottom: var(--space-4);
@@ -321,8 +324,8 @@ select.input {
 }
 
 .itemTotal {
-  font-family: var(--font-main);
-  font-size: var(--font-size-base);
+  font-family: "Anybody", sans-serif;
+  font-size: 15px;
   color: var(--color-black);
   white-space: nowrap;
 }
