@@ -20,3 +20,9 @@
     padding: var(--space-48) 0;
   }
 }
+
+@media (max-width: 360px) {
+  .section{
+    padding: 10px 0px;
+  }
+}

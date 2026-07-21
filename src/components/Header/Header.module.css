@@ -342,3 +342,9 @@
     height: 36px;
   }
 }
+@media (max-width: 768px) {
+  .mobileNavLink {
+  font-size: 18px;
+  font-weight: 600;
+}
+}

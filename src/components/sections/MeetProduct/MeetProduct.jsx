@@ -16,19 +16,19 @@ const benefits = [
 
 const slides = [
   {
-    src: "/images/slider/1.png",
+    src: "/images/slider/2.png",
     alt: "Goku Gainz supplement bottle on gym floor",
   },
   {
-    src: "/images/slider/2.png",
+    src: "/images/slider/3.png",
     alt: "Goku Gainz supplement bottle with dumbbells",
   },
   {
-    src: "/images/slider/3.png",
+    src: "/images/slider/4.png",
     alt: "Goku Gainz supplement bottle close up",
   },
   {
-    src: "/images/slider/4.png",
+    src: "/images/slider/1.png",
     alt: "Goku Gainz supplement bottle in gym setting",
   },
 ];

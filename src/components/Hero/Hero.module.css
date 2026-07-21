@@ -156,3 +156,8 @@ word-spacing: 0;
     height: 24px;
   }
 }
+@media (max-width: 576px) {
+  .title{
+    font-size: 28px;
+  }
+}

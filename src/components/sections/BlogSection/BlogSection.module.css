@@ -105,3 +105,16 @@ word-spacing: 0;
     text-align: start;
   }
 } 
+@media (min-width: 360px){
+  .titleTop{
+    font-size: 30px;
+    text-align: start;
+  }
+  .title{
+    font-size: 30px;
+    text-align: start;
+  }
+  .subtitle{
+    text-align: start;
+  }
+}

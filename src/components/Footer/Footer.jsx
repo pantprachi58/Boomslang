@@ -8,7 +8,7 @@ const quickLinks = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/shop" },
   { label: "About", href: "/about" },
-  { label: "FAQs", href: "/faqs" },
+  { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -137,7 +137,7 @@ Delhi – 110095</span>
 
         <div className={styles.bottom}>
           <p className={styles.copyright}>
-            &copy; {new Date().getFullYear()} Boomslang Nutrition. All Rights Reserved. Crafted with ❤️ by VD Infotech – Web Development | Digital Marketing | App & Software | Branding
+            &copy; {new Date().getFullYear()} Boomslang Nutrition. All Rights Reserved. Crafted with ❤️ by <a href="https://www.vdinfotech.in/" target="_blank" rel="noopener noreferrer" className={styles.link}>VD Infotech – Web Development | Digital Marketing | App & Software | Branding</a>
           </p>
         </div>
       </Container>
