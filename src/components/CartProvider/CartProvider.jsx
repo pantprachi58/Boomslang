@@ -10,6 +10,7 @@ import {
 } from "react";
 
 const CART_STORAGE_KEY = "boomslang-cart";
+const GST_COMPONENT_RATE = 0.025;
 const CartContext = createContext(null);
 
 function readStoredCart() {
@@ -111,8 +112,8 @@ export function CartProvider({ children }) {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-    const cgst = Math.round(subtotal * 0.09);
-    const sgst = Math.round(subtotal * 0.09);
+    const cgst = Math.round(subtotal * GST_COMPONENT_RATE);
+    const sgst = Math.round(subtotal * GST_COMPONENT_RATE);
 
     return {
       subtotal,

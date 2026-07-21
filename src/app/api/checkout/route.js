@@ -5,6 +5,7 @@ export const runtime = "nodejs";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const transactionRegex = /^[0-9]{12,}$/;
+const COD_PREPAID_AMOUNT = 99;
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -29,6 +30,10 @@ function parseBoolean(value, fallback = false) {
 
 function formatPrice(amount) {
   return `₹ ${Number(amount || 0).toLocaleString("en-IN")}`;
+}
+
+function formatPaymentMethod(method) {
+  return method === "cod" ? "Cash on Delivery" : "Full QR Payment";
 }
 
 function createTransporter() {
@@ -155,11 +160,15 @@ export async function POST(request) {
       city: normalizeField(body.delivery?.city),
       state: normalizeField(body.delivery?.state),
     };
-    const payment = {
-      upiTransactionId: normalizeField(body.payment?.upiTransactionId),
-    };
     const items = normalizeItems(body.items);
     const totals = normalizeTotals(body.totals);
+    const rawPaymentMethod = normalizeField(body.payment?.method);
+    const payment = {
+      method: rawPaymentMethod === "cod" ? "cod" : "prepaid",
+      paidAmount: rawPaymentMethod === "cod" ? COD_PREPAID_AMOUNT : totals.total,
+      upiTransactionId: normalizeField(body.payment?.upiTransactionId),
+    };
+    const amountDue = Math.max(totals.total - payment.paidAmount, 0);
 
     if (
       !delivery.fullName ||
@@ -212,6 +221,7 @@ export async function POST(request) {
     const fromEmail = process.env.SMTP_USER || process.env.EMAIL_USER;
     const orderId = `BN-${Date.now().toString(36).toUpperCase()}`;
     const address = buildAddress(delivery);
+    const paymentMethodLabel = formatPaymentMethod(payment.method);
     const placedAt = new Date().toLocaleString("en-IN", {
       timeZone: "Asia/Kolkata",
       dateStyle: "medium",
@@ -237,6 +247,9 @@ export async function POST(request) {
         address,
         "",
         "Payment",
+        `Payment Method: ${paymentMethodLabel}`,
+        `Paid Amount: ${formatPrice(payment.paidAmount)}`,
+        `Amount Due on Delivery: ${formatPrice(amountDue)}`,
         `UPI Transaction ID: ${payment.upiTransactionId}`,
         "",
         "Items",
@@ -244,8 +257,8 @@ export async function POST(request) {
         "",
         "Totals",
         `Subtotal: ${formatPrice(totals.subtotal)}`,
-        `CGST (9%): ${formatPrice(totals.cgst)}`,
-        `SGST (9%): ${formatPrice(totals.sgst)}`,
+        `CGST (2.5%): ${formatPrice(totals.cgst)}`,
+        `SGST (2.5%): ${formatPrice(totals.sgst)}`,
         `Total: ${formatPrice(totals.total)}`,
       ].join("\n"),
       html: `
@@ -264,6 +277,9 @@ export async function POST(request) {
             <p style="white-space: pre-wrap; line-height: 1.6;">${escapeHtml(address)}</p>
 
             <h2 style="color: #222; border-bottom: 2px solid #7cb729; padding-bottom: 10px; margin-top: 28px;">Payment</h2>
+            <p><strong>Payment Method:</strong> ${escapeHtml(paymentMethodLabel)}</p>
+            <p><strong>Paid Amount:</strong> ${formatPrice(payment.paidAmount)}</p>
+            <p><strong>Amount Due on Delivery:</strong> ${formatPrice(amountDue)}</p>
             <p><strong>UPI Transaction ID:</strong> ${escapeHtml(payment.upiTransactionId)}</p>
 
             <h2 style="color: #222; border-bottom: 2px solid #7cb729; padding-bottom: 10px; margin-top: 28px;">Order Items</h2>
@@ -281,8 +297,8 @@ export async function POST(request) {
 
             <div style="background: white; padding: 18px; border-radius: 8px; margin-top: 20px;">
               <p style="margin: 8px 0;"><strong>Subtotal:</strong> ${formatPrice(totals.subtotal)}</p>
-              <p style="margin: 8px 0;"><strong>CGST (9%):</strong> ${formatPrice(totals.cgst)}</p>
-              <p style="margin: 8px 0;"><strong>SGST (9%):</strong> ${formatPrice(totals.sgst)}</p>
+              <p style="margin: 8px 0;"><strong>CGST (2.5%):</strong> ${formatPrice(totals.cgst)}</p>
+              <p style="margin: 8px 0;"><strong>SGST (2.5%):</strong> ${formatPrice(totals.sgst)}</p>
               <p style="margin: 12px 0 0; font-size: 18px;"><strong>Total Amount:</strong> ${formatPrice(totals.total)}</p>
             </div>
           </div>
@@ -294,14 +310,20 @@ export async function POST(request) {
     const customerMail = {
       from: `"Boomslang Nutrition" <${fromEmail}>`,
       to: delivery.email,
+      bcc: supportEmail,
       subject: `Your Boomslang Nutrition Order ${orderId}`,
       text: [
         `Thank you, ${delivery.fullName}!`,
         "",
-        "We have received your checkout details and payment confirmation.",
+        payment.method === "cod"
+          ? "We have received your Cash on Delivery order details and ₹99 payment confirmation."
+          : "We have received your checkout details and full payment confirmation.",
         "",
         `Order ID: ${orderId}`,
         `Placed At: ${placedAt}`,
+        `Payment Method: ${paymentMethodLabel}`,
+        `Paid Amount: ${formatPrice(payment.paidAmount)}`,
+        `Amount Due on Delivery: ${formatPrice(amountDue)}`,
         `UPI Transaction ID: ${payment.upiTransactionId}`,
         "",
         "Items",
@@ -312,8 +334,8 @@ export async function POST(request) {
         "",
         "Totals",
         `Subtotal: ${formatPrice(totals.subtotal)}`,
-        `CGST (9%): ${formatPrice(totals.cgst)}`,
-        `SGST (9%): ${formatPrice(totals.sgst)}`,
+        `CGST (2.5%): ${formatPrice(totals.cgst)}`,
+        `SGST (2.5%): ${formatPrice(totals.sgst)}`,
         `Total: ${formatPrice(totals.total)}`,
         "",
         "Boomslang Nutrition",
@@ -327,11 +349,14 @@ export async function POST(request) {
           </div>
           <div style="padding: 28px; background: #f9f9f9;">
             <p style="font-size: 16px; line-height: 1.6; color: #333;">
-              Your order has been captured for review. Our team will verify your UPI payment and contact you if anything else is needed.
+              Your order has been captured for review. Our team will verify your ${payment.method === "cod" ? "₹99 Cash on Delivery booking" : "full UPI"} payment and contact you if anything else is needed.
             </p>
             <div style="background: white; padding: 18px; border-radius: 8px; border-left: 4px solid #7cb729; margin: 20px 0;">
               <p style="margin: 8px 0;"><strong>Order ID:</strong> ${escapeHtml(orderId)}</p>
               <p style="margin: 8px 0;"><strong>Placed At:</strong> ${escapeHtml(placedAt)}</p>
+              <p style="margin: 8px 0;"><strong>Payment Method:</strong> ${escapeHtml(paymentMethodLabel)}</p>
+              <p style="margin: 8px 0;"><strong>Paid Amount:</strong> ${formatPrice(payment.paidAmount)}</p>
+              <p style="margin: 8px 0;"><strong>Amount Due on Delivery:</strong> ${formatPrice(amountDue)}</p>
               <p style="margin: 8px 0;"><strong>UPI Transaction ID:</strong> ${escapeHtml(payment.upiTransactionId)}</p>
             </div>
 
@@ -350,8 +375,8 @@ export async function POST(request) {
 
             <div style="background: white; padding: 18px; border-radius: 8px; margin-top: 20px;">
               <p style="margin: 8px 0;"><strong>Subtotal:</strong> ${formatPrice(totals.subtotal)}</p>
-              <p style="margin: 8px 0;"><strong>CGST (9%):</strong> ${formatPrice(totals.cgst)}</p>
-              <p style="margin: 8px 0;"><strong>SGST (9%):</strong> ${formatPrice(totals.sgst)}</p>
+              <p style="margin: 8px 0;"><strong>CGST (2.5%):</strong> ${formatPrice(totals.cgst)}</p>
+              <p style="margin: 8px 0;"><strong>SGST (2.5%):</strong> ${formatPrice(totals.sgst)}</p>
               <p style="margin: 12px 0 0; font-size: 18px;"><strong>Total Amount:</strong> ${formatPrice(totals.total)}</p>
             </div>
 

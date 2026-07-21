@@ -10,17 +10,17 @@
     "description": "GOKU GAINZ by Boomslang Nutrition is a carefully formulated Ayurvedic supplement featuring Herbal Weight Gain Capsules designed to support healthy and natural weight gain. Created for individuals looking to improve body nourishment, appetite, strength, stamina, and overall wellness, these Weight Gain Capsules help complement your daily nutrition and fitness routine. If you're searching for the Best Weight Gain Capsules with an Ayurvedic herbal approach, GOKU GAINZ offers a thoughtfully crafted formula to support your wellness goals. For optimal results, use it alongside a balanced diet and regular exercise.",
     "metaTitle": "Buy Herbal Weight Gain Capsules | GOKU GAINZ",
     "metaDescription": "Goku Gainz Herbal Weight Gain Capsules with a natural Ayurvedic formula to support healthy weight gain, energy, strength, and overall wellness.",
-    "discountLabel": "20% Off",
-    "oldPrice": 999,
+    "discountLabel": "56% Off",
+    "oldPrice": 1799,
     "price": 799,
-    "percentOff": 20,
+    "percentOff": 56,
     "availability": "In Stock",
     "image": "/images/5.png",
     "images": [
       "/images/5.png",
-      "/images/goku-gainz-three-bottles.png",
-      "/images/goku-gainz-lifestyle-collage.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/goku-gainz/18.png",
+      "/images/products/goku-gainz/19.png",
+      "/images/products/goku-gainz/20.png"
     ],
     "highlights": [
       "Helps support healthy and gradual weight gain",
@@ -77,16 +77,17 @@
     "description": "Power up your training with Strychnine Electric Blood Orange, a premium Orange Pre Workout Supplement from Boomslang Nutrition. Formulated to support energy, focus, endurance, and workout performance, this gym pre workout helps you prepare for intense training sessions. Whether you're lifting weights, performing HIIT, or pushing through challenging workouts, it delivers the support you need before every session.",
     "metaTitle": "Strychnine Electric Blood Orange | Gym Pre Workout",
     "metaDescription": "Strychnine Electric Blood Orange gym pre workout helps support energy, focus, endurance, and workout performance with every serving.",
-    "discountLabel": "10% Off",
-    "oldPrice": 1499,
+    "discountLabel": "61% Off",
+    "oldPrice": 3499,
     "price": 1350,
-    "percentOff": 10,
+    "percentOff": 61,
     "availability": "In Stock",
     "image": "/images/1.png",
     "images": [
       "/images/1.png",
-      "/images/strycnnine-mango.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/strychnine-electric-blood-orange/13.png",
+      "/images/products/strychnine-electric-blood-orange/14.png",
+      "/images/products/strychnine-electric-blood-orange/15.png"
     ],
     "flavours": [
       { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
@@ -95,7 +96,7 @@
       { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
-      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 3499 }
     ],
     "highlights": [
       "Helps support strong workout energy output",
@@ -142,18 +143,17 @@
     "description": "Power up your workouts with Strychnine Mango, a premium Mango Pre Workout Supplement from Boomslang Nutrition. Formulated to support energy, focus, endurance, and workout performance, this workout supplement helps you stay prepared for intense training sessions. Whether you're lifting weights, performing HIIT, or pushing your limits in the gym, its refreshing mango flavor and easy-to-mix formula make it the perfect pre-workout companion.",
     "metaTitle": "Buy Strychnine Mango Workout Supplement",
     "metaDescription": "Fuel your training with Strychnine Mango workout supplement from Boomslang Nutritions. Supports energy, focus, endurance, and an active fitness routine.",
-    "discountLabel": "10% Off",
-    "oldPrice": 1499,
+    "discountLabel": "61% Off",
+    "oldPrice": 3499,
     "price": 1350,
-    "percentOff": 10,
+    "percentOff": 61,
     "availability": "In Stock",
     "image": "/images/2.png",
     "images": [
       "/images/2.png",
       "/images/products/strychnine-mango/5.png",
       "/images/products/strychnine-mango/6.png",
-      "/images/products/strychnine-mango/7.png",
-      "/images/products/strychnine-mango/8.png"
+      "/images/products/strychnine-mango/7.png"
     ],
     "flavours": [
       { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
@@ -162,7 +162,7 @@
       { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
-      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 3499 }
     ],
     "highlights": [
       "Helps prepare your body for demanding training sessions",
@@ -210,17 +210,16 @@
     "description": "Power up your training sessions with Strychnine Pineapple, a premium Pineapple Pre Workout Supplement from Boomslang Nutrition. Designed for athletes and fitness enthusiasts, this high-performance pre workout powder helps support energy, focus, endurance, and overall workout intensity. With its refreshing pineapple flavor and easy-to-mix formula, it makes every workout more energized and enjoyable. Whether you're hitting heavy lifts, pushing through HIIT, or training for endurance, this pre-workout is built to help you perform at your peak.",
     "metaTitle": "Buy Strychnine Pineapple Pre Workout Powder",
     "metaDescription": "Train with Strychnine Pineapple pre workout powder from Boomslang Nutritions. Designed to support energy, focus, endurance, and performance.",
-    "discountLabel": "10% Off",
-    "oldPrice": 1499,
+    "discountLabel": "61% Off",
+    "oldPrice": 3499,
     "price": 1350,
-    "percentOff": 10,
+    "percentOff": 61,
     "availability": "In Stock",
     "image": "/images/3.png",
     "images": [
       "/images/3.png",
       "/images/products/strychnine-pineapple/1.png",
       "/images/products/strychnine-pineapple/2.png",
-      "/images/products/strychnine-pineapple/3.png",
       "/images/products/strychnine-pineapple/4.png"
     ],
     "flavours": [
@@ -230,7 +229,7 @@
       { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
-      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 1499 }
+      { "id": "300g", "name": "300 g", "price": 1350, "oldPrice": 3499 }
     ],
     "highlights": [
       "Helps prepare your body for demanding workouts",
@@ -278,16 +277,17 @@
     "description": "Power up your training sessions with Strychnine Mix Fruit, a premium Mix Fruit Pre Workout Supplement from Boomslang Nutrition. Specially formulated as an energy pre workout, it helps support explosive energy, focus, endurance, and overall workout performance. With a refreshing mixed fruit flavor and fast-dissolving formula, it is designed to keep your workouts intense, productive, and enjoyable. Whether you're lifting heavy, training for endurance, or pushing through HIIT sessions, this pre-workout helps you stay ready for peak performance.",
     "metaTitle": "Buy Strychnine Mix Fruit Energy Pre Workout",
     "metaDescription": "Power your workouts with Strychnine Mix Fruit energy pre workout from Boomslang Nutritions. Supports energy, focus, endurance, and performance.",
-    "discountLabel": "10% Off",
-    "oldPrice": 1499,
+    "discountLabel": "61% Off",
+    "oldPrice": 3499,
     "price": 1350,
-    "percentOff": 10,
+    "percentOff": 61,
     "availability": "In Stock",
     "image": "/images/4.png",
     "images": [
       "/images/4.png",
-      "/images/strycnnine-mango.png",
-      "/images/man-drinking-shaker.png"
+      "/images/products/strychnine-mix-fruit/10.png",
+      "/images/products/strychnine-mix-fruit/11.png",
+      "/images/products/strychnine-mix-fruit/12.png"
     ],
     "flavours": [
       { "id": "electric-blood-orange", "name": "Blood Orange", "available": true, "href": "/shop/strychnine-electric-blood-orange" },
@@ -296,7 +296,7 @@
       { "id": "mix-fruit", "name": "Mix Fruit", "available": true, "href": "/shop/strychnine-mix-fruit" }
     ],
     "weights": [
-      { "id": "250g", "name": "250 g", "price": 1350, "oldPrice": 1499 }
+      { "id": "250g", "name": "250 g", "price": 1350, "oldPrice": 3499 }
     ],
     "highlights": [
       "Helps prepare the body for intense training",

@@ -34,6 +34,8 @@ const states = [
   "Uttarakhand",
   "West Bengal",
 ];
+const GST_COMPONENT_RATE = 0.025;
+const COD_PREPAID_AMOUNT = 99;
 
 function RequiredMark() {
   return <span className={styles.required}>*</span>;
@@ -51,6 +53,7 @@ export default function CheckoutContent() {
   const [submittedOrder, setSubmittedOrder] = useState(null);
   const [directItem, setDirectItem] = useState(null);
   const [checkoutMode, setCheckoutMode] = useState("cart");
+  const [paymentMethod, setPaymentMethod] = useState("prepaid");
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
@@ -81,8 +84,8 @@ export default function CheckoutContent() {
     }
 
     const subtotal = directItem.price * directItem.quantity;
-    const cgst = Math.round(subtotal * 0.09);
-    const sgst = Math.round(subtotal * 0.09);
+    const cgst = Math.round(subtotal * GST_COMPONENT_RATE);
+    const sgst = Math.round(subtotal * GST_COMPONENT_RATE);
 
     return {
       subtotal,
@@ -106,6 +109,9 @@ export default function CheckoutContent() {
     setStatus({ type: "", message: "" });
 
     const formData = new FormData(form);
+    const selectedPaymentMethod = String(formData.get("paymentMethod") || "prepaid");
+    const paidAmount =
+      selectedPaymentMethod === "cod" ? COD_PREPAID_AMOUNT : checkoutTotals.total;
     const payload = {
       checkoutMode,
       delivery: {
@@ -120,6 +126,8 @@ export default function CheckoutContent() {
         state: String(formData.get("state") || ""),
       },
       payment: {
+        method: selectedPaymentMethod,
+        paidAmount,
         upiTransactionId: String(formData.get("upiTransactionId") || ""),
       },
       items: checkoutItems.map((item) => ({
@@ -155,6 +163,10 @@ export default function CheckoutContent() {
         orderId: data.orderId,
         items: checkoutItems,
         totals: checkoutTotals,
+        payment: {
+          method: selectedPaymentMethod,
+          paidAmount,
+        },
       });
       setSubmitted(true);
       setStatus({
@@ -177,6 +189,13 @@ export default function CheckoutContent() {
 
   const displayItems = submittedOrder?.items || checkoutItems;
   const displayTotals = submittedOrder?.totals || checkoutTotals;
+  const activePaymentMethod = submittedOrder?.payment?.method || paymentMethod;
+  const payableAmount = submittedOrder?.payment?.paidAmount || (
+    activePaymentMethod === "cod" ? COD_PREPAID_AMOUNT : checkoutTotals.total
+  );
+  const paymentMethodLabel =
+    activePaymentMethod === "cod" ? "Cash on Delivery" : "Full QR Payment";
+  const amountDueOnDelivery = Math.max(displayTotals.total - payableAmount, 0);
 
   if (!isReady) {
     return (
@@ -322,12 +341,51 @@ export default function CheckoutContent() {
 
             <section className={styles.section}>
               <h2 className={styles.sectionTitle}>Payment Confirmation</h2>
+              <div className={styles.paymentMethods}>
+                <label
+                  className={`${styles.paymentMethod} ${
+                    paymentMethod === "prepaid" ? styles.paymentMethodActive : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="prepaid"
+                    checked={paymentMethod === "prepaid"}
+                    onChange={() => setPaymentMethod("prepaid")}
+                  />
+                  <span>
+                    <strong>Pay Online</strong>
+                    <small>Pay full order amount by QR code.</small>
+                  </span>
+                </label>
+
+                <label
+                  className={`${styles.paymentMethod} ${
+                    paymentMethod === "cod" ? styles.paymentMethodActive : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="cod"
+                    checked={paymentMethod === "cod"}
+                    onChange={() => setPaymentMethod("cod")}
+                  />
+                  <span>
+                    <strong>Cash on Delivery</strong>
+                    <small>Pay ₹99 now using QR. Remaining amount on delivery.</small>
+                  </span>
+                </label>
+              </div>
+
               <div className={styles.paymentBox}>
                 <div>
                   <p className={styles.paymentTitle}>Scan and pay</p>
                   <p className={styles.paymentText}>
-                    Pay the order total using the QR code in the order summary, then enter
-                    the transaction ID below.
+                    {paymentMethod === "cod"
+                      ? "For Cash on Delivery, pay ₹99 using the QR code in the order summary, then enter the transaction ID below."
+                      : "Pay the order total using the QR code in the order summary, then enter the transaction ID below."}
                   </p>
                   <p className={styles.upiText}>UPI ID: 8520320988@indianbk</p>
                 </div>
@@ -377,7 +435,8 @@ export default function CheckoutContent() {
                 height={390}
                 className={styles.summaryQr}
               />
-              <p>Scan this QR and pay exactly {formatPrice(displayTotals.total)}.</p>
+              <p>Scan this QR and pay exactly {formatPrice(payableAmount)}.</p>
+              <p className={styles.paymentModeText}>{paymentMethodLabel}</p>
             </div>
 
             <div className={styles.items}>
@@ -411,11 +470,11 @@ export default function CheckoutContent() {
                 <strong>{formatPrice(displayTotals.subtotal)}</strong>
               </div>
               <div className={styles.summaryRow}>
-                <span>CGST (9%)</span>
+                <span>CGST (2.5%)</span>
                 <strong>{formatPrice(displayTotals.cgst)}</strong>
               </div>
               <div className={styles.summaryRow}>
-                <span>SGST (9%)</span>
+                <span>SGST (2.5%)</span>
                 <strong>{formatPrice(displayTotals.sgst)}</strong>
               </div>
             </div>
@@ -424,6 +483,16 @@ export default function CheckoutContent() {
               <span>Total Amount</span>
               <strong>{formatPrice(displayTotals.total)}</strong>
             </div>
+            <div className={styles.payableRow}>
+              <span>Payable Now</span>
+              <strong>{formatPrice(payableAmount)}</strong>
+            </div>
+            {activePaymentMethod === "cod" && (
+              <div className={styles.dueRow}>
+                <span>Due On Delivery</span>
+                <strong>{formatPrice(amountDueOnDelivery)}</strong>
+              </div>
+            )}
           </aside>
         </div>
       </Container>
