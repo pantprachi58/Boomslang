@@ -62,14 +62,14 @@
 ## 📧 Email Configuration
 
 ### Current Setup
-- **Email**: support@boomslangnutrition.com
+- **Email**: support@theboomslangnutritions.com
 - **App Password**: gzst ejsv ekds zryx
 - **Service**: Gmail SMTP
 
 ### For Production (Recommended)
 1. Create `.env.local` file in project root:
 ```env
-EMAIL_USER=support@boomslangnutrition.com
+EMAIL_USER=support@theboomslangnutritions.com
 EMAIL_PASS=gzst ejsv ekds zryx
 ```
 

@@ -161,7 +161,7 @@ export async function POST(request) {
         message,
         "",
         "Boomslang Nutrition",
-        "support@boomslangnutrition.com",
+        "support@theboomslangnutritions.com",
       ].join("\n"),
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px;">
@@ -194,7 +194,7 @@ export async function POST(request) {
             <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold;">Boomslang Nutrition</p>
             <p style="margin: 5px 0; font-size: 12px; color: #999;">Premium Ayurvedic Supplements for Your Fitness Journey</p>
             <p style="margin: 10px 0 5px 0; font-size: 12px;">
-              <a href="mailto:support@boomslangnutrition.com" style="color: #7cb729; text-decoration: none;">support@boomslangnutrition.com</a>
+              <a href="mailto:support@theboomslangnutritions.com" style="color: #7cb729; text-decoration: none;">support@theboomslangnutritions.com</a>
             </p>
           </div>
         </div>

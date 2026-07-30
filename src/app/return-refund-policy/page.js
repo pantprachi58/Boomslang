@@ -278,8 +278,8 @@ export default function ReturnRefundPolicy() {
                 </p>
                 <p className={styles.contactEmail}>
                   <strong>Email:</strong>{" "}
-                  <a href="mailto:support@boomslangnutrition.com">
-                    support@boomslangnutrition.com
+                  <a href="mailto:support@theboomslangnutritions.com">
+                    support@theboomslangnutritions.com
                   </a>
                 </p>
               </div>

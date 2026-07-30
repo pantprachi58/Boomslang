@@ -127,8 +127,8 @@ Delhi – 110095</span>
               </li>
               <li className={styles.contactItem}>
                 <MailIcon className={styles.contactIcon} />
-                <a href="mailto:support@boomslangnutrition.com" className={styles.link}>
-                   support@boomslangnutrition.com
+                <a href="mailto:support@theboomslangnutritions.com" className={styles.link}>
+                   support@theboomslangnutritions.com
                 </a>
               </li>
             </ul>

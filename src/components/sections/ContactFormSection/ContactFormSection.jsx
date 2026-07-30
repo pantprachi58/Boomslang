@@ -230,8 +230,8 @@ export default function ContactFormSection() {
                 </div>
                 <h3 className={styles.cardTitle}>Email Us</h3>
                 <p className={styles.cardText}>
-                  <a href="mailto:support@boomslangnutrition.com" className={styles.link}>
-                    support@boomslangnutrition.com
+                  <a href="mailto:support@theboomslangnutritions.com" className={styles.link}>
+                    support@theboomslangnutritions.com
                   </a>
                 </p>
                 <p className={styles.cardSubtext}>

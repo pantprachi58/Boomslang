@@ -339,7 +339,7 @@ export async function POST(request) {
         `Total: ${formatPrice(totals.total)}`,
         "",
         "Boomslang Nutrition",
-        "support@boomslangnutrition.com",
+        "support@theboomslangnutritions.com",
       ].join("\n"),
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 720px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
@@ -385,7 +385,7 @@ export async function POST(request) {
           </div>
           <div style="background: #333; color: white; padding: 20px; text-align: center;">
             <p style="margin: 0 0 8px; font-weight: bold;">Boomslang Nutrition</p>
-            <a href="mailto:support@boomslangnutrition.com" style="color: #7cb729; text-decoration: none;">support@boomslangnutrition.com</a>
+            <a href="mailto:support@theboomslangnutritions.com" style="color: #7cb729; text-decoration: none;">support@theboomslangnutritions.com</a>
           </div>
         </div>
       `,

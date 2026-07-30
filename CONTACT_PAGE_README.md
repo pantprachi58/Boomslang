@@ -38,7 +38,7 @@ The Contact page provides users with multiple ways to reach out to Boomslang Nut
 **Location**: `src/components/sections/ContactInfo/`
 - Displays 4 information cards:
   1. **Location**: Physical address (placeholder for now)
-  2. **Email**: support@boomslangnutrition.com
+  2. **Email**: support@theboomslangnutritions.com
   3. **Phone**: Coming soon placeholder
   4. **Business Hours**: Operating schedule
 - Each card features:
@@ -69,7 +69,7 @@ The contact form sends data to this API endpoint which:
 3. Sends two emails using Nodemailer:
 
 #### Email 1: To Support Team
-- **To**: support@boomslangnutrition.com
+- **To**: support@theboomslangnutritions.com
 - **Subject**: Contact Form: [User's Subject]
 - **Contains**:
   - User's name, email, phone, subject
@@ -90,7 +90,7 @@ The contact form sends data to this API endpoint which:
 
 ### Email Configuration
 - **Service**: Gmail SMTP
-- **Account**: support@boomslangnutrition.com
+- **Account**: support@theboomslangnutritions.com
 - **App Password**: gzst ejsv ekds zryx
 - **Library**: nodemailer
 
@@ -148,7 +148,7 @@ npm install nodemailer
 #### Update Email Credentials (Recommended)
 Create `.env.local` file:
 ```env
-EMAIL_USER=support@boomslangnutrition.com
+EMAIL_USER=support@theboomslangnutritions.com
 EMAIL_PASS=gzst ejsv ekds zryx
 ```
 

@@ -26,13 +26,13 @@ npm start
 ## 📧 Email Setup
 
 ### Current Configuration
-- **Support Email**: support@boomslangnutrition.com
+- **Support Email**: support@theboomslangnutritions.com
 - **App Password**: gzst ejsv ekds zryx (configured)
 - **Status**: ✅ Ready to send emails
 
 ### Email Flow
 1. User fills contact form → Clicks "Send Message"
-2. **Email #1** sent to: `support@boomslangnutrition.com`
+2. **Email #1** sent to: `support@theboomslangnutritions.com`
    - Contains: User's name, email, phone, subject, message
    - Reply-to: User's email (for easy replies)
 3. **Email #2** sent to: User's email
@@ -79,7 +79,7 @@ For production, use environment variables:
 
 1. Create `.env.local`:
 ```env
-EMAIL_USER=support@boomslangnutrition.com
+EMAIL_USER=support@theboomslangnutritions.com
 EMAIL_PASS=gzst ejsv ekds zryx
 ```
 
@@ -101,7 +101,7 @@ EMAIL_PASS=gzst ejsv ekds zryx
 3. Click "Send Message"
 4. Check for:
    - ✅ Success message on screen
-   - ✅ Email in support@boomslangnutrition.com inbox
+   - ✅ Email in support@theboomslangnutritions.com inbox
    - ✅ Auto-reply at your-email@example.com
 
 ## 📱 Navigation
@@ -143,5 +143,5 @@ npm install
 ---
 
 **Contact Page URL**: `/contact`  
-**Email**: support@boomslangnutrition.com  
+**Email**: support@theboomslangnutritions.com  
 **Status**: ✅ Live and Ready!
