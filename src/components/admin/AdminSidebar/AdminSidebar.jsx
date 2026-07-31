@@ -4,6 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthProvider/AuthProvider";
 import {
   DashboardIcon,
   PackageIcon,
@@ -20,6 +22,8 @@ import styles from "./AdminSidebar.module.css";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
 
   const menuItems = [
@@ -85,7 +89,14 @@ export default function AdminSidebar() {
             <GlobeIcon />
             <span>View Website</span>
           </Link>
-          <button className={styles.logout}>
+          <button
+            className={styles.logout}
+            onClick={async () => {
+              await logout();
+              router.replace("/login");
+              router.refresh();
+            }}
+          >
             <LogoutIcon />
             <span>Logout</span>
           </button>

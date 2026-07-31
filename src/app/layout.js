@@ -1,4 +1,5 @@
 import { Anybody, Inter } from "next/font/google";
+import { AuthProvider } from "@/components/AuthProvider/AuthProvider";
 import { CartProvider } from "@/components/CartProvider/CartProvider";
 import "./globals.css";
 
@@ -27,7 +28,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${anybody.variable} ${inter.variable}`}>
       <body>
-        <CartProvider>{children}</CartProvider>
+        <AuthProvider>
+          <CartProvider>{children}</CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

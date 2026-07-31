@@ -18,6 +18,69 @@
   overflow-y: auto;
 }
 
+.guardPage {
+  min-height: 100vh;
+  padding: 24px;
+  background: var(--color-page-green);
+  display: grid;
+  place-items: center;
+}
+
+.guardLoader {
+  width: min(420px, 100%);
+  min-height: 180px;
+  border: 1px solid rgba(124, 183, 41, 0.22);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.guardLoader p {
+  color: #344054;
+  font-size: 15px;
+  font-weight: var(--fw-semibold);
+}
+
+.guardDots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guardDots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  animation: guardDot 0.9s ease-in-out infinite;
+}
+
+.guardDots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.guardDots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes guardDot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-7px);
+  }
+}
+
 @media (max-width: 1024px) {
   .mainContent {
     margin-left: 0;

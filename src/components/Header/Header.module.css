@@ -129,6 +129,76 @@
   padding: 0;
 }
 
+.accountWrap,
+.mobileAccountWrap {
+  position: relative;
+}
+
+.accountDropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  right: 0;
+  min-width: 210px;
+  padding: 8px;
+  background: #0f0f0f;
+  border: 1px solid rgba(124, 183, 41, 0.3);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.26);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+  z-index: 1200;
+}
+
+.accountDropdownOpen {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.accountName {
+  padding: 12px 12px 10px;
+  color: var(--color-white);
+  font-size: 14px;
+  font-weight: var(--fw-bold);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 4px;
+}
+
+.accountLink,
+.accountLogout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  padding: 0 12px;
+  color: rgba(255, 255, 255, 0.86);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+  text-align: left;
+  cursor: pointer;
+}
+
+.accountLink svg,
+.accountLogout svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.accountLink:hover,
+.accountLogout:hover,
+.accountLink:focus-visible,
+.accountLogout:focus-visible {
+  color: var(--color-white);
+  background: rgba(124, 183, 41, 0.22);
+}
+
 .cartBtn {
   position: relative;
 }
@@ -187,16 +257,18 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 46px;
-  padding: 0 16px;
-  margin-bottom: var(--space-24);
+  min-height: 58px;
+  padding: 0 18px;
+  margin-bottom: var(--space-20);
   border-radius: var(--radius-pill);
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .mobileSearchBox .searchInput {
-  font-size: var(--font-size-md);
+  font-size: 18px;
+  height: 100%;
+  line-height: 1.2;
 }
 
 .shopBtn {
@@ -220,11 +292,13 @@
 .mobileMenu {
   position: fixed;
   inset: 0;
-  background-color: #1b0000;
+  background:
+    linear-gradient(180deg, rgba(2, 15, 8, 0.98), rgba(12, 22, 10, 0.98)),
+    var(--color-black);
   z-index: 1050;
   display: flex;
   flex-direction: column;
-  padding: var(--space-96) var(--space-24) var(--space-32);
+  padding: 92px var(--space-24) var(--space-32);
   overflow-y: auto;
   transform: translateX(100%);
   transition: transform 0.3s ease;
@@ -299,6 +373,7 @@
   display: flex;
   gap: var(--space-24);
   margin-top: var(--space-32);
+  position: relative;
 }
 
 .mobileActions .iconBtn {
@@ -308,6 +383,54 @@
 .mobileShopBtn {
   margin-top: var(--space-24);
   align-self: flex-start;
+}
+
+.mobileAccountPanel {
+  margin-top: var(--space-32);
+  padding-top: var(--space-24);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileWelcomeTop {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 22px;
+}
+
+.mobileWelcomeTop span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 13px;
+  font-weight: var(--fw-semibold);
+}
+
+.mobileWelcomeTop strong {
+  color: var(--color-white);
+  font-size: 20px;
+}
+
+.mobileAccountLink {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: var(--font-main);
+  font-size: 15px;
+  font-weight: var(--fw-semibold);
+  padding: 0;
+  cursor: pointer;
+}
+
+.mobileAccountLink svg {
+  width: 20px;
+  height: 20px;
+  color: var(--color-primary-light);
 }
 
 @media (min-width: 992px) {
@@ -339,6 +462,27 @@
   }
 
   .logoImg {
-    height: 36px;
+    height: 54px;
+  }
+
+  .actions {
+    gap: 16px;
+  }
+
+  .actions .cartBtn {
+    display: flex;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  .accountWrap {
+    display: none;
+  }
+
+  .mobileAccountWrap .accountDropdown {
+    top: calc(100% + 12px);
+    left: 0;
+    right: auto;
+    width: min(260px, calc(100vw - 48px));
   }
 }

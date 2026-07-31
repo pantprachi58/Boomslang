@@ -234,6 +234,9 @@
 }
 
 .profileDropdownItem {
+  width: 100%;
+  border: none;
+  background: none;
   padding: 0.875rem 1.25rem;
   cursor: pointer;
   transition: background 0.2s ease;

@@ -1,6 +1,4 @@
-import AdminSidebar from "@/components/admin/AdminSidebar/AdminSidebar";
-import AdminHeader from "@/components/admin/AdminHeader/AdminHeader";
-import styles from "./AdminLayout.module.css";
+import AdminGuard from "@/components/admin/AdminGuard/AdminGuard";
 
 export const metadata = {
   title: "Admin Panel - Boomslang Nutrition",
@@ -8,13 +6,5 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }) {
-  return (
-    <div className={styles.adminLayout}>
-      <AdminSidebar />
-      <div className={styles.mainContent}>
-        <AdminHeader />
-        <main className={styles.contentArea}>{children}</main>
-      </div>
-    </div>
-  );
+  return <AdminGuard>{children}</AdminGuard>;
 }

@@ -4,11 +4,22 @@ import { useState } from "react";
 import { SearchIcon } from "@/components/icons/Icons";
 import { BellIcon, HelpIcon, SettingsIcon, LogoutIcon } from "@/components/admin/icons/AdminIcons";
 import { UserIcon } from "@/components/icons/Icons";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/components/AuthProvider/AuthProvider";
 import styles from "./AdminHeader.module.css";
 
 export default function AdminHeader() {
+  const router = useRouter();
+  const { user, logout } = useAuth();
   const [showNotifications, setShowNotifications] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
+  const displayName = user?.name || "Admin User";
+  const initials = displayName
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 
   const notifications = [
     { id: 1, text: "New order received (#1234)", time: "5 min ago", unread: true },
@@ -72,10 +83,10 @@ export default function AdminHeader() {
             onClick={() => setShowProfile(!showProfile)}
           >
             <div className={styles.avatar}>
-              <span>AD</span>
+              <span>{initials || "AD"}</span>
             </div>
             <div className={styles.profileInfo}>
-              <span className={styles.profileName}>Admin User</span>
+              <span className={styles.profileName}>{displayName}</span>
               <span className={styles.profileRole}>Administrator</span>
             </div>
           </button>
@@ -92,9 +103,17 @@ export default function AdminHeader() {
                 <HelpIcon /> Help & Support
               </div>
               <hr className={styles.divider} />
-              <div className={styles.profileDropdownItem}>
+              <button
+                type="button"
+                className={styles.profileDropdownItem}
+                onClick={async () => {
+                  await logout();
+                  router.replace("/login");
+                  router.refresh();
+                }}
+              >
                 <LogoutIcon /> Logout
-              </div>
+              </button>
             </div>
           )}
         </div>

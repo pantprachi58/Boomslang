@@ -3,8 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { UserRound, MapPin, ShoppingBag, LogOut, LogIn, KeyRound } from "lucide-react";
 import navItems from "@/data/navigation";
 import Button from "@/components/Button/Button";
+import { useAuth } from "@/components/AuthProvider/AuthProvider";
 import { useCart } from "@/components/CartProvider/CartProvider";
 import {
   ChevronDownIcon,
@@ -17,11 +20,18 @@ import {
 import styles from "./Header.module.css";
 
 export default function Header() {
+  const router = useRouter();
   const [openDropdown, setOpenDropdown] = useState(null);
+  const [accountOpen, setAccountOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(null);
   const { totals } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
   const headerRef = useRef(null);
+  const accountLabel = isAuthenticated
+    ? `${user.firstName || user.name || "Account"} account`
+    : "Login";
+  const accountName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ");
 
   useEffect(() => {
     document.body.classList.toggle("noScroll", mobileOpen);
@@ -32,6 +42,7 @@ export default function Header() {
     function handleClickOutside(event) {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
         setOpenDropdown(null);
+        setAccountOpen(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -42,6 +53,7 @@ export default function Header() {
     function handleEscape(event) {
       if (event.key === "Escape") {
         setOpenDropdown(null);
+        setAccountOpen(false);
         setMobileOpen(false);
       }
     }
@@ -56,7 +68,42 @@ export default function Header() {
   const closeMobileMenu = () => {
     setMobileOpen(false);
     setMobileExpanded(null);
+    setAccountOpen(false);
   };
+
+  const handleLogout = () => {
+    logout();
+    setAccountOpen(false);
+    setMobileOpen(false);
+    router.push("/");
+    router.refresh();
+  };
+
+  const renderAccountMenu = () => isAuthenticated ? (
+    <div className={`${styles.accountDropdown} ${accountOpen ? styles.accountDropdownOpen : ""}`}>
+      <div className={styles.accountName}>{accountName}</div>
+      <Link href="/profile" className={styles.accountLink} onClick={closeMobileMenu}>
+        <UserRound aria-hidden="true" />
+        Profile
+      </Link>
+      <Link href="/orders" className={styles.accountLink} onClick={closeMobileMenu}>
+        <ShoppingBag aria-hidden="true" />
+        Orders
+      </Link>
+      <Link href="/address" className={styles.accountLink} onClick={closeMobileMenu}>
+        <MapPin aria-hidden="true" />
+        Address
+      </Link>
+      <Link href="/change-password" className={styles.accountLink} onClick={closeMobileMenu}>
+        <KeyRound aria-hidden="true" />
+        Change Password
+      </Link>
+      <button type="button" className={styles.accountLogout} onClick={handleLogout}>
+        <LogOut aria-hidden="true" />
+        Logout
+      </button>
+    </div>
+  ) : null;
 
   return (
     <header className={styles.header} ref={headerRef}>
@@ -143,9 +190,28 @@ export default function Header() {
               aria-label="Search products"
             />
           </form>
-          <button type="button" className={styles.iconBtn} aria-label="Account">
-            <UserIcon />
-          </button>
+          <div
+            className={styles.accountWrap}
+            onMouseEnter={() => isAuthenticated && setAccountOpen(true)}
+            onMouseLeave={() => setAccountOpen(false)}
+          >
+            {isAuthenticated ? (
+              <button
+                type="button"
+                className={styles.iconBtn}
+                aria-label={accountLabel}
+                aria-expanded={accountOpen}
+                onClick={() => setAccountOpen((prev) => !prev)}
+              >
+                <UserIcon />
+              </button>
+            ) : (
+              <Link href="/login" className={styles.iconBtn} aria-label="Login">
+                <UserIcon />
+              </Link>
+            )}
+            {renderAccountMenu()}
+          </div>
           <Link href="/cart" className={`${styles.iconBtn} ${styles.cartBtn}`} aria-label="Cart">
             <CartIcon />
             <span className={styles.cartBadge} aria-hidden="true">
@@ -173,6 +239,28 @@ export default function Header() {
         className={`${styles.mobileMenu} ${mobileOpen ? styles.mobileMenuOpen : ""}`}
         aria-hidden={!mobileOpen}
       >
+        {isAuthenticated && (
+          <div className={styles.mobileWelcomeTop}>
+            <span>Welcome</span>
+            <strong>{accountName}</strong>
+          </div>
+        )}
+
+        <form
+          className={styles.mobileSearchBox}
+          role="search"
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+          <input
+            type="search"
+            name="q"
+            placeholder="Search Products"
+            className={styles.searchInput}
+            aria-label="Search products"
+          />
+        </form>
+
         <ul className={styles.mobileNavList}>
           {navItems.map((item) => {
             const hasChildren = Boolean(item.children?.length);
@@ -224,42 +312,51 @@ export default function Header() {
           })}
         </ul>
 
-        <form
-          className={styles.mobileSearchBox}
-          role="search"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <SearchIcon className={styles.searchIcon} aria-hidden="true" />
-          <input
-            type="search"
-            name="q"
-            placeholder="Search Products"
-            className={styles.searchInput}
-            aria-label="Search products"
-          />
-        </form>
-
-        <div className={styles.mobileActions}>
-          <button type="button" className={styles.iconBtn} aria-label="Account">
-            <UserIcon />
-          </button>
-          <Link
-            href="/cart"
-            className={`${styles.iconBtn} ${styles.cartBtn}`}
-            aria-label="Cart"
-            onClick={closeMobileMenu}
-          >
-            <CartIcon />
-            <span className={styles.cartBadge} aria-hidden="true">
-              {totals.totalQuantity}
-            </span>
-          </Link>
-        </div>
-
         <Button href="/shop" className={styles.mobileShopBtn} onClick={closeMobileMenu}>
           Shop Now
         </Button>
+
+        <div className={styles.mobileAccountPanel}>
+          {isAuthenticated ? (
+            <>
+              <Link href="/profile" className={styles.mobileAccountLink} onClick={closeMobileMenu}>
+                <UserRound aria-hidden="true" />
+                Profile
+              </Link>
+              <Link href="/address" className={styles.mobileAccountLink} onClick={closeMobileMenu}>
+                <MapPin aria-hidden="true" />
+                Address
+              </Link>
+              <Link
+                href="/change-password"
+                className={styles.mobileAccountLink}
+                onClick={closeMobileMenu}
+              >
+                <KeyRound aria-hidden="true" />
+                Change Password
+              </Link>
+              <Link href="/orders" className={styles.mobileAccountLink} onClick={closeMobileMenu}>
+                <ShoppingBag aria-hidden="true" />
+                Orders
+              </Link>
+              <button
+                type="button"
+                className={styles.mobileAccountLink}
+                onClick={handleLogout}
+              >
+                <LogOut aria-hidden="true" />
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className={styles.mobileAccountLink} onClick={closeMobileMenu}>
+              <LogIn aria-hidden="true" />
+              Login
+            </Link>
+          )}
+        </div>
       </div>
+
     </header>
   );
 }
