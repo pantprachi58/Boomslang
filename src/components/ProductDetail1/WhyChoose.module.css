@@ -4,10 +4,14 @@
 
 .inner {
   position: relative;
+  min-height: 320px;
   border-radius: 18px;
   overflow: hidden;
   padding: 64px 40px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   background-image: linear-gradient(rgb(15 40 20 / 46%), rgb(12 33 16)), url(/images/natural-support-bg.webp);
   background-size: cover;
   background-position: center;

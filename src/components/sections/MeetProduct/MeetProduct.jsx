@@ -35,8 +35,11 @@ const slides = [
 
 const AUTOPLAY_INTERVAL = 4000;
 
-export default function MeetProduct() {
+export default function MeetProduct({ featuredProduct }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const hasFeaturedProduct = Boolean(featuredProduct?.slug);
+  const productName = featuredProduct?.name;
+  const productHref = featuredProduct?.href || `/shop/${featuredProduct?.slug}`;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -99,7 +102,7 @@ export default function MeetProduct() {
               </li>
             ))}
           </ul>
-          <Button href="/shop/goku-gainz">Shop GOKU GAINZ</Button>
+          {hasFeaturedProduct && <Button href={productHref}>Shop {productName}</Button>}
         </div>
 
       </div>

@@ -2,18 +2,20 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./ProductGallery.module.css";
 
 export default function ProductGallery({ images, alt }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const safeImages = (images || []).filter(Boolean).map(resolveAssetUrl);
 
-  if (!images?.length) return null;
+  if (!safeImages.length) return null;
 
   return (
     <div className={styles.gallery}>
       <div className={styles.mainImage}>
         <Image
-          src={images[activeIndex]}
+          src={safeImages[activeIndex]}
           alt={alt}
           width={560}
           height={560}
@@ -24,13 +26,13 @@ export default function ProductGallery({ images, alt }) {
       </div>
 
       <div className={styles.thumbnails}>
-        {images.map((src, index) => (
+        {safeImages.map((src, index) => (
           <button
             key={src}
             type="button"
             className={`${styles.thumbnail} ${index === activeIndex ? styles.thumbnailActive : ""}`}
             onClick={() => setActiveIndex(index)}
-            aria-label={`Show image ${index + 1} of ${images.length}`}
+            aria-label={`Show image ${index + 1} of ${safeImages.length}`}
             aria-pressed={index === activeIndex}
           >
             <Image

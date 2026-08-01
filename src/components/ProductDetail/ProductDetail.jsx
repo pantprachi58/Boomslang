@@ -13,9 +13,21 @@ import styles from "./ProductDetail.module.css";
 
 export default function ProductDetail({ product }) {
   const hasIngredients = product.ingredients?.length > 0;
-  const hasWhyChoose = Boolean(product.whyChoose);
-  const hasHowToUse = Boolean(product.howToUse);
-  const hasStorageCare = Boolean(product.storage || product.disclaimer);
+  const primaryTitle = product.primarySectionTitle || product.whyChooseTitle || `Why Choose ${product.name}?`;
+  const primaryDescription = product.primarySectionDescription || product.whyChoose;
+  const primaryImage = product.primarySectionImage;
+  const secondaryTitle = product.secondarySectionTitle || product.howToUseTitle || "How to Use";
+  const secondaryDescription = product.secondarySectionDescription || product.howToUse;
+  const secondaryImage = product.secondarySectionImage || product.howToUseImage || product.image;
+  const suitableForTitle = product.suitableForTitle || product.whoCanUseTitle;
+  const suitableForLead = product.suitableForLead || product.whoCanUseLead;
+  const suitableForItems = product.suitableForItems || product.whoCanUse || [];
+  const storageTitle = product.storageCareTitle || product.storageTitle || "Storage & Care";
+  const storageDescription = product.storageCareDescription || product.storage;
+  const storageImage = product.primarySectionImage || product.storageImage || product.image;
+  const hasWhyChoose = Boolean(primaryDescription);
+  const hasHowToUse = Boolean(secondaryDescription || suitableForItems.length > 0);
+  const hasStorageCare = Boolean(storageDescription || product.disclaimer);
 
   return (
     <main className={styles.page}>
@@ -41,30 +53,31 @@ export default function ProductDetail({ product }) {
 
       {hasWhyChoose && (
         <WhyChoose
-          title={product.whyChooseTitle || `Why Choose ${product.name}?`}
-          description={product.whyChoose}
+          title={primaryTitle}
+          description={primaryDescription}
+          image={primaryImage}
         />
       )}
 
       {hasHowToUse && (
         <HowToUse
-          title={product.howToUseTitle}
-          howToUse={product.howToUse}
-          whoCanUseTitle={product.whoCanUseTitle}
-          whoCanUseLead={product.whoCanUseLead}
-          whoCanUse={product.whoCanUse}
-          image={product.howToUseImage || product.image}
+          title={secondaryTitle}
+          howToUse={secondaryDescription}
+          whoCanUseTitle={suitableForTitle}
+          whoCanUseLead={suitableForLead}
+          whoCanUse={suitableForItems}
+          image={secondaryImage}
           imageAlt={`${product.name} usage`}
         />
       )}
 
       {hasStorageCare && (
         <StorageCare
-          storageTitle={product.storageTitle}
-          storage={product.storage}
+          storageTitle={storageTitle}
+          storage={storageDescription}
           disclaimerTitle={product.disclaimerTitle}
           disclaimer={product.disclaimer}
-          image={product.storageImage || product.image}
+          image={storageImage}
           imageAlt={`${product.name} storage`}
         />
       )}

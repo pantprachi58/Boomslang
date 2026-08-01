@@ -30,7 +30,7 @@ export function getShopProducts() {
     image: product.image,
     originalPrice: product.oldPrice,
     discountedPrice: product.price,
-    percentOff: product.percentOff,
+    percentOff: product.discount ?? product.percentOff,
     availability: product.availability,
     variant: product.weights?.[0]?.name,
   }));

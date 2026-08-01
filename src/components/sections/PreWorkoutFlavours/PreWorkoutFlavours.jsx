@@ -1,13 +1,10 @@
 import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
 import ProductCard from "@/components/ProductCard/ProductCard";
-import { getShopProducts } from "@/data/products";
 import styles from "./PreWorkoutFlavours.module.css";
 
-const flavours = getShopProducts().filter(
-  (product) => product.category === "STRYCHNINE"
-);
+export default function PreWorkoutFlavours({ products = [] }) {
+  if (!products.length) return null;
 
-export default function PreWorkoutFlavours() {
   return (
     <SectionWrapper background="offwhite" className={styles.section}>
       <div className={styles.heading}>
@@ -22,13 +19,13 @@ export default function PreWorkoutFlavours() {
         </p>
       </div>
       <div className={styles.grid}>
-        {flavours.map((flavour) => (
+        {products.map((flavour) => (
           <ProductCard
             key={flavour.slug}
             slug={flavour.slug}
             image={flavour.image}
             name={flavour.name}
-            description={flavour.description}
+            description={flavour.cardDescription || flavour.description}
             originalPrice={flavour.originalPrice}
             discountedPrice={flavour.discountedPrice}
             percentOff={flavour.percentOff}

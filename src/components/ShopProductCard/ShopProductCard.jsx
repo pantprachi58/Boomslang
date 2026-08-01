@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/CartProvider/CartProvider";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./ShopProductCard.module.css";
 
 export default function ShopProductCard({
@@ -10,6 +11,7 @@ export default function ShopProductCard({
   slug,
   name,
   description,
+  cardDescription,
   image,
   originalPrice,
   discountedPrice,
@@ -22,12 +24,13 @@ export default function ShopProductCard({
   const itemId = cartId || slug || href;
   const quantity = getItemQuantity(itemId);
   const productHref = href || `/shop/${slug}`;
+  const displayImage = resolveAssetUrl(image || "/images/logo.png");
   const cartItem = {
     id: itemId,
     slug,
     name,
-    description,
-    image,
+    description: cardDescription || description,
+    image: displayImage,
     price: discountedPrice,
     oldPrice: originalPrice,
     percentOff,
@@ -39,7 +42,7 @@ export default function ShopProductCard({
     <div className={styles.card}>
       <div className={styles.imageContainer}>
         <Image
-          src={image}
+          src={displayImage}
           alt={name}
           width={300}
           height={360}
@@ -52,7 +55,7 @@ export default function ShopProductCard({
 
       <div className={styles.content}>
         <h3 className={styles.name}>{name}</h3>
-        <p className={styles.description}>{description}</p>
+        <p className={styles.description}>{cardDescription || description}</p>
 
         <div className={styles.pricing}>
           <span className={styles.percentOff}>{percentOff}% Off</span>

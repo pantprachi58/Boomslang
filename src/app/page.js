@@ -9,20 +9,26 @@ import BlogSection from "@/components/sections/BlogSection/BlogSection";
 import FaqSection from "@/components/sections/FaqSection/FaqSection";
 import CtaBanner from "@/components/sections/CtaBanner/CtaBanner";
 import Newsletter from "@/components/sections/Newsletter/Newsletter";
+import { fetchFeaturedProduct, fetchPublicProducts } from "@/lib/productsApi";
 
-export default function Home() {
+export default async function Home() {
+  const [featuredProduct, strychnineProducts] = await Promise.all([
+    fetchFeaturedProduct(),
+    fetchPublicProducts({ category: "STRYCHNINE", limit: 4 }),
+  ]);
+
   return (
     <>
-      <Header />
+      <Header featuredProduct={featuredProduct} />
       <main>
-        <Hero />
-        <MeetProduct />
-        <PreWorkoutFlavours />
+        <Hero featuredProduct={featuredProduct} />
+        <MeetProduct featuredProduct={featuredProduct} />
+        <PreWorkoutFlavours products={strychnineProducts.products} />
         <NaturalSupport />
         <JourneySupport />
         <BlogSection />
         <FaqSection />
-        <CtaBanner />
+        <CtaBanner featuredProduct={featuredProduct} />
         <Newsletter />
       </main>
       <Footer />

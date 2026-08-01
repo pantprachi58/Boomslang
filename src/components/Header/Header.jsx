@@ -9,6 +9,7 @@ import navItems from "@/data/navigation";
 import Button from "@/components/Button/Button";
 import { useAuth } from "@/components/AuthProvider/AuthProvider";
 import { useCart } from "@/components/CartProvider/CartProvider";
+import { fetchFeaturedProduct } from "@/lib/productsApi";
 import {
   ChevronDownIcon,
   HamburgerIcon,
@@ -19,8 +20,42 @@ import {
 } from "@/components/icons/Icons";
 import styles from "./Header.module.css";
 
-export default function Header() {
+const FEATURED_PRODUCT_STORAGE_KEY = "boomslang_featured_product";
+
+function getCachedFeaturedProduct() {
+  if (typeof window === "undefined") return null;
+
+  try {
+    const cachedProduct = window.localStorage.getItem(FEATURED_PRODUCT_STORAGE_KEY);
+    return cachedProduct ? JSON.parse(cachedProduct) : null;
+  } catch {
+    return null;
+  }
+}
+
+function setCachedFeaturedProduct(product) {
+  if (typeof window === "undefined") return;
+
+  if (!product?.slug) {
+    window.localStorage.removeItem(FEATURED_PRODUCT_STORAGE_KEY);
+    return;
+  }
+
+  window.localStorage.setItem(
+    FEATURED_PRODUCT_STORAGE_KEY,
+    JSON.stringify({
+      slug: product.slug,
+      name: product.name,
+      href: product.href || `/shop/${product.slug}`,
+    })
+  );
+}
+
+export default function Header({ featuredProduct: initialFeaturedProduct }) {
   const router = useRouter();
+  const [featuredProduct, setFeaturedProduct] = useState(initialFeaturedProduct || null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [mobileSearchQuery, setMobileSearchQuery] = useState("");
   const [openDropdown, setOpenDropdown] = useState(null);
   const [accountOpen, setAccountOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -32,11 +67,44 @@ export default function Header() {
     ? `${user.firstName || user.name || "Account"} account`
     : "Login";
   const accountName = user?.name || [user?.firstName, user?.lastName].filter(Boolean).join(" ");
+  const featuredNavItem = featuredProduct
+    ? {
+        label: featuredProduct.name,
+        href: featuredProduct.href || `/shop/${featuredProduct.slug}`,
+      }
+    : null;
+  const dynamicNavItems = featuredNavItem
+    ? [navItems[0], featuredNavItem, ...navItems.slice(2)]
+    : [navItems[0], ...navItems.slice(2)];
 
   useEffect(() => {
     document.body.classList.toggle("noScroll", mobileOpen);
     return () => document.body.classList.remove("noScroll");
   }, [mobileOpen]);
+
+  useEffect(() => {
+    if (initialFeaturedProduct) {
+      setFeaturedProduct(initialFeaturedProduct);
+      setCachedFeaturedProduct(initialFeaturedProduct);
+      return;
+    }
+
+    const cachedProduct = getCachedFeaturedProduct();
+    if (cachedProduct) {
+      setFeaturedProduct(cachedProduct);
+    }
+
+    let isMounted = true;
+    fetchFeaturedProduct().then((product) => {
+      if (!isMounted) return;
+      setFeaturedProduct(product);
+      setCachedFeaturedProduct(product);
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initialFeaturedProduct]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -77,6 +145,13 @@ export default function Header() {
     setMobileOpen(false);
     router.push("/");
     router.refresh();
+  };
+
+  const submitSearch = (event, value) => {
+    event.preventDefault();
+    const search = value.trim();
+    closeMobileMenu();
+    router.push(search ? `/shop?search=${encodeURIComponent(search)}` : "/shop");
   };
 
   const renderAccountMenu = () => isAuthenticated ? (
@@ -122,7 +197,7 @@ export default function Header() {
 
         <nav className={styles.nav} aria-label="Primary navigation">
           <ul className={styles.navList}>
-            {navItems.map((item) => {
+            {dynamicNavItems.map((item) => {
               const hasChildren = Boolean(item.children?.length);
               const isOpen = openDropdown === item.label;
               return (
@@ -179,13 +254,17 @@ export default function Header() {
           <form
             className={styles.searchBox}
             role="search"
-            onSubmit={(event) => event.preventDefault()}
+            onSubmit={(event) => submitSearch(event, searchQuery)}
           >
-            <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+            <button type="submit" className={styles.searchButton} aria-label="Search products">
+              <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+            </button>
             <input
               type="search"
               name="q"
               placeholder="Search Products"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.target.value)}
               className={styles.searchInput}
               aria-label="Search products"
             />
@@ -249,20 +328,24 @@ export default function Header() {
         <form
           className={styles.mobileSearchBox}
           role="search"
-          onSubmit={(event) => event.preventDefault()}
+          onSubmit={(event) => submitSearch(event, mobileSearchQuery)}
         >
-          <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+          <button type="submit" className={styles.searchButton} aria-label="Search products">
+            <SearchIcon className={styles.searchIcon} aria-hidden="true" />
+          </button>
           <input
             type="search"
             name="q"
             placeholder="Search Products"
+            value={mobileSearchQuery}
+            onChange={(event) => setMobileSearchQuery(event.target.value)}
             className={styles.searchInput}
             aria-label="Search products"
           />
         </form>
 
         <ul className={styles.mobileNavList}>
-          {navItems.map((item) => {
+          {dynamicNavItems.map((item) => {
             const hasChildren = Boolean(item.children?.length);
             const isExpanded = mobileExpanded === item.label;
             return (

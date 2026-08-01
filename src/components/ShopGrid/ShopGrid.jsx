@@ -1,9 +1,10 @@
 import ShopProductCard from "@/components/ShopProductCard/ShopProductCard";
 import styles from "./ShopGrid.module.css";
 
-export default function ShopGrid({ products, currentPage, totalPages, onPageChange }) {
+export default function ShopGrid({ products, currentPage, totalPages, onPageChange, isLoading = false }) {
+  const hasProducts = products.length > 0;
   const renderPagination = () => {
-    if (totalPages <= 1) return null;
+    if (totalPages <= 1 || isLoading) return null;
 
     const pages = [];
     for (let i = 1; i <= totalPages; i++) {
@@ -47,7 +48,20 @@ export default function ShopGrid({ products, currentPage, totalPages, onPageChan
     );
   };
 
-  if (products.length === 0) {
+  if (isLoading && !hasProducts) {
+    return (
+      <div className={styles.loadingState} aria-live="polite">
+        <div className={styles.loadingDots} aria-hidden="true">
+          <span />
+          <span />
+          <span />
+        </div>
+        <p>Loading products</p>
+      </div>
+    );
+  }
+
+  if (!hasProducts) {
     return (
       <div className={styles.emptyState}>
         <p className={styles.emptyMessage}>No products found matching your filters.</p>
@@ -57,7 +71,17 @@ export default function ShopGrid({ products, currentPage, totalPages, onPageChan
   }
 
   return (
-    <div className={styles.shopGrid}>
+    <div className={`${styles.shopGrid} ${isLoading ? styles.refreshing : ""}`}>
+      {isLoading && (
+        <div className={styles.refreshLoader} aria-live="polite">
+          <div className={styles.loadingDots} aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+          <p>Updating products</p>
+        </div>
+      )}
       <div className={styles.productGrid}>
         {products.map((product) => (
           <ShopProductCard key={product.id} {...product} />

@@ -1,7 +1,11 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/Container/Container";
 import { MailIcon, PinIcon } from "@/components/icons/Icons";
+import { fetchFeaturedProduct, fetchPublicProducts } from "@/lib/productsApi";
 import styles from "./Footer.module.css";
 
 const quickLinks = [
@@ -12,15 +16,8 @@ const quickLinks = [
   { label: "Contact", href: "/contact" },
 ];
 
-const productLinks = [
-  { label: "GOKU GAINZ", href: "/shop/goku-gainz" },
-  { label: "STRYCNNINE Mango", href: "/shop/strychnine-mango" },
-  { label: "STRYCNNINE Mix Fruit", href: "/shop/strychnine-mix-fruit" },
-  { label: "STRYCNNINE Pineapple", href: "/shop/strychnine-pineapple" },
-  {
-    label: "STRYCNNINE Electric Blood Orange",
-    href: "/shop/strychnine-electric-blood-orange",
-  },
+const defaultProductLinks = [
+  { label: "Products", href: "/shop" },
 ];
 
 const supportLinks = [
@@ -39,6 +36,40 @@ const socials = [
 ];
 
 export default function Footer() {
+  const [productLinks, setProductLinks] = useState(defaultProductLinks);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadProductLinks() {
+      const [featuredProduct, latestProducts] = await Promise.all([
+        fetchFeaturedProduct(),
+        fetchPublicProducts({ limit: 5 }),
+      ]);
+      const featuredSlug = featuredProduct?.slug;
+      const links = [
+        featuredProduct,
+        ...latestProducts.products.filter((product) => product.slug !== featuredSlug),
+      ]
+        .filter(Boolean)
+        .slice(0, 5)
+        .map((product) => ({
+          label: product.name,
+          href: product.href,
+        }));
+
+      if (isMounted && links.length) {
+        setProductLinks(links);
+      }
+    }
+
+    loadProductLinks();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <footer className={styles.footer}>
       <Container className={styles.inner}>

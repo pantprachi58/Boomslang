@@ -9,6 +9,10 @@
   align-items: center;
 }
 
+.singleColumn {
+  grid-template-columns: 1fr;
+}
+
 .imageWrap {
   border-radius: var(--radius-lg);
   overflow: hidden;

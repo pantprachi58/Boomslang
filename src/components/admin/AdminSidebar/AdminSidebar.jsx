@@ -29,6 +29,7 @@ export default function AdminSidebar() {
   const menuItems = [
     { name: "Dashboard", path: "/admin", Icon: DashboardIcon },
     { name: "Products", path: "/admin/products", Icon: PackageIcon },
+    { name: "Ingredients", path: "/admin/ingredients", Icon: DocumentIcon },
     { name: "Orders", path: "/admin/orders", Icon: ShoppingCartIcon },
     { name: "Customers", path: "/admin/customers", Icon: UsersIcon },
     { name: "Blog Posts", path: "/admin/blog", Icon: DocumentIcon },

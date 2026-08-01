@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Container from "@/components/Container/Container";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./StorageCare.module.css";
 
 export default function StorageCare({
@@ -13,17 +14,19 @@ export default function StorageCare({
   return (
     <section className={styles.section}>
       <Container>
-        <div className={styles.grid}>
-          <div className={styles.imageWrap}>
-            <Image
-              src={image}
-              alt={imageAlt}
-              width={500}
-              height={500}
-              className={styles.image}
-              sizes="(max-width: 768px) 100vw, 45vw"
-            />
-          </div>
+        <div className={`${styles.grid} ${!image ? styles.singleColumn : ""}`}>
+          {image && (
+            <div className={styles.imageWrap}>
+              <Image
+                src={resolveAssetUrl(image)}
+                alt={imageAlt}
+                width={500}
+                height={500}
+                className={styles.image}
+                sizes="(max-width: 768px) 100vw, 45vw"
+              />
+            </div>
+          )}
 
           <div className={styles.content}>
             {storage && (

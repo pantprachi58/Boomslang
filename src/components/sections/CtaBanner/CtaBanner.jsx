@@ -3,7 +3,11 @@ import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
 import Button from "@/components/Button/Button";
 import styles from "./CtaBanner.module.css";
 
-export default function CtaBanner() {
+export default function CtaBanner({ featuredProduct }) {
+  const hasFeaturedProduct = Boolean(featuredProduct?.slug);
+  const productName = featuredProduct?.name;
+  const productHref = featuredProduct?.href || `/shop/${featuredProduct?.slug}`;
+
   return (
     <SectionWrapper background="light" className={styles.section}>
       <div className={styles.banner}>
@@ -24,7 +28,7 @@ export default function CtaBanner() {
             <p className={styles.description}>
               Give your body the nutritional support it deserves with GOKU GAINZ, one of Boomslang Nutrition's trusted Ayurvedic supplements for weight gain. Support healthy weight gain, improve appetite, and enhance nutrient absorption as part of your everyday wellness routine.
             </p>
-            <Button href="/shop/goku-gainz">Shop GOKU GAINZ</Button>
+            {hasFeaturedProduct && <Button href={productHref}>Shop {productName}</Button>}
           </div>
         </div>
       </div>

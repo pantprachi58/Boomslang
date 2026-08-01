@@ -1,42 +1,46 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Container from "@/components/Container/Container";
 import ShopFilters from "@/components/ShopFilters/ShopFilters";
 import ShopGrid from "@/components/ShopGrid/ShopGrid";
 import { CloseIcon } from "@/components/icons/Icons";
-import { getShopProducts } from "@/data/products";
+import { fetchPublicProducts } from "@/lib/productsApi";
 import styles from "./ShopContent.module.css";
 
-const allProducts = getShopProducts();
-const priceMax = Math.ceil(
-  Math.max(...allProducts.map((product) => product.discountedPrice)) / 500
-) * 500;
 const defaultFilters = {
   search: "",
   categories: [],
-  priceRange: [0, priceMax],
+  priceRange: [0, 5000],
   discount: [0, 100],
 };
 
-export default function ShopContent() {
-  const [filters, setFilters] = useState(defaultFilters);
+export default function ShopContent({ initialSearch = "", initialProducts }) {
+  const initialCategoryTotal =
+    initialProducts?.facets?.categories?.reduce((sum, category) => sum + category.count, 0) || 0;
+  const initialMaxPrice = Math.max(
+    Math.ceil((initialProducts?.facets?.price?.max || 0) / 500) * 500,
+    500
+  );
+  const [filters, setFilters] = useState({
+    ...defaultFilters,
+    search: initialSearch,
+    priceRange: [0, initialMaxPrice],
+  });
+  const [products, setProducts] = useState(initialProducts?.products || []);
+  const [productsCount, setProductsCount] = useState(initialProducts?.pagination?.total || 0);
+  const [categories, setCategories] = useState([
+    { name: "All Products", count: initialCategoryTotal },
+    ...(initialProducts?.facets?.categories || []),
+  ]);
+  const [priceBounds, setPriceBounds] = useState({ min: 0, max: initialMaxPrice });
+  const [isLoading, setIsLoading] = useState(!initialProducts);
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(initialProducts?.pagination?.pages || 1);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const productsPerPage = 6;
-
-  const categories = useMemo(() => {
-    const counts = allProducts.reduce((result, product) => {
-      result[product.category] = (result[product.category] || 0) + 1;
-      return result;
-    }, {});
-
-    return [
-      { name: "All Products", count: allProducts.length },
-      ...Object.entries(counts).map(([name, count]) => ({ name, count })),
-    ];
-  }, []);
+  const shouldSkipInitialFetch = useRef(Boolean(initialProducts));
 
   useEffect(() => {
     document.body.style.overflow = filtersOpen ? "hidden" : "";
@@ -46,47 +50,55 @@ export default function ShopContent() {
     };
   }, [filtersOpen]);
 
-  const filteredProducts = allProducts.filter((product) => {
-    const search = filters.search.trim().toLowerCase();
+  useEffect(() => {
+    setFilters((current) =>
+      current.search === initialSearch ? current : { ...current, search: initialSearch }
+    );
+    setCurrentPage(1);
+  }, [initialSearch]);
 
-    if (
-      search &&
-      ![product.name, product.description, product.category]
-        .join(" ")
-        .toLowerCase()
-        .includes(search)
-    ) {
-      return false;
+  useEffect(() => {
+    if (shouldSkipInitialFetch.current) {
+      shouldSkipInitialFetch.current = false;
+      return;
     }
 
-    if (
-      filters.categories.length > 0 &&
-      !filters.categories.includes(product.category)
-    ) {
-      return false;
-    }
+    const timeout = window.setTimeout(async () => {
+      setIsLoading(true);
+      const maxPrice = filters.priceRange[1] || priceBounds.max;
+      const result = await fetchPublicProducts({
+        page: currentPage,
+        limit: productsPerPage,
+        search: filters.search,
+        category: filters.categories.join(","),
+        minPrice: filters.priceRange[0],
+        maxPrice,
+        minDiscount: filters.discount[0],
+        maxDiscount: filters.discount[1],
+      });
 
-    if (
-      product.discountedPrice < filters.priceRange[0] ||
-      product.discountedPrice > filters.priceRange[1]
-    ) {
-      return false;
-    }
+      const categoryTotal = result.facets.categories.reduce((sum, category) => sum + category.count, 0);
+      const nextMaxPrice = Math.max(Math.ceil((result.facets.price.max || 0) / 500) * 500, 500);
 
-    if (product.percentOff < filters.discount[0] || product.percentOff > filters.discount[1]) {
-      return false;
-    }
+      setProducts(result.products);
+      setProductsCount(result.pagination.total);
+      setTotalPages(result.pagination.pages);
+      setCategories([
+        { name: "All Products", count: categoryTotal },
+        ...result.facets.categories,
+      ]);
+      setPriceBounds({ min: 0, max: nextMaxPrice });
 
-    return true;
-  });
+      setIsLoading(false);
+    }, 250);
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-  const startIndex = (currentPage - 1) * productsPerPage;
-  const currentProducts = filteredProducts.slice(startIndex, startIndex + productsPerPage);
+    return () => window.clearTimeout(timeout);
+  }, [currentPage, filters]);
+
   const activeFiltersCount =
     filters.categories.length +
     (filters.search ? 1 : 0) +
-    (filters.priceRange[1] !== priceMax ? 1 : 0) +
+    (filters.priceRange[1] !== priceBounds.max ? 1 : 0) +
     (filters.discount[0] !== 0 ? 1 : 0);
 
   const handleFilterChange = (newFilters) => {
@@ -134,7 +146,9 @@ export default function ShopContent() {
             )}
           </button>
           <span className={styles.resultCount}>
-            {filteredProducts.length} {filteredProducts.length === 1 ? "product" : "products"}
+            {isLoading && products.length === 0
+              ? "Loading products..."
+              : `${productsCount} ${productsCount === 1 ? "product" : "products"}`}
           </span>
         </div>
 
@@ -168,16 +182,17 @@ export default function ShopContent() {
               onFilterChange={handleFilterChange}
               onApply={() => setFiltersOpen(false)}
               categories={categories}
-              priceBounds={{ min: 0, max: priceMax }}
-              productsCount={filteredProducts.length}
+              priceBounds={priceBounds}
+              productsCount={productsCount}
             />
           </aside>
           <div className={styles.mainContent}>
-            <ShopGrid 
-              products={currentProducts}
+            <ShopGrid
+              products={products}
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              isLoading={isLoading}
             />
           </div>
         </div>

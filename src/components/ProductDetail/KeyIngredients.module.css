@@ -47,6 +47,18 @@
   object-fit: cover;
 }
 
+.placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  color: var(--color-white);
+  font-family: "Anybody", sans-serif;
+  font-size: 48px;
+  font-weight: var(--fw-bold);
+  background: rgba(124, 183, 41, 0.28);
+}
+
 .name {
   font-family: "Anybody", sans-serif;
   font-size: var(--font-size-lg);

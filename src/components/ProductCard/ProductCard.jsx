@@ -3,27 +3,30 @@
 import Image from "next/image";
 import Button from "@/components/Button/Button";
 import { useCart } from "@/components/CartProvider/CartProvider";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./ProductCard.module.css";
 
 export default function ProductCard({ 
   slug,
   image, 
   name, 
-  description, 
+  description,
+  cardDescription,
   originalPrice, 
   discountedPrice, 
   percentOff, 
   href = "/shop" 
 }) {
   const { addItem, decreaseItem, getItemQuantity } = useCart();
+  const displayImage = resolveAssetUrl(image || "/images/logo.png");
   const itemId = slug || href;
   const quantity = getItemQuantity(itemId);
   const cartItem = {
     id: itemId,
     slug,
     name,
-    description,
-    image,
+    description: cardDescription || description,
+    image: displayImage,
     price: discountedPrice,
     oldPrice: originalPrice,
     percentOff,
@@ -65,10 +68,10 @@ export default function ProductCard({
         </button>
       )}
       <div className={styles.imageWrap}>
-        <Image src={image} alt={name} width={400} height={480} className={styles.image} />
+        <Image src={displayImage} alt={name} width={400} height={480} className={styles.image} />
       </div>
       <h3 className={styles.name}>{name}</h3>
-      <p className={styles.description}>{description}</p>
+      <p className={styles.description}>{cardDescription || description}</p>
       
       {(originalPrice && discountedPrice && percentOff) && (
         <div className={styles.pricing}>

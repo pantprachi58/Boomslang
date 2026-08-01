@@ -1,6 +1,7 @@
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ShopContent from "@/components/sections/ShopContent/ShopContent";
+import { fetchFeaturedProduct, fetchPublicProducts } from "@/lib/productsApi";
 import styles from "./Shop.module.css";
 
 export const metadata = {
@@ -8,12 +9,18 @@ export const metadata = {
   description: "Browse our collection of premium ayurvedic supplements and pre-workout formulas.",
 };
 
-export default function ShopPage() {
+export default async function ShopPage({ searchParams }) {
+  const initialSearch = searchParams?.search || "";
+  const [featuredProduct, initialProducts] = await Promise.all([
+    fetchFeaturedProduct(),
+    fetchPublicProducts({ page: 1, limit: 6, search: initialSearch }),
+  ]);
+
   return (
     <>
-      <Header />
+      <Header featuredProduct={featuredProduct} />
       <main className={styles.shopPage}>
-        <ShopContent />
+        <ShopContent initialSearch={initialSearch} initialProducts={initialProducts} />
       </main>
       <Footer />
     </>

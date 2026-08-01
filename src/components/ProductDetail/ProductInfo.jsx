@@ -21,13 +21,16 @@ export default function ProductInfo({ product }) {
   const { addItem, decreaseItem, getItemQuantity } = useCart();
   const router = useRouter();
 
-  const shortDescription =
-    product.description.length > 120
-      ? `${product.description.slice(0, 120)}... `
-      : product.description;
+  const description = product.description || "";
+  const shouldTruncateDescription = description.length > 120;
+  const shortDescription = shouldTruncateDescription
+    ? `${description.slice(0, 120)}... `
+    : description;
   const currentWeight = product.weights?.find((weight) => weight.id === selectedWeight);
+  const hasMultipleWeights = product.weights?.length > 1;
   const displayPrice = currentWeight?.price || product.price;
   const displayOldPrice = currentWeight?.oldPrice || product.oldPrice;
+  const displayDiscount = currentWeight?.discount ?? product.discount ?? product.percentOff;
   const productHref = `/shop/${product.slug}`;
   const itemId = currentWeight ? `${product.slug}:${currentWeight.id}` : product.slug;
   const quantity = getItemQuantity(itemId);
@@ -39,7 +42,7 @@ export default function ProductInfo({ product }) {
     image: product.image,
     price: displayPrice,
     oldPrice: displayOldPrice,
-    percentOff: product.percentOff,
+    percentOff: displayDiscount,
     href: productHref,
     variant: currentWeight?.name,
   };
@@ -50,17 +53,21 @@ export default function ProductInfo({ product }) {
       <p className={styles.subtitle}>{product.subtitle}</p>
       <p className={styles.tagline}>{product.tagline}</p>
 
-      <p className={styles.description}>
-        {expanded ? product.description : shortDescription}
-        <button
-          type="button"
-          className={styles.moreBtn}
-          onClick={() => setExpanded((prev) => !prev)}
-          aria-expanded={expanded}
-        >
-          {expanded ? "less" : "more"}
-        </button>
-      </p>
+      {description && (
+        <p className={styles.description}>
+          {expanded ? description : shortDescription}
+          {shouldTruncateDescription && (
+            <button
+              type="button"
+              className={styles.moreBtn}
+              onClick={() => setExpanded((prev) => !prev)}
+              aria-expanded={expanded}
+            >
+              {expanded ? "less" : "more"}
+            </button>
+          )}
+        </p>
+      )}
 
       {product.flavours?.length > 0 && (
         <div className={styles.optionGroup}>
@@ -95,7 +102,7 @@ export default function ProductInfo({ product }) {
         </div>
       )}
 
-      {product.weights?.length > 0 && (
+      {hasMultipleWeights && (
         <div className={styles.optionGroup}>
           <span className={styles.optionLabel}>Size</span>
           <div className={styles.optionButtons}>
@@ -117,7 +124,7 @@ export default function ProductInfo({ product }) {
       )}
 
       <div className={styles.priceRow}>
-        <span className={styles.discount}>{product.discountLabel}</span>
+        {displayDiscount > 0 && <span className={styles.discount}>{displayDiscount}% Off</span>}
         <span className={styles.oldPrice}>₹{displayOldPrice}</span>
         <span className={styles.price}>₹ {displayPrice}</span>
       </div>

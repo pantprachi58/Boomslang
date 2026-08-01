@@ -10,7 +10,11 @@ const features = [
   { label: "Weight Gain", icon: BarbellIcon },
 ];
 
-export default function Hero() {
+export default function Hero({ featuredProduct }) {
+  const hasFeaturedProduct = Boolean(featuredProduct?.slug);
+  const productHref = featuredProduct?.href || `/shop/${featuredProduct?.slug}`;
+  const productName = featuredProduct?.name;
+
   return (
     <section className={styles.hero}>
       <div className={styles.bgWrap}>
@@ -46,9 +50,11 @@ export default function Hero() {
                 </span>
               ))}
             </div>
-            <Button href="/shop/goku-gainz" size="small">
-              Shop GOKU GAINZ
-            </Button>
+            {hasFeaturedProduct && (
+              <Button href={productHref} size="small">
+                Shop {productName}
+              </Button>
+            )}
           </div>
         </div>
       </Container>

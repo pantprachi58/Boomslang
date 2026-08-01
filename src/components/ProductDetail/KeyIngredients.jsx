@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Container from "@/components/Container/Container";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./KeyIngredients.module.css";
 
 export default function KeyIngredients({ ingredients = [] }) {
@@ -11,14 +12,18 @@ export default function KeyIngredients({ ingredients = [] }) {
           {ingredients.map((item) => (
             <div key={item.name} className={styles.card}>
               <div className={styles.imageWrap}>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={180}
-                  height={180}
-                  className={styles.image}
-                  sizes="(max-width: 576px) 45vw, 180px"
-                />
+                {item.image ? (
+                  <Image
+                    src={resolveAssetUrl(item.image)}
+                    alt={item.name}
+                    width={180}
+                    height={180}
+                    className={styles.image}
+                    sizes="(max-width: 576px) 45vw, 180px"
+                  />
+                ) : (
+                  <span className={styles.placeholder}>{item.name?.charAt(0) || "I"}</span>
+                )}
               </div>
               <h3 className={styles.name}>{item.name}</h3>
             </div>
