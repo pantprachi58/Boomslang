@@ -214,6 +214,18 @@
   color: var(--color-black);
 }
 
+.stockStatus {
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--color-primary-dark);
+}
+
+.stockStatusDanger {
+  color: #c62828;
+}
+
 .quantityLabel {
   font-family: var(--font-paragraph);
   font-size: var(--font-size-md);
@@ -259,6 +271,16 @@
   color: var(--color-primary-dark);
 }
 
+.stepBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.stepBtn:disabled:hover {
+  background: none;
+  color: var(--color-gray-700);
+}
+
 .quantityValue {
   font-family: var(--font-paragraph);
   font-size: var(--font-size-md);
@@ -287,6 +309,17 @@
   color: #000;
 }
 
+.addToCart:disabled,
+.buyNow:disabled {
+  opacity: 0.52;
+  cursor: not-allowed;
+}
+
+.addToCart:disabled:hover {
+  background: #E7FFDD;
+  color: #000;
+}
+
 .buyNow {
   width: 100%;
   height: 52px;
@@ -304,6 +337,10 @@
 
 .buyNow:hover {
   background: var(--color-primary-dark);
+}
+
+.buyNow:disabled:hover {
+  background: #5BA700;
 }
 
 .featureStrip {

@@ -32,8 +32,38 @@
   background-color: #e6d255;
 }
 
+.addButton:disabled,
+.quantityBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.addButton:disabled:hover {
+  background-color: #F4E066;
+}
+
+.quantityBtn:disabled:hover {
+  background: var(--color-primary);
+}
+
 .addButton svg {
   color: #fff;
+}
+
+.stockBadge {
+  position: absolute;
+  top: 24px;
+  right: 18px;
+  z-index: 10;
+  border-radius: 12px;
+  background: #151515;
+  color: var(--color-white);
+  font-family: var(--font-main);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  padding: 10px 12px;
+  text-transform: uppercase;
 }
 
 .quantityControl {

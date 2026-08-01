@@ -9,8 +9,19 @@ export function getProductHref(product) {
   return `/shop/${product.slug}`;
 }
 
+export function getCartItemId(slug, variantId) {
+  return variantId ? `${slug}:${variantId}` : slug;
+}
+
+export function getVariantStock(product, variantId) {
+  const variant = product.weights?.find((weight) => weight.id === variantId) || product.weights?.[0];
+  return Number(variant?.quantity ?? product.quantity ?? 0);
+}
+
 export function normalizeProduct(product) {
   const firstWeight = product.weights?.[0];
+  const variantId = firstWeight?.id || "";
+  const stock = Number(firstWeight?.quantity ?? product.quantity ?? 0);
   const image = resolveAssetUrl(product.image || product.images?.[0] || FALLBACK_IMAGE);
   const images = (product.images?.length ? product.images : [product.image])
     .filter(Boolean)
@@ -19,7 +30,8 @@ export function normalizeProduct(product) {
   return {
     ...product,
     id: product._id || product.id || product.slug,
-    cartId: firstWeight?.id ? `${product.slug}:${firstWeight.id}` : product.slug,
+    variantId,
+    cartId: getCartItemId(product.slug, variantId),
     href: getProductHref(product),
     image,
     images: images.length ? images : [FALLBACK_IMAGE],
@@ -29,6 +41,8 @@ export function normalizeProduct(product) {
     discountedPrice: firstWeight?.price ?? product.price,
     percentOff: firstWeight?.discount ?? product.discount ?? product.percentOff ?? 0,
     variant: firstWeight?.name,
+    stock,
+    isOutOfStock: stock <= 0,
   };
 }
 

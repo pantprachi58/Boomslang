@@ -10,8 +10,11 @@ import {
 } from "react";
 
 const CART_STORAGE_KEY = "boomslang-cart";
-const GST_COMPONENT_RATE = 0.025;
 const CartContext = createContext(null);
+
+function getCartItemId(slug, variantId) {
+  return variantId ? `${slug}:${variantId}` : slug;
+}
 
 function readStoredCart() {
   if (typeof window === "undefined") {
@@ -21,7 +24,7 @@ function readStoredCart() {
   try {
     const stored = window.localStorage.getItem(CART_STORAGE_KEY);
     const parsed = stored ? JSON.parse(stored) : [];
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) ? parsed.map(normalizeCartItem).filter(Boolean) : [];
   } catch {
     return [];
   }
@@ -30,6 +33,33 @@ function readStoredCart() {
 function normalizeQuantity(quantity) {
   const value = Number(quantity);
   return Number.isFinite(value) && value > 0 ? Math.floor(value) : 1;
+}
+
+function normalizeStock(stock) {
+  const value = Number(stock);
+  return Number.isFinite(value) ? Math.max(Math.floor(value), 0) : null;
+}
+
+function normalizeCartItem(item) {
+  if (!item || typeof item !== "object") {
+    return null;
+  }
+
+  const rawId = String(item.id || "");
+  const idParts = rawId.split(":");
+  const slug = String(item.slug || idParts[0] || "").trim();
+  const variantId = String(item.variantId || (idParts.length > 1 ? idParts.slice(1).join(":") : "")).trim();
+
+  if (!slug) {
+    return null;
+  }
+
+  return {
+    id: getCartItemId(slug, variantId),
+    slug,
+    variantId,
+    quantity: normalizeQuantity(item.quantity),
+  };
 }
 
 export function CartProvider({ children }) {
@@ -61,15 +91,29 @@ export function CartProvider({ children }) {
   }, []);
 
   const addItem = useCallback((item, quantity = 1) => {
+    const normalizedItem = normalizeCartItem(item);
+    if (!normalizedItem) return;
+
     const amount = normalizeQuantity(quantity);
+    const stock = normalizeStock(item.stock);
+
+    if (stock !== null && stock <= 0) {
+      return;
+    }
 
     setItems((currentItems) => {
-      const existing = currentItems.find((cartItem) => cartItem.id === item.id);
+      const existing = currentItems.find((cartItem) => cartItem.id === normalizedItem.id);
 
       if (existing) {
         return currentItems.map((cartItem) =>
-          cartItem.id === item.id
-            ? { ...cartItem, quantity: cartItem.quantity + amount }
+          cartItem.id === normalizedItem.id
+            ? {
+                ...cartItem,
+                quantity:
+                  stock === null
+                    ? cartItem.quantity + amount
+                    : Math.min(cartItem.quantity + amount, stock),
+              }
             : cartItem
         );
       }
@@ -77,8 +121,8 @@ export function CartProvider({ children }) {
       return [
         ...currentItems,
         {
-          ...item,
-          quantity: amount,
+          ...normalizedItem,
+          quantity: stock === null ? amount : Math.min(amount, stock),
         },
       ];
     });
@@ -102,24 +146,31 @@ export function CartProvider({ children }) {
     setItems([]);
   }, []);
 
+  const updateItemQuantity = useCallback((id, quantity) => {
+    const nextQuantity = Number(quantity);
+
+    setItems((currentItems) =>
+      currentItems
+        .map((item) =>
+          item.id === id
+            ? { ...item, quantity: Number.isFinite(nextQuantity) ? Math.floor(nextQuantity) : item.quantity }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  }, []);
+
   const getItemQuantity = useCallback(
     (id) => items.find((item) => item.id === id)?.quantity || 0,
     [items]
   );
 
   const totals = useMemo(() => {
-    const subtotal = items.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
-    const cgst = Math.round(subtotal * GST_COMPONENT_RATE);
-    const sgst = Math.round(subtotal * GST_COMPONENT_RATE);
-
     return {
-      subtotal,
-      cgst,
-      sgst,
-      total: subtotal + cgst + sgst,
+      subtotal: 0,
+      cgst: 0,
+      sgst: 0,
+      total: 0,
       totalQuantity: items.reduce((sum, item) => sum + item.quantity, 0),
     };
   }, [items]);
@@ -132,9 +183,10 @@ export function CartProvider({ children }) {
       decreaseItem,
       removeItem,
       clearCart,
+      updateItemQuantity,
       getItemQuantity,
     }),
-    [items, totals, addItem, decreaseItem, removeItem, clearCart, getItemQuantity]
+    [items, totals, addItem, decreaseItem, removeItem, clearCart, updateItemQuantity, getItemQuantity]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

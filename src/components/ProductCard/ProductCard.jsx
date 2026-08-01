@@ -4,6 +4,7 @@ import Image from "next/image";
 import Button from "@/components/Button/Button";
 import { useCart } from "@/components/CartProvider/CartProvider";
 import { resolveAssetUrl } from "@/lib/assetUrl";
+import { getCartItemId } from "@/lib/productsApi";
 import styles from "./ProductCard.module.css";
 
 export default function ProductCard({ 
@@ -15,27 +16,30 @@ export default function ProductCard({
   originalPrice, 
   discountedPrice, 
   percentOff, 
+  variantId = "",
+  stock = 0,
+  isOutOfStock = false,
   href = "/shop" 
 }) {
   const { addItem, decreaseItem, getItemQuantity } = useCart();
   const displayImage = resolveAssetUrl(image || "/images/logo.png");
-  const itemId = slug || href;
+  const itemId = getCartItemId(slug || href, variantId);
   const quantity = getItemQuantity(itemId);
+  const availableStock = Number(stock || 0);
+  const outOfStock = isOutOfStock || availableStock <= 0;
+  const canAddMore = !outOfStock && quantity < availableStock;
   const cartItem = {
     id: itemId,
     slug,
-    name,
-    description: cardDescription || description,
-    image: displayImage,
-    price: discountedPrice,
-    oldPrice: originalPrice,
-    percentOff,
-    href,
+    variantId,
+    stock: availableStock,
   };
 
   return (
     <div className={styles.card}>
-      {quantity > 0 ? (
+      {outOfStock ? (
+        <span className={styles.stockBadge}>Out of Stock</span>
+      ) : quantity > 0 ? (
         <div className={styles.quantityControl} aria-label={`${name} quantity`}>
           <button
             type="button"
@@ -51,6 +55,7 @@ export default function ProductCard({
             className={styles.quantityBtn}
             onClick={() => addItem(cartItem)}
             aria-label={`Add one ${name}`}
+            disabled={!canAddMore}
           >
             +
           </button>
@@ -61,6 +66,7 @@ export default function ProductCard({
           className={styles.addButton}
           aria-label={`Add ${name} to cart`}
           onClick={() => addItem(cartItem)}
+          disabled={!canAddMore}
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

@@ -7,6 +7,10 @@ import Container from "@/components/Container/Container";
 import Button from "@/components/Button/Button";
 import { useCart } from "@/components/CartProvider/CartProvider";
 import { CartIcon } from "@/components/icons/Icons";
+import { useAuth } from "@/components/AuthProvider/AuthProvider";
+import { calculateCartTotals, hydrateCartItems } from "@/lib/cartHydration";
+import { createOrder } from "@/lib/ordersApi";
+import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./CheckoutContent.module.css";
 
 const states = [
@@ -34,8 +38,16 @@ const states = [
   "Uttarakhand",
   "West Bengal",
 ];
-const GST_COMPONENT_RATE = 0.025;
 const COD_PREPAID_AMOUNT = 99;
+const emptyAddressForm = {
+  pincode: "",
+  addressLine1: "",
+  addressLine2: "",
+  landmark: "",
+  city: "",
+  state: "",
+  isDefault: false,
+};
 
 function RequiredMark() {
   return <span className={styles.required}>*</span>;
@@ -46,15 +58,22 @@ function formatPrice(amount) {
 }
 
 export default function CheckoutContent() {
-  const { items, totals, clearCart } = useCart();
+  const { items, clearCart } = useCart();
+  const { user, isAuthenticated, isLoading: isAuthLoading, addAddress } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAddingAddress, setIsAddingAddress] = useState(false);
   const [status, setStatus] = useState({ type: "", message: "" });
   const [submittedOrder, setSubmittedOrder] = useState(null);
   const [directItem, setDirectItem] = useState(null);
   const [checkoutMode, setCheckoutMode] = useState("cart");
   const [paymentMethod, setPaymentMethod] = useState("prepaid");
   const [isReady, setIsReady] = useState(false);
+  const [hydratedCartItems, setHydratedCartItems] = useState([]);
+  const [isHydratingCart, setIsHydratingCart] = useState(false);
+  const [selectedAddressId, setSelectedAddressId] = useState("");
+  const [addressMode, setAddressMode] = useState("saved");
+  const [addressForm, setAddressForm] = useState(emptyAddressForm);
 
   useEffect(() => {
     const mode = window.sessionStorage.getItem("boomslang-checkout-mode");
@@ -77,24 +96,122 @@ export default function CheckoutContent() {
     setIsReady(true);
   }, []);
 
-  const checkoutItems = checkoutMode === "direct" && directItem ? [directItem] : items;
+  useEffect(() => {
+    let isCurrent = true;
+
+    async function loadCartItems() {
+      if (!isReady || checkoutMode !== "cart") return;
+
+      if (items.length === 0) {
+        setHydratedCartItems([]);
+        setIsHydratingCart(false);
+        return;
+      }
+
+      setIsHydratingCart(true);
+      const nextItems = await hydrateCartItems(items);
+      if (!isCurrent) return;
+
+      setHydratedCartItems(nextItems);
+      setIsHydratingCart(false);
+    }
+
+    loadCartItems();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [checkoutMode, isReady, items]);
+
+  useEffect(() => {
+    const addresses = user?.addresses || [];
+
+    if (!addresses.length) {
+      setSelectedAddressId("");
+      setAddressMode("new");
+      return;
+    }
+
+    setAddressMode("saved");
+    setSelectedAddressId((current) => {
+      if (addresses.some((address) => address._id === current || address.id === current)) {
+        return current;
+      }
+
+      const defaultAddress = addresses.find((address) => address.isDefault) || addresses[0];
+      return defaultAddress._id || defaultAddress.id || "";
+    });
+  }, [user]);
+
+  const checkoutItems = checkoutMode === "direct" && directItem ? [directItem] : hydratedCartItems;
   const checkoutTotals = useMemo(() => {
     if (checkoutMode !== "direct" || !directItem) {
-      return totals;
+      return calculateCartTotals(hydratedCartItems);
     }
 
     const subtotal = directItem.price * directItem.quantity;
-    const cgst = Math.round(subtotal * GST_COMPONENT_RATE);
-    const sgst = Math.round(subtotal * GST_COMPONENT_RATE);
+    const directTotals = calculateCartTotals([
+      {
+        ...directItem,
+        purchasableQuantity: directItem.quantity,
+      },
+    ]);
 
     return {
+      ...directTotals,
       subtotal,
-      cgst,
-      sgst,
-      total: subtotal + cgst + sgst,
       totalQuantity: directItem.quantity,
     };
-  }, [checkoutMode, directItem, totals]);
+  }, [checkoutMode, directItem, hydratedCartItems]);
+
+  const savedAddresses = user?.addresses || [];
+  const selectedAddress =
+    savedAddresses.find((address) => address._id === selectedAddressId || address.id === selectedAddressId) ||
+    null;
+
+  const handleAddressFieldChange = (field, value) => {
+    setAddressForm((current) => ({ ...current, [field]: value }));
+  };
+
+  const handleAddAddress = async () => {
+    setStatus({ type: "", message: "" });
+
+    if (
+      !addressForm.pincode ||
+      !addressForm.addressLine1 ||
+      !addressForm.addressLine2 ||
+      !addressForm.city ||
+      !addressForm.state
+    ) {
+      setStatus({
+        type: "error",
+        message: "Please fill in all required address fields.",
+      });
+      return;
+    }
+
+    setIsAddingAddress(true);
+
+    try {
+      const response = await addAddress({
+        ...addressForm,
+        isDefault: addressForm.isDefault || savedAddresses.length === 0,
+      });
+      const nextAddresses = response.data || response.user?.addresses || [];
+      const nextAddress = nextAddresses[nextAddresses.length - 1];
+
+      setAddressForm(emptyAddressForm);
+      setAddressMode("saved");
+      setSelectedAddressId(nextAddress?._id || nextAddress?.id || "");
+    } catch (error) {
+      setStatus({
+        type: "error",
+        message: error.message,
+      });
+    } finally {
+      setIsAddingAddress(false);
+    }
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -108,65 +225,52 @@ export default function CheckoutContent() {
     setIsSubmitting(true);
     setStatus({ type: "", message: "" });
 
+    if (!selectedAddress) {
+      setStatus({
+        type: "error",
+        message: "Please select or add a delivery address.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
+    if (
+      isHydratingCart ||
+      checkoutItems.some((item) => item.isOutOfStock || item.isUnavailable || item.purchasableQuantity <= 0)
+    ) {
+      setStatus({
+        type: "error",
+        message: "Please remove out of stock products before placing your order.",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     const formData = new FormData(form);
     const selectedPaymentMethod = String(formData.get("paymentMethod") || "prepaid");
-    const paidAmount =
-      selectedPaymentMethod === "cod" ? COD_PREPAID_AMOUNT : checkoutTotals.total;
     const payload = {
       checkoutMode,
-      delivery: {
-        fullName: String(formData.get("fullName") || ""),
-        email: String(formData.get("email") || ""),
-        mobile: String(formData.get("mobile") || ""),
-        pincode: String(formData.get("pincode") || ""),
-        addressLine1: String(formData.get("addressLine1") || ""),
-        addressLine2: String(formData.get("addressLine2") || ""),
-        landmark: String(formData.get("landmark") || ""),
-        city: String(formData.get("city") || ""),
-        state: String(formData.get("state") || ""),
-      },
+      deliveryAddress: selectedAddress,
       payment: {
         method: selectedPaymentMethod,
-        paidAmount,
         upiTransactionId: String(formData.get("upiTransactionId") || ""),
       },
       items: checkoutItems.map((item) => ({
-        id: item.id,
-        name: item.name,
-        description: item.description,
-        variant: item.variant,
-        quantity: item.quantity,
-        price: item.price,
+        slug: item.slug,
+        variantId: item.variantId,
+        quantity: item.purchasableQuantity || item.quantity,
       })),
-      totals: checkoutTotals,
     };
 
     try {
-      const response = await fetch("/api/checkout/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-      const data = await response.json().catch(() => ({}));
-
-      if (!response.ok) {
-        setStatus({
-          type: "error",
-          message: data.error || "Failed to send order email. Please try again.",
-        });
-        return;
-      }
+      const data = await createOrder(payload);
+      const order = data.data;
 
       setSubmittedOrder({
-        orderId: data.orderId,
-        items: checkoutItems,
-        totals: checkoutTotals,
-        payment: {
-          method: selectedPaymentMethod,
-          paidAmount,
-        },
+        orderId: order.orderNumber,
+        items: order.items,
+        totals: order.totals,
+        payment: order.payment,
       });
       setSubmitted(true);
       setStatus({
@@ -176,11 +280,13 @@ export default function CheckoutContent() {
 
       if (checkoutMode === "cart") {
         clearCart();
+      } else {
+        window.sessionStorage.removeItem("boomslang-direct-checkout-item");
       }
-    } catch {
+    } catch (error) {
       setStatus({
         type: "error",
-        message: "Failed to send order email. Please try again later.",
+        message: error.message,
       });
     } finally {
       setIsSubmitting(false);
@@ -196,8 +302,25 @@ export default function CheckoutContent() {
   const paymentMethodLabel =
     activePaymentMethod === "cod" ? "Cash on Delivery" : "Full QR Payment";
   const amountDueOnDelivery = Math.max(displayTotals.total - payableAmount, 0);
+  const isPreparingCartCheckout =
+    isReady &&
+    checkoutMode === "cart" &&
+    items.length > 0 &&
+    displayItems.length === 0;
 
-  if (!isReady) {
+  if (!isReady || isAuthLoading) {
+    return (
+      <main className={styles.page}>
+        <Container>
+          <div className={styles.emptyState}>
+            <h1 className={styles.title}>Preparing Checkout</h1>
+          </div>
+        </Container>
+      </main>
+    );
+  }
+
+  if (isPreparingCartCheckout) {
     return (
       <main className={styles.page}>
         <Container>
@@ -230,6 +353,27 @@ export default function CheckoutContent() {
     );
   }
 
+  if (!isAuthenticated) {
+    return (
+      <main className={styles.page}>
+        <Container>
+          <div className={styles.emptyState}>
+            <span className={styles.emptyIcon} aria-hidden="true">
+              <CartIcon />
+            </span>
+            <h1 className={styles.title}>Login To Checkout</h1>
+            <p className={styles.emptyText}>
+              Please login so we can use your saved addresses and keep your order history.
+            </p>
+            <Button href="/login?redirect=/checkout" size="small">
+              Login
+            </Button>
+          </div>
+        </Container>
+      </main>
+    );
+  }
+
   return (
     <main className={styles.page}>
       <Container>
@@ -243,100 +387,187 @@ export default function CheckoutContent() {
         <div className={styles.layout}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <section className={styles.section}>
-              <h2 className={styles.sectionTitle}>Delivery Details</h2>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Full name (First and Last name) <RequiredMark />
-                </span>
-                <input name="fullName" type="text" required className={styles.input} />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Email <RequiredMark />
-                </span>
-                <input name="email" type="email" required className={styles.input} />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Mobile number <RequiredMark />
-                </span>
-                <input
-                  name="mobile"
-                  type="tel"
-                  inputMode="numeric"
-                  pattern="[0-9]{10}"
-                  title="Enter a 10 digit mobile number"
-                  required
-                  className={styles.input}
-                />
-                <span className={styles.helpText}>May be used to assist delivery</span>
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Pincode <RequiredMark />
-                </span>
-                <input
-                  name="pincode"
-                  type="text"
-                  inputMode="numeric"
-                  pattern="[0-9]{6}"
-                  title="Enter a 6 digit PIN code"
-                  placeholder="6 digits [0-9] PIN code"
-                  required
-                  className={styles.input}
-                />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Flat, House no., Building, Company, Apartment <RequiredMark />
-                </span>
-                <input name="addressLine1" type="text" required className={styles.input} />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>
-                  Area, Street, Sector, Village <RequiredMark />
-                </span>
-                <input name="addressLine2" type="text" required className={styles.input} />
-              </label>
-
-              <label className={styles.field}>
-                <span className={styles.label}>Landmark</span>
-                <input
-                  name="landmark"
-                  type="text"
-                  placeholder="E.g. near apollo hospital"
-                  className={styles.input}
-                />
-              </label>
-
-              <div className={styles.twoCol}>
-                <label className={styles.field}>
-                  <span className={styles.label}>
-                    Town/City <RequiredMark />
-                  </span>
-                  <input name="city" type="text" required className={styles.input} />
-                </label>
-
-                <label className={styles.field}>
-                  <span className={styles.label}>
-                    State <RequiredMark />
-                  </span>
-                  <select name="state" required className={styles.input}>
-                    <option value="">Choose a state</option>
-                    {states.map((state) => (
-                      <option value={state} key={state}>
-                        {state}
-                      </option>
-                    ))}
-                  </select>
-                </label>
+              <div className={styles.sectionHeader}>
+                <div>
+                  <h2 className={styles.sectionTitle}>Delivery Address</h2>
+                  <p className={styles.sectionHint}>
+                    Delivering to {user?.name || user?.email}
+                  </p>
+                </div>
+                {savedAddresses.length > 0 && (
+                  <button
+                    type="button"
+                    className={styles.changeAddressBtn}
+                    onClick={() => setAddressMode(addressMode === "new" ? "saved" : "new")}
+                  >
+                    {addressMode === "new" ? "Saved Addresses" : "Add New Address"}
+                  </button>
+                )}
               </div>
+
+              {savedAddresses.length > 0 && addressMode === "saved" && (
+                <div className={styles.addressList}>
+                  {savedAddresses.map((address) => {
+                    const addressId = address._id || address.id;
+                    const isSelected = selectedAddressId === addressId;
+
+                    return (
+                      <label
+                        key={addressId}
+                        className={`${styles.addressOption} ${
+                          isSelected ? styles.addressOptionActive : ""
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="selectedAddress"
+                          value={addressId}
+                          checked={isSelected}
+                          onChange={() => setSelectedAddressId(addressId)}
+                        />
+                        <span>
+                          <strong>{user?.name || user?.email}</strong>
+                          <small className={styles.addressPhone}>{user?.mobile}</small>
+                          <small>{address.addressLine1}</small>
+                          <small>{address.addressLine2}</small>
+                          {address.landmark && <small>Landmark: {address.landmark}</small>}
+                          <small>
+                            {address.city}, {address.state} - {address.pincode}
+                          </small>
+                          {address.isDefault && <em>Default address</em>}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+
+              {(addressMode === "new" || savedAddresses.length === 0) && (
+                <div className={styles.addressForm}>
+                  <label className={styles.field}>
+                    <span className={styles.label}>
+                      Pincode <RequiredMark />
+                    </span>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]{6}"
+                      title="Enter a 6 digit PIN code"
+                      placeholder="6 digits [0-9] PIN code"
+                      required
+                      className={styles.input}
+                      value={addressForm.pincode}
+                      onChange={(event) => handleAddressFieldChange("pincode", event.target.value)}
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.label}>
+                      Flat, House no., Building, Company, Apartment <RequiredMark />
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      className={styles.input}
+                      value={addressForm.addressLine1}
+                      onChange={(event) =>
+                        handleAddressFieldChange("addressLine1", event.target.value)
+                      }
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.label}>
+                      Area, Street, Sector, Village <RequiredMark />
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      className={styles.input}
+                      value={addressForm.addressLine2}
+                      onChange={(event) =>
+                        handleAddressFieldChange("addressLine2", event.target.value)
+                      }
+                    />
+                  </label>
+
+                  <label className={styles.field}>
+                    <span className={styles.label}>Landmark</span>
+                    <input
+                      type="text"
+                      placeholder="E.g. near apollo hospital"
+                      className={styles.input}
+                      value={addressForm.landmark}
+                      onChange={(event) => handleAddressFieldChange("landmark", event.target.value)}
+                    />
+                  </label>
+
+                  <div className={styles.twoCol}>
+                    <label className={styles.field}>
+                      <span className={styles.label}>
+                        Town/City <RequiredMark />
+                      </span>
+                      <input
+                        type="text"
+                        required
+                        className={styles.input}
+                        value={addressForm.city}
+                        onChange={(event) => handleAddressFieldChange("city", event.target.value)}
+                      />
+                    </label>
+
+                    <label className={styles.field}>
+                      <span className={styles.label}>
+                        State <RequiredMark />
+                      </span>
+                      <select
+                        required
+                        className={styles.input}
+                        value={addressForm.state}
+                        onChange={(event) => handleAddressFieldChange("state", event.target.value)}
+                      >
+                        <option value="">Choose a state</option>
+                        {states.map((state) => (
+                          <option value={state} key={state}>
+                            {state}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                  </div>
+
+                  <label className={styles.saveDefault}>
+                    <input
+                      type="checkbox"
+                      checked={addressForm.isDefault}
+                      onChange={(event) =>
+                        handleAddressFieldChange("isDefault", event.target.checked)
+                      }
+                    />
+                    Make this my default delivery address
+                  </label>
+
+                  <div className={styles.addressActions}>
+                    <button
+                      type="button"
+                      className={styles.saveAddressBtn}
+                      onClick={handleAddAddress}
+                      disabled={isAddingAddress}
+                    >
+                      {isAddingAddress ? "Saving Address..." : "Save & Use Address"}
+                    </button>
+                    {savedAddresses.length > 0 && (
+                      <button
+                        type="button"
+                        className={styles.cancelAddressBtn}
+                        onClick={() => setAddressMode("saved")}
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
             </section>
 
             <section className={styles.section}>
@@ -417,7 +648,7 @@ export default function CheckoutContent() {
               <button
                 type="submit"
                 className={styles.placeOrderBtn}
-                disabled={isSubmitting || submitted}
+                disabled={isSubmitting || submitted || !selectedAddress || isAddingAddress}
               >
                 {isSubmitting ? "Placing Order..." : submitted ? "Order Placed" : "Place Order"}
               </button>
@@ -441,9 +672,9 @@ export default function CheckoutContent() {
 
             <div className={styles.items}>
               {displayItems.map((item) => (
-                <div className={styles.item} key={item.id}>
+                <div className={styles.item} key={item.id || `${item.slug}:${item.variantId}`}>
                   <Image
-                    src={item.image}
+                    src={resolveAssetUrl(item.image || "/images/logo.png")}
                     alt={item.name}
                     width={62}
                     height={62}
@@ -454,11 +685,11 @@ export default function CheckoutContent() {
                       {item.name}
                     </Link>
                     <span className={styles.itemMeta}>
-                      {item.quantity} x {formatPrice(item.price)}
+                      {item.purchasableQuantity || item.quantity} x {formatPrice(item.price)}
                     </span>
                   </div>
                   <strong className={styles.itemTotal}>
-                    {formatPrice(item.price * item.quantity)}
+                    {formatPrice(item.price * (item.purchasableQuantity || item.quantity))}
                   </strong>
                 </div>
               ))}
@@ -503,11 +734,11 @@ export default function CheckoutContent() {
             <span className={styles.successIcon} aria-hidden="true" />
             <h2>Order Placed Successfully</h2>
             <p>
-              Your order details have been sent to your email.
+              Your order has been saved successfully.
               {submittedOrder.orderId ? ` Order ID: ${submittedOrder.orderId}` : ""}
             </p>
-            <Button href="/shop" size="small">
-              Continue Shopping
+            <Button href="/orders" size="small">
+              View Orders
             </Button>
           </div>
         </div>

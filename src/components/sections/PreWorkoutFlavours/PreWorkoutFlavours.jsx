@@ -29,6 +29,9 @@ export default function PreWorkoutFlavours({ products = [] }) {
             originalPrice={flavour.originalPrice}
             discountedPrice={flavour.discountedPrice}
             percentOff={flavour.percentOff}
+            variantId={flavour.variantId}
+            stock={flavour.stock}
+            isOutOfStock={flavour.isOutOfStock}
             href={flavour.href}
           />
         ))}

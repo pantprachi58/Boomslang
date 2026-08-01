@@ -77,6 +77,156 @@
   margin-bottom: var(--space-24);
 }
 
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-16);
+  margin-bottom: var(--space-24);
+}
+
+.sectionHeader .sectionTitle {
+  margin-bottom: var(--space-6);
+}
+
+.sectionHint {
+  margin: 0;
+  color: var(--color-gray-700);
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+}
+
+.changeAddressBtn,
+.saveAddressBtn,
+.cancelAddressBtn {
+  min-height: 42px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+}
+
+.changeAddressBtn,
+.cancelAddressBtn {
+  border: 1px solid var(--color-primary);
+  background: var(--color-white);
+  color: var(--color-primary-dark);
+  padding: 0 var(--space-16);
+}
+
+.saveAddressBtn {
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-white);
+  padding: 0 var(--space-18);
+}
+
+.saveAddressBtn:disabled,
+.cancelAddressBtn:disabled,
+.changeAddressBtn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.addressList {
+  display: grid;
+  gap: var(--space-16);
+}
+
+.addressOption {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: var(--space-16);
+  align-items: flex-start;
+  padding: var(--space-22);
+  border: 1px solid var(--color-gray-300);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  cursor: pointer;
+}
+
+.addressOptionActive {
+  border-color: var(--color-primary);
+  background: var(--color-page-green);
+  box-shadow: 0 0 0 3px rgba(124, 183, 41, 0.12);
+}
+
+.addressOption input {
+  width: 18px;
+  height: 18px;
+  margin-top: 4px;
+  accent-color: var(--color-primary);
+}
+
+.addressOption span {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.addressOption strong {
+  color: var(--color-black);
+  font-family: var(--font-main);
+  font-size: var(--font-size-md);
+  line-height: 1.35;
+}
+
+.addressOption small {
+  color: var(--color-gray-700);
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-base);
+  line-height: 1.45;
+}
+
+.addressOption em {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  background: #eef7e2;
+  color: var(--color-primary-dark);
+  font-family: var(--font-main);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+}
+
+.addressPhone {
+  color: #344054;
+  font-weight: var(--fw-semibold);
+}
+
+.addressForm {
+  padding-top: var(--space-4);
+}
+
+.saveDefault {
+  display: flex;
+  align-items: center;
+  gap: var(--space-10);
+  color: #344054;
+  font-family: var(--font-paragraph);
+  font-size: var(--font-size-sm);
+  font-weight: var(--fw-semibold);
+  margin-bottom: var(--space-20);
+}
+
+.saveDefault input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+}
+
+.addressActions {
+  display: flex;
+  gap: var(--space-12);
+  flex-wrap: wrap;
+}
+
 .field {
   display: flex;
   flex-direction: column;
@@ -513,6 +663,10 @@ select.input {
 
   .section {
     padding: var(--space-24);
+  }
+
+  .sectionHeader {
+    flex-direction: column;
   }
 
   .twoCol {
