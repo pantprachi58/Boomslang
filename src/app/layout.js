@@ -17,20 +17,107 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "Boomslang Nutrition | Ayurvedic Supplements For Weight Gain",
+  metadataBase: new URL("https://www.theboomslangnutritions.com"),
+  title: "The Boomslang Nutritions | Ayurvedic Weight Gain Supplements",
   description:
-    "Boomslang Nutrition offers ayurvedic supplements for healthy weight gain, pre-workout formulas and natural muscle support.",
+    "Discover Ayurvedic weight gain supplements from The Boomslang Nutritions. Herbal formulas designed to support healthy weight gain, appetite, digestion, and overall wellness.",
   icons: {
     icon: "/images/logo.png",
   },
   verification: {
     google: "G7P6vTQ6oymvUxtcDvfEGfDPqXuVHE0NLlODjnroDpM",
   },
+  openGraph: {
+    type: "website",
+    siteName: "The Boomslang Nutritions",
+    title: "The Boomslang Nutritions | Ayurvedic Weight Gain Supplements",
+    description:
+      "Discover Ayurvedic weight gain supplements from The Boomslang Nutritions. Herbal formulas designed to support healthy weight gain, appetite, digestion, and overall wellness.",
+    url: "https://www.theboomslangnutritions.com/",
+    images: [
+      {
+        url: "/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "The Boomslang Nutritions - Ayurvedic Weight Gain Supplements",
+      },
+    ],
+    locale: "en_IN",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({ children }) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://www.theboomslangnutritions.com/#organization",
+    name: "The Boomslang Nutritions",
+    url: "https://www.theboomslangnutritions.com/",
+    logo: "https://www.theboomslangnutritions.com/images/logo.png",
+    description:
+      "Ayurvedic supplements for weight gain by The Boomslang Nutritions. Herbal formulas to support healthy weight gain, energy, wellness, and everyday vitality.",
+    email: "support@theboomslangnutritions.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "G-190, Shop No. 3, Dilshad Colony",
+      addressLocality: "Delhi",
+      addressRegion: "Delhi",
+      postalCode: "110095",
+      addressCountry: "IN",
+    },
+    sameAs: [
+      "https://www.instagram.com/yourprofile",
+      "https://www.facebook.com/yourpage",
+      "https://www.linkedin.com/company/yourcompany",
+      "https://www.youtube.com/@yourchannel",
+    ],
+  };
+
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://www.theboomslangnutritions.com/#website",
+    url: "https://www.theboomslangnutritions.com/",
+    name: "The Boomslang Nutritions",
+    description:
+      "Ayurvedic supplements for weight gain by Boomslang Nutritions.",
+    publisher: {
+      "@id": "https://www.theboomslangnutritions.com/#organization",
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate:
+          "https://www.theboomslangnutritions.com/search?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+    inLanguage: "en-IN",
+  };
+
   return (
     <html lang="en" className={`${anybody.variable} ${inter.variable}`}>
+      <head>
+        <Script
+          id="organization-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
+        <Script
+          id="website-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+      </head>
       <Script id="google-tag-manager" strategy="afterInteractive">
         {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

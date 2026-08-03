@@ -1,0 +1,10 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /login/
+Disallow: /cart/
+Disallow: /checkout/
+Disallow: /my-account/
+Disallow: /wp-admin/
+Allow: /
+
+Sitemap: https://www.theboomslangnutritions.com/sitemap.xml
