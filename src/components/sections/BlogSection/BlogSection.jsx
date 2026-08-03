@@ -1,12 +1,14 @@
 import Image from "next/image";
 import SectionWrapper from "@/components/SectionWrapper/SectionWrapper";
 import BlogCard from "@/components/BlogCard/BlogCard";
-import { getRecentBlogs } from "@/data/blogs";
+import { fetchRecentBlogs } from "@/lib/blogsApi";
 import styles from "./BlogSection.module.css";
 
-const posts = getRecentBlogs(4);
+export default async function BlogSection() {
+  const posts = await fetchRecentBlogs(4);
 
-export default function BlogSection() {
+  if (!posts.length) return null;
+
   return (
     <SectionWrapper background="light" className={styles.section} containerClassName={styles.container}>
       <div className={styles.banner}>

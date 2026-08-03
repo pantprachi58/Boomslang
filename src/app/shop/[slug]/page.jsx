@@ -3,14 +3,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Newsletter from "@/components/sections/Newsletter/Newsletter";
 import ProductDetail from "@/components/ProductDetail/ProductDetail";
-import { allProducts } from "@/data/products";
 import { fetchFeaturedProduct, fetchProductBySlug } from "@/lib/productsApi";
-
-export function generateStaticParams() {
-  return allProducts.map((product) => ({
-    slug: product.slug,
-  }));
-}
 
 export async function generateMetadata({ params }) {
   const product = await fetchProductBySlug(params.slug);

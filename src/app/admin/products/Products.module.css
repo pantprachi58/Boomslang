@@ -160,6 +160,7 @@
 
 .toolbar {
   display: flex;
+  align-items: center;
   gap: 12px;
   margin-bottom: 18px;
   flex-wrap: wrap;
@@ -208,7 +209,9 @@
 }
 
 .filterSelect {
-  min-width: 190px;
+  width: auto;
+  flex: 0 0 240px;
+  min-width: 220px;
 }
 
 .searchInput:focus,
@@ -474,6 +477,12 @@
   font-weight: var(--fw-semibold);
 }
 
+.field .imagePreviewText {
+  color: #667085;
+  font-size: 12px;
+  font-weight: var(--fw-medium);
+}
+
 .field textarea {
   min-height: 96px;
   resize: vertical;
@@ -482,6 +491,16 @@
 
 .field input[type="file"] {
   padding: 10px 14px;
+}
+
+.hiddenFileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 
 .field input:disabled,
@@ -630,12 +649,23 @@
 
 .imagePreview {
   min-height: 118px;
+  width: 100%;
   border: 1px dashed #d0d5dd;
   border-radius: var(--radius-sm);
   background: #f8fbf5;
   display: grid;
   place-items: center;
   overflow: hidden;
+}
+
+label.imagePreview {
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+label.imagePreview:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(124, 183, 41, 0.12);
 }
 
 .imagePreview img {

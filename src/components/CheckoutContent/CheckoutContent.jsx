@@ -10,6 +10,7 @@ import { CartIcon } from "@/components/icons/Icons";
 import { useAuth } from "@/components/AuthProvider/AuthProvider";
 import { calculateCartTotals, hydrateCartItems } from "@/lib/cartHydration";
 import { createOrder } from "@/lib/ordersApi";
+import { validateVoucher } from "@/lib/vouchersApi";
 import { resolveAssetUrl } from "@/lib/assetUrl";
 import styles from "./CheckoutContent.module.css";
 
@@ -57,6 +58,24 @@ function formatPrice(amount) {
   return `₹ ${amount.toLocaleString("en-IN")}`;
 }
 
+function PreparingCheckout() {
+  return (
+    <main className={styles.page}>
+      <Container>
+        <section className={styles.loadingState} aria-live="polite">
+          <div className={styles.loadingDots} aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+          <h1 className={styles.title}>Preparing Checkout</h1>
+          <p className={styles.emptyText}>Getting your cart and account details ready.</p>
+        </section>
+      </Container>
+    </main>
+  );
+}
+
 export default function CheckoutContent() {
   const { items, clearCart } = useCart();
   const { user, isAuthenticated, isLoading: isAuthLoading, addAddress } = useAuth();
@@ -74,6 +93,10 @@ export default function CheckoutContent() {
   const [selectedAddressId, setSelectedAddressId] = useState("");
   const [addressMode, setAddressMode] = useState("saved");
   const [addressForm, setAddressForm] = useState(emptyAddressForm);
+  const [voucherCode, setVoucherCode] = useState("");
+  const [appliedVoucher, setAppliedVoucher] = useState(null);
+  const [voucherStatus, setVoucherStatus] = useState({ type: "", message: "" });
+  const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
 
   useEffect(() => {
     const mode = window.sessionStorage.getItem("boomslang-checkout-mode");
@@ -163,6 +186,20 @@ export default function CheckoutContent() {
       totalQuantity: directItem.quantity,
     };
   }, [checkoutMode, directItem, hydratedCartItems]);
+  const discountedCheckoutTotals = useMemo(() => {
+    if (!appliedVoucher) return checkoutTotals;
+
+    const grossTotal = checkoutTotals.subtotal + checkoutTotals.cgst + checkoutTotals.sgst;
+    const discount = Math.round(
+      (grossTotal * Number(appliedVoucher.discountPercent || 0)) / 100
+    );
+
+    return {
+      ...checkoutTotals,
+      discount,
+      total: Math.max(grossTotal - discount, 0),
+    };
+  }, [appliedVoucher, checkoutTotals]);
 
   const savedAddresses = user?.addresses || [];
   const selectedAddress =
@@ -213,6 +250,52 @@ export default function CheckoutContent() {
     }
   };
 
+  const handleVoucherCodeChange = (value) => {
+    const normalizedValue = value.replace(/[^a-z0-9]/gi, "").toUpperCase().slice(0, 10);
+    setVoucherCode(normalizedValue);
+
+    if (appliedVoucher && normalizedValue !== appliedVoucher.code) {
+      setAppliedVoucher(null);
+      setVoucherStatus({ type: "", message: "" });
+    }
+  };
+
+  const handleApplyVoucher = async () => {
+    const normalizedCode = voucherCode.trim().toUpperCase();
+    setVoucherStatus({ type: "", message: "" });
+
+    if (!/^[A-Z0-9]{6,10}$/.test(normalizedCode)) {
+      setVoucherStatus({
+        type: "error",
+        message: "Enter a valid 6 to 10 character voucher code.",
+      });
+      return;
+    }
+
+    setIsApplyingVoucher(true);
+
+    try {
+      const voucher = await validateVoucher(normalizedCode);
+      setAppliedVoucher(voucher);
+      setVoucherCode(voucher.code);
+      setVoucherStatus({
+        type: "success",
+        message: `${voucher.code} applied for ${voucher.discountPercent}% off.`,
+      });
+    } catch (error) {
+      setAppliedVoucher(null);
+      setVoucherStatus({ type: "error", message: error.message });
+    } finally {
+      setIsApplyingVoucher(false);
+    }
+  };
+
+  const handleRemoveVoucher = () => {
+    setAppliedVoucher(null);
+    setVoucherCode("");
+    setVoucherStatus({ type: "", message: "" });
+  };
+
   async function handleSubmit(event) {
     event.preventDefault();
     const form = event.currentTarget;
@@ -260,6 +343,7 @@ export default function CheckoutContent() {
         variantId: item.variantId,
         quantity: item.purchasableQuantity || item.quantity,
       })),
+      voucherCode: appliedVoucher?.code || "",
     };
 
     try {
@@ -271,6 +355,7 @@ export default function CheckoutContent() {
         items: order.items,
         totals: order.totals,
         payment: order.payment,
+        voucher: order.voucher,
       });
       setSubmitted(true);
       setStatus({
@@ -294,10 +379,20 @@ export default function CheckoutContent() {
   }
 
   const displayItems = submittedOrder?.items || checkoutItems;
-  const displayTotals = submittedOrder?.totals || checkoutTotals;
+  const displayTotals = submittedOrder?.totals || discountedCheckoutTotals;
+  const displayVoucher =
+    submittedOrder?.voucher?.code
+      ? submittedOrder.voucher
+      : appliedVoucher
+        ? {
+            code: appliedVoucher.code,
+            discountPercent: appliedVoucher.discountPercent,
+            discountAmount: displayTotals.discount || 0,
+          }
+        : null;
   const activePaymentMethod = submittedOrder?.payment?.method || paymentMethod;
   const payableAmount = submittedOrder?.payment?.paidAmount || (
-    activePaymentMethod === "cod" ? COD_PREPAID_AMOUNT : checkoutTotals.total
+    activePaymentMethod === "cod" ? Math.min(COD_PREPAID_AMOUNT, displayTotals.total) : displayTotals.total
   );
   const paymentMethodLabel =
     activePaymentMethod === "cod" ? "Cash on Delivery" : "Full QR Payment";
@@ -309,27 +404,11 @@ export default function CheckoutContent() {
     displayItems.length === 0;
 
   if (!isReady || isAuthLoading) {
-    return (
-      <main className={styles.page}>
-        <Container>
-          <div className={styles.emptyState}>
-            <h1 className={styles.title}>Preparing Checkout</h1>
-          </div>
-        </Container>
-      </main>
-    );
+    return <PreparingCheckout />;
   }
 
   if (isPreparingCartCheckout) {
-    return (
-      <main className={styles.page}>
-        <Container>
-          <div className={styles.emptyState}>
-            <h1 className={styles.title}>Preparing Checkout</h1>
-          </div>
-        </Container>
-      </main>
-    );
+    return <PreparingCheckout />;
   }
 
   if (displayItems.length === 0) {
@@ -695,11 +774,57 @@ export default function CheckoutContent() {
               ))}
             </div>
 
+            {!submittedOrder && (
+              <div className={styles.voucherBox}>
+                <label className={styles.voucherLabel} htmlFor="checkout-voucher">
+                  Voucher Code
+                </label>
+                <div className={styles.voucherControls}>
+                  <input
+                    id="checkout-voucher"
+                    type="text"
+                    value={voucherCode}
+                    onChange={(event) => handleVoucherCodeChange(event.target.value)}
+                    placeholder="ENTER CODE"
+                    className={styles.voucherInput}
+                    disabled={isApplyingVoucher}
+                  />
+                  {appliedVoucher ? (
+                    <button type="button" className={styles.removeVoucherBtn} onClick={handleRemoveVoucher}>
+                      Remove
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={styles.applyVoucherBtn}
+                      onClick={handleApplyVoucher}
+                      disabled={isApplyingVoucher}
+                    >
+                      {isApplyingVoucher ? "Checking..." : "Apply"}
+                    </button>
+                  )}
+                </div>
+                {voucherStatus.message && (
+                  <p className={`${styles.voucherStatus} ${styles[voucherStatus.type]}`}>
+                    {voucherStatus.message}
+                  </p>
+                )}
+              </div>
+            )}
+
             <div className={styles.summaryRows}>
               <div className={styles.summaryRow}>
                 <span>Subtotal</span>
                 <strong>{formatPrice(displayTotals.subtotal)}</strong>
               </div>
+              {displayVoucher?.code && (
+                <div className={`${styles.summaryRow} ${styles.discountRow}`}>
+                  <span>
+                    Voucher {displayVoucher.code} ({displayVoucher.discountPercent}%)
+                  </span>
+                  <strong>-{formatPrice(displayVoucher.discountAmount || displayTotals.discount || 0)}</strong>
+                </div>
+              )}
               <div className={styles.summaryRow}>
                 <span>CGST (2.5%)</span>
                 <strong>{formatPrice(displayTotals.cgst)}</strong>

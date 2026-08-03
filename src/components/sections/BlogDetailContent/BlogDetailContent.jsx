@@ -2,14 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/Container/Container";
 import { CalendarIcon } from "@/components/icons/Icons";
-import { getAllBlogs } from "@/data/blogs";
 import styles from "./BlogDetailContent.module.css";
 
-export default function BlogDetailContent({ blog }) {
-  const relatedPosts = getAllBlogs()
-    .filter((post) => post.slug !== blog.slug && post.category === blog.category)
-    .slice(0, 2);
-
+export default function BlogDetailContent({ blog, relatedPosts = [] }) {
   return (
     <main className={styles.page}>
       <section className={styles.hero}>
@@ -33,16 +28,18 @@ export default function BlogDetailContent({ blog }) {
                 <span>{blog.readTime}</span>
               </div>
             </div>
-            <div className={styles.heroImageWrap}>
-              <Image
-                src={blog.image}
-                alt={blog.title}
-                fill
-                className={styles.heroImage}
-                sizes="(max-width: 992px) 100vw, 45vw"
-                priority
-              />
-            </div>
+            {blog.image && (
+              <div className={styles.heroImageWrap}>
+                <Image
+                  src={blog.image}
+                  alt={blog.imageAlt || blog.title}
+                  fill
+                  className={styles.heroImage}
+                  sizes="(max-width: 992px) 100vw, 45vw"
+                  priority
+                />
+              </div>
+            )}
           </div>
         </Container>
       </section>
@@ -51,7 +48,7 @@ export default function BlogDetailContent({ blog }) {
         <div className={styles.contentLayout}>
           <article className={styles.article}>
             <p className={styles.lead}>{blog.description}</p>
-            {blog.content.map((section) => (
+            {(blog.content || []).map((section) => (
               <section className={styles.articleSection} key={section.heading}>
                 <h2>{section.heading}</h2>
                 <p>{section.body}</p>
@@ -59,7 +56,7 @@ export default function BlogDetailContent({ blog }) {
             ))}
 
             <div className={styles.tagList} aria-label="Article tags">
-              {blog.tags.map((tag) => (
+              {(blog.tags || []).map((tag) => (
                 <span className={styles.tag} key={tag}>
                   {tag}
                 </span>
@@ -92,13 +89,15 @@ export default function BlogDetailContent({ blog }) {
                 <div className={styles.relatedList}>
                   {relatedPosts.map((post) => (
                     <Link href={post.href} className={styles.relatedItem} key={post.id}>
-                      <Image
-                        src={post.image}
-                        alt={post.title}
-                        width={86}
-                        height={70}
-                        className={styles.relatedImage}
-                      />
+                      {post.image && (
+                        <Image
+                          src={post.image}
+                          alt={post.title}
+                          width={86}
+                          height={70}
+                          className={styles.relatedImage}
+                        />
+                      )}
                       <span>{post.title}</span>
                     </Link>
                   ))}

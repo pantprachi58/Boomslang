@@ -68,15 +68,38 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
   overflow: hidden;
 }
 
 .tableWrapper {
+  width: 100%;
+  max-width: 100%;
+  display: block;
   overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #9bcf57 #eef7e2;
+}
+
+.tableWrapper::-webkit-scrollbar {
+  height: 10px;
+}
+
+.tableWrapper::-webkit-scrollbar-track {
+  background: #eef7e2;
+  border-radius: 999px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb {
+  background: #9bcf57;
+  border-radius: 999px;
 }
 
 .table {
   width: 100%;
+  min-width: 980px;
   border-collapse: collapse;
   font-size: 0.9rem;
 }
@@ -139,6 +162,24 @@
 .amount {
   font-weight: 700;
   color: #10b981;
+}
+
+.amountCell {
+  display: flex;
+  min-width: 140px;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.amountCell strong {
+  color: #10b981;
+}
+
+.amountCell span {
+  color: var(--color-primary-dark);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .status {
@@ -235,6 +276,37 @@
   background: #fef2f2;
   color: #991b1b;
   font-weight: 600;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.pagination span {
+  color: #475467;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pageBtn {
+  min-height: 40px;
+  border: 1px solid #d0d5dd;
+  border-radius: 8px;
+  background: white;
+  color: #344054;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pageBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .dateTime {
@@ -402,6 +474,11 @@
   color: #111827;
 }
 
+.discountLine,
+.discountLine strong {
+  color: var(--color-primary-dark);
+}
+
 .detailTotal {
   border-bottom: none;
   font-size: 1.1rem;
@@ -441,5 +518,9 @@
 
   .detailGrid {
     grid-template-columns: 1fr;
+  }
+
+  .pagination {
+    justify-content: space-between;
   }
 }

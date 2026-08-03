@@ -3,25 +3,28 @@
 import { useState } from "react";
 import styles from "./SalesChart.module.css";
 
-export default function SalesChart() {
+const emptySeries = {
+  week: [],
+  month: [],
+  year: [],
+};
+
+function formatPrice(amount) {
+  return `₹ ${Number(amount || 0).toLocaleString("en-IN")}`;
+}
+
+function formatShortPrice(amount) {
+  const value = Number(amount || 0);
+  if (value >= 100000) return `₹${(value / 100000).toFixed(1)}L`;
+  if (value >= 1000) return `₹${(value / 1000).toFixed(1)}k`;
+  return `₹${value}`;
+}
+
+export default function SalesChart({ data = emptySeries, isLoading = false }) {
   const [period, setPeriod] = useState("week");
 
-  // Mock data - replace with actual data
-  const salesData = {
-    week: [2400, 3200, 2800, 3600, 4200, 3800, 4500],
-    month: [12000, 15000, 13500, 16800, 18200, 17500, 19800, 21000, 19500, 22000, 24500, 26000],
-    year: [145000, 178000, 165000, 198000, 215000, 202000, 235000, 248000, 238000, 265000, 282000, 305000],
-  };
-
-  const labels = {
-    week: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-    month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    year: ["2023 Q1", "2023 Q2", "2023 Q3", "2023 Q4", "2024 Q1", "2024 Q2", "2024 Q3", "2024 Q4"],
-  };
-
-  const currentData = salesData[period];
-  const currentLabels = labels[period];
-  const maxValue = Math.max(...currentData);
+  const currentData = data?.[period] || [];
+  const maxValue = Math.max(...currentData.map((item) => Number(item.value || 0)), 1);
 
   return (
     <div className={styles.chartCard}>
@@ -53,25 +56,32 @@ export default function SalesChart() {
       </div>
 
       <div className={styles.chartContainer}>
-        <div className={styles.chart}>
-          {currentData.map((value, index) => {
-            const height = (value / maxValue) * 100;
-            return (
-              <div key={index} className={styles.barWrapper}>
-                <div className={styles.barContainer}>
-                  <div
-                    className={styles.bar}
-                    style={{ height: `${height}%` }}
-                    title={`$${value.toLocaleString()}`}
-                  >
-                    <span className={styles.barValue}>${(value / 1000).toFixed(1)}k</span>
+        {isLoading ? (
+          <div className={styles.emptyChart}>Loading sales data...</div>
+        ) : currentData.length === 0 ? (
+          <div className={styles.emptyChart}>No sales data available.</div>
+        ) : (
+          <div className={styles.chart}>
+            {currentData.map((item) => {
+              const value = Number(item.value || 0);
+              const height = Math.max((value / maxValue) * 100, value > 0 ? 8 : 0);
+              return (
+                <div key={item.key || item.label} className={styles.barWrapper}>
+                  <div className={styles.barContainer}>
+                    <div
+                      className={styles.bar}
+                      style={{ height: `${height}%` }}
+                      title={formatPrice(value)}
+                    >
+                      <span className={styles.barValue}>{formatShortPrice(value)}</span>
+                    </div>
                   </div>
+                  <span className={styles.label}>{item.label}</span>
                 </div>
-                <span className={styles.label}>{currentLabels[index]}</span>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

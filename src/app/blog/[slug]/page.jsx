@@ -2,16 +2,11 @@ import { notFound } from "next/navigation";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import BlogDetailContent from "@/components/sections/BlogDetailContent/BlogDetailContent";
-import { getAllBlogs, getBlogBySlug } from "@/data/blogs";
+import { fetchBlogBySlug, fetchPublicBlogs } from "@/lib/blogsApi";
 
-export function generateStaticParams() {
-  return getAllBlogs().map((blog) => ({
-    slug: blog.slug,
-  }));
-}
 
-export function generateMetadata({ params }) {
-  const blog = getBlogBySlug(params.slug);
+export async function generateMetadata({ params }) {
+  const blog = await fetchBlogBySlug(params.slug);
 
   if (!blog) {
     return {
@@ -25,17 +20,25 @@ export function generateMetadata({ params }) {
   };
 }
 
-export default function BlogDetailPage({ params }) {
-  const blog = getBlogBySlug(params.slug);
+export default async function BlogDetailPage({ params }) {
+  const blog = await fetchBlogBySlug(params.slug);
 
   if (!blog) {
     notFound();
   }
 
+  const relatedResult = await fetchPublicBlogs({
+    category: blog.category,
+    limit: 3,
+  });
+  const relatedPosts = relatedResult.blogs
+    .filter((post) => post.slug !== blog.slug)
+    .slice(0, 2);
+
   return (
     <>
       <Header />
-      <BlogDetailContent blog={blog} />
+      <BlogDetailContent blog={blog} relatedPosts={relatedPosts} />
       <Footer />
     </>
   );

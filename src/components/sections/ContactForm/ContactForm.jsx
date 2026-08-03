@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { submitContactQuery } from "@/lib/contactApi";
 import styles from "./ContactForm.module.css";
 
 export default function ContactForm() {
@@ -33,38 +34,23 @@ export default function ContactForm() {
     setStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      const data = await submitContactQuery(formData);
+
+      setStatus({
+        type: "success",
+        message: data.message || "Thank you! Your message has been sent successfully. We'll get back to you soon.",
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setStatus({
-          type: "success",
-          message: "Thank you! Your message has been sent successfully. We'll get back to you soon.",
-        });
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        });
-      } else {
-        setStatus({
-          type: "error",
-          message: data.error || "Something went wrong. Please try again.",
-        });
-      }
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
     } catch (error) {
       setStatus({
         type: "error",
-        message: "Failed to send message. Please try again later.",
+        message: error.message || "Failed to send message. Please try again later.",
       });
     } finally {
       setIsSubmitting(false);

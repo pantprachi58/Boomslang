@@ -122,7 +122,14 @@ export default function OrdersPage() {
                     {order.deliveryAddress.pincode}
                   </p>
                 </div>
-                <strong>{formatPrice(order.totals.total)}</strong>
+                <div className={styles.orderTotals}>
+                  {order.voucher?.code && (
+                    <span className={styles.voucherBadge}>
+                      {order.voucher.code} saved {formatPrice(order.voucher.discountAmount)}
+                    </span>
+                  )}
+                  <strong>{formatPrice(order.totals.total)}</strong>
+                </div>
               </div>
             </article>
           ))}

@@ -26,12 +26,18 @@
   margin-bottom: 2rem;
 }
 
-.chartsSection {
+.recentSection {
   margin-bottom: 2rem;
 }
 
-.recentSection {
-  margin-bottom: 2rem;
+.errorMessage {
+  margin-bottom: 1rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-weight: 600;
 }
 
 @media (max-width: 768px) {

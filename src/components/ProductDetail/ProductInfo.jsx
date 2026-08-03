@@ -142,10 +142,6 @@ export default function ProductInfo({ product }) {
         <span className={styles.price}>₹ {displayPrice}</span>
       </div>
 
-      <p className={`${styles.stockStatus} ${outOfStock ? styles.stockStatusDanger : ""}`}>
-        {outOfStock ? "Out of stock" : `${availableStock} in stock`}
-      </p>
-
       <span className={styles.quantityLabel}>Quantity</span>
       <div className={styles.buyRow}>
         <div className={styles.quantity}>

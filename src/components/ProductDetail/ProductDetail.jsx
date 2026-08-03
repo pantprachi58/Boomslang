@@ -1,10 +1,8 @@
 import Container from "@/components/Container/Container";
 import ProductGallery from "./ProductGallery";
 import ProductInfo from "./ProductInfo";
-import DeliveryDetails from "./DeliveryDetails";
 import PeaceOfMind from "./PeaceOfMind";
 import ProductHighlights from "./ProductHighlights";
-import RatingsReviews from "./RatingsReviews";
 import KeyIngredients from "./KeyIngredients";
 import WhyChoose from "./WhyChoose";
 import HowToUse from "./HowToUse";
@@ -39,11 +37,9 @@ export default function ProductDetail({ product }) {
 
           <div className={styles.details}>
             <ProductInfo product={product} />
-            <DeliveryDetails />
             <div className={styles.accordions}>
               <PeaceOfMind />
               <ProductHighlights highlights={product.highlights} />
-              <RatingsReviews review={product.review} />
             </div>
           </div>
         </Container>

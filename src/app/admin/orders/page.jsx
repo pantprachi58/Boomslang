@@ -53,6 +53,8 @@ function getStatusClass(status) {
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [filterStatus, setFilterStatus] = useState("all");
+  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({ page: 1, limit: 10, total: 0, pages: 1 });
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [updatingOrderId, setUpdatingOrderId] = useState("");
@@ -66,8 +68,11 @@ export default function OrdersPage() {
       setError("");
 
       try {
-        const nextOrders = await fetchAdminOrders(filterStatus);
-        if (isCurrent) setOrders(nextOrders);
+        const response = await fetchAdminOrders(filterStatus, { page, limit: 10 });
+        if (isCurrent) {
+          setOrders(response.orders);
+          setPagination(response.pagination);
+        }
       } catch (err) {
         if (isCurrent) setError(err.message);
       } finally {
@@ -80,16 +85,16 @@ export default function OrdersPage() {
     return () => {
       isCurrent = false;
     };
-  }, [filterStatus]);
+  }, [filterStatus, page]);
 
   const stats = useMemo(
     () => ({
-      total: orders.length,
+      total: pagination.total,
       pending: orders.filter((order) => order.status === "pending").length,
       accepted: orders.filter((order) => order.status === "accepted").length,
       delivered: orders.filter((order) => order.status === "delivered").length,
     }),
-    [orders]
+    [orders, pagination.total]
   );
 
   const handleStatusChange = async (orderId, status) => {
@@ -121,7 +126,10 @@ export default function OrdersPage() {
       <div className={styles.toolbar}>
         <select
           value={filterStatus}
-          onChange={(event) => setFilterStatus(event.target.value)}
+          onChange={(event) => {
+            setFilterStatus(event.target.value);
+            setPage(1);
+          }}
           className={styles.filterSelect}
         >
           <option value="all">All Orders</option>
@@ -164,7 +172,6 @@ export default function OrdersPage() {
                 <th>Items</th>
                 <th>Quantity</th>
                 <th>Amount</th>
-                <th>Payment</th>
                 <th>Status</th>
                 <th>Date & Time</th>
                 <th>Actions</th>
@@ -173,7 +180,7 @@ export default function OrdersPage() {
             <tbody>
               {isLoading && (
                 <tr>
-                  <td colSpan="9">
+                  <td colSpan="8">
                     <div className={styles.loadingState}>Loading orders...</div>
                   </td>
                 </tr>
@@ -181,7 +188,7 @@ export default function OrdersPage() {
 
               {!isLoading && orders.length === 0 && (
                 <tr>
-                  <td colSpan="9">
+                  <td colSpan="8">
                     <div className={styles.loadingState}>No orders found.</div>
                   </td>
                 </tr>
@@ -209,12 +216,14 @@ export default function OrdersPage() {
                       </div>
                     </td>
                     <td className={styles.quantity}>{order.totals.totalQuantity}</td>
-                    <td className={styles.amount}>{formatPrice(order.totals.total)}</td>
                     <td>
-                      <div className={styles.paymentCell}>
-                        <strong>{getPaymentLabel(order.payment.method)}</strong>
-                        <span>Paid {formatPrice(order.payment.paidAmount)}</span>
-                        <span>UPI {order.payment.upiTransactionId}</span>
+                      <div className={styles.amountCell}>
+                        <strong>{formatPrice(order.totals.total)}</strong>
+                        {order.voucher?.code && (
+                          <span>
+                            {order.voucher.code}: -{formatPrice(order.voucher.discountAmount)}
+                          </span>
+                        )}
                       </div>
                     </td>
                     <td>
@@ -253,6 +262,26 @@ export default function OrdersPage() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div className={styles.pagination}>
+        <button
+          type="button"
+          className={styles.pageBtn}
+          disabled={page <= 1 || isLoading}
+          onClick={() => setPage((current) => Math.max(current - 1, 1))}
+        >
+          Previous
+        </button>
+        <span>Page {pagination.page || page} of {pagination.pages || 1}</span>
+        <button
+          type="button"
+          className={styles.pageBtn}
+          disabled={page >= pagination.pages || isLoading}
+          onClick={() => setPage((current) => current + 1)}
+        >
+          Next
+        </button>
       </div>
 
       {selectedOrder && (
@@ -297,6 +326,18 @@ export default function OrdersPage() {
                 <p>UPI Transaction ID: {selectedOrder.payment.upiTransactionId}</p>
               </section>
               <section>
+                <h3>Voucher</h3>
+                {selectedOrder.voucher?.code ? (
+                  <>
+                    <p>Code: {selectedOrder.voucher.code}</p>
+                    <p>Discount: {selectedOrder.voucher.discountPercent}%</p>
+                    <p>Saved: {formatPrice(selectedOrder.voucher.discountAmount)}</p>
+                  </>
+                ) : (
+                  <p>No voucher applied</p>
+                )}
+              </section>
+              <section>
                 <h3>Order Status</h3>
                 <p>{statusLabels[selectedOrder.status]}</p>
                 <p>Total quantity: {selectedOrder.totals.totalQuantity}</p>
@@ -322,6 +363,14 @@ export default function OrdersPage() {
                 <span>Subtotal</span>
                 <strong>{formatPrice(selectedOrder.totals.subtotal)}</strong>
               </div>
+              {selectedOrder.voucher?.code && (
+                <div className={styles.discountLine}>
+                  <span>
+                    Voucher {selectedOrder.voucher.code} ({selectedOrder.voucher.discountPercent}%)
+                  </span>
+                  <strong>-{formatPrice(selectedOrder.voucher.discountAmount)}</strong>
+                </div>
+              )}
               <div>
                 <span>CGST (2.5%)</span>
                 <strong>{formatPrice(selectedOrder.totals.cgst)}</strong>

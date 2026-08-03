@@ -12,10 +12,10 @@ import {
   ShoppingCartIcon,
   UsersIcon,
   DocumentIcon,
-  ChartIcon,
-  SettingsIcon,
   GlobeIcon,
   LogoutIcon,
+  TagIcon,
+  MailEnvelopeIcon,
 } from "@/components/admin/icons/AdminIcons";
 import { HamburgerIcon } from "@/components/icons/Icons";
 import styles from "./AdminSidebar.module.css";
@@ -31,10 +31,11 @@ export default function AdminSidebar() {
     { name: "Products", path: "/admin/products", Icon: PackageIcon },
     { name: "Ingredients", path: "/admin/ingredients", Icon: DocumentIcon },
     { name: "Orders", path: "/admin/orders", Icon: ShoppingCartIcon },
+    { name: "Vouchers", path: "/admin/vouchers", Icon: TagIcon },
+    { name: "Contacts", path: "/admin/contact-queries", Icon: MailEnvelopeIcon },
+    { name: "Subscribers", path: "/admin/subscribers", Icon: MailEnvelopeIcon },
     { name: "Customers", path: "/admin/customers", Icon: UsersIcon },
-    { name: "Blog Posts", path: "/admin/blog", Icon: DocumentIcon },
-    { name: "Analytics", path: "/admin/analytics", Icon: ChartIcon },
-    { name: "Settings", path: "/admin/settings", Icon: SettingsIcon },
+    { name: "Blogs", path: "/admin/blog", Icon: DocumentIcon },
   ];
 
   return (

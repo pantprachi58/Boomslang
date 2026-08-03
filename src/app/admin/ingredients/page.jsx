@@ -157,21 +157,24 @@ export default function IngredientsPage() {
           <label className={styles.field}>
             <span>Image</span>
             <input
+              id="ingredient-image"
               type="file"
               accept="image/*"
               onChange={(event) => setImageFile(event.target.files?.[0] || null)}
+              className={styles.hiddenFileInput}
             />
+            <span className={styles.imagePreviewText}>Click the image tile to upload or replace.</span>
+            <label htmlFor="ingredient-image" className={styles.imagePreview}>
+              {form.image || imageFile ? (
+                <img
+                  src={imageFile ? URL.createObjectURL(imageFile) : resolveAssetUrl(form.image)}
+                  alt={form.name || "Ingredient"}
+                />
+              ) : (
+                <ImagePlus aria-hidden="true" />
+              )}
+            </label>
           </label>
-          <div className={styles.imagePreview}>
-            {form.image || imageFile ? (
-              <img
-                src={imageFile ? URL.createObjectURL(imageFile) : resolveAssetUrl(form.image)}
-                alt={form.name || "Ingredient"}
-              />
-            ) : (
-              <ImagePlus aria-hidden="true" />
-            )}
-          </div>
         </div>
         <div className={styles.modalActions}>
           <button type="submit" className={styles.saveBtn} disabled={isSubmitting}>

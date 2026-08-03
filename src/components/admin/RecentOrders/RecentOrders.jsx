@@ -1,64 +1,39 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { EyeIcon } from "@/components/admin/icons/AdminIcons";
 import styles from "./RecentOrders.module.css";
 
-export default function RecentOrders() {
-  const [orders] = useState([
-    {
-      id: "#1234",
-      customer: "John Doe",
-      product: "Goku Gainz Pre-Workout",
-      amount: "$89.99",
-      status: "completed",
-      date: "2024-01-15",
-    },
-    {
-      id: "#1235",
-      customer: "Jane Smith",
-      product: "Ember Weight Gain",
-      amount: "$129.99",
-      status: "processing",
-      date: "2024-01-15",
-    },
-    {
-      id: "#1236",
-      customer: "Mike Johnson",
-      product: "Strycnnine Mango",
-      amount: "$79.99",
-      status: "pending",
-      date: "2024-01-14",
-    },
-    {
-      id: "#1237",
-      customer: "Sarah Williams",
-      product: "Goku Gainz Pre-Workout",
-      amount: "$89.99",
-      status: "completed",
-      date: "2024-01-14",
-    },
-    {
-      id: "#1238",
-      customer: "David Brown",
-      product: "Ember Weight Gain",
-      amount: "$129.99",
-      status: "cancelled",
-      date: "2024-01-13",
-    },
-  ]);
+const statusLabels = {
+  pending: "Pending",
+  accepted: "Accepted",
+  out_for_delivery: "Out For Delivery",
+  delivered: "Delivered",
+};
 
+function formatPrice(amount) {
+  return `₹ ${Number(amount || 0).toLocaleString("en-IN")}`;
+}
+
+function formatDate(date) {
+  if (!date) return "-";
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+export default function RecentOrders({ orders = [], isLoading = false }) {
   const getStatusClass = (status) => {
     switch (status) {
-      case "completed":
+      case "delivered":
         return styles.statusCompleted;
-      case "processing":
+      case "accepted":
         return styles.statusProcessing;
       case "pending":
         return styles.statusPending;
-      case "cancelled":
-        return styles.statusCancelled;
+      case "out_for_delivery":
+        return styles.statusDelivery;
       default:
         return "";
     }
@@ -86,29 +61,36 @@ export default function RecentOrders() {
               <th>Amount</th>
               <th>Status</th>
               <th>Date</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td className={styles.orderId}>{order.id}</td>
-                <td>{order.customer}</td>
-                <td>{order.product}</td>
-                <td className={styles.amount}>{order.amount}</td>
-                <td>
-                  <span className={`${styles.status} ${getStatusClass(order.status)}`}>
-                    {order.status}
-                  </span>
-                </td>
-                <td>{order.date}</td>
-                <td>
-                  <button className={styles.actionBtn} title="View details">
-                    <EyeIcon />
-                  </button>
-                </td>
+            {isLoading && (
+              <tr>
+                <td colSpan="6" className={styles.emptyCell}>Loading recent orders...</td>
               </tr>
-            ))}
+            )}
+
+            {!isLoading && orders.length === 0 && (
+              <tr>
+                <td colSpan="6" className={styles.emptyCell}>No orders yet.</td>
+              </tr>
+            )}
+
+            {!isLoading &&
+              orders.map((order) => (
+                <tr key={order.id || order.orderNumber}>
+                  <td className={styles.orderId}>{order.orderNumber}</td>
+                  <td>{order.customer}</td>
+                  <td>{order.product}</td>
+                  <td className={styles.amount}>{formatPrice(order.amount)}</td>
+                  <td>
+                    <span className={`${styles.status} ${getStatusClass(order.status)}`}>
+                      {statusLabels[order.status] || order.status}
+                    </span>
+                  </td>
+                  <td>{formatDate(order.date)}</td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

@@ -1,40 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/Container/Container";
 import BlogCard from "@/components/BlogCard/BlogCard";
 import { SearchIcon } from "@/components/icons/Icons";
-import { getAllBlogs, getBlogCategories, getRecentBlogs } from "@/data/blogs";
+import { fetchPublicBlogs } from "@/lib/blogsApi";
+import { subscribeEmail } from "@/lib/subscribersApi";
 import styles from "./BlogContent.module.css";
-
-const allPosts = getAllBlogs();
-const categories = getBlogCategories();
-const recentPosts = getRecentBlogs(3);
 
 export default function BlogContent() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [posts, setPosts] = useState([]);
+  const [recentPosts, setRecentPosts] = useState([]);
+  const [facets, setFacets] = useState({ categories: [] });
+  const [pagination, setPagination] = useState({ page: 1, limit: 6, total: 0, pages: 1 });
+  const [isLoading, setIsLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState({ type: "", message: "" });
+  const [isSubscribing, setIsSubscribing] = useState(false);
   const postsPerPage = 6;
+  const hasPosts = posts.length > 0;
 
-  // Filter posts based on category and search
-  const filteredPosts = allPosts.filter((post) => {
-    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
-    const search = searchQuery.toLowerCase();
-    const matchesSearch =
-      post.title.toLowerCase().includes(search) ||
-      post.description.toLowerCase().includes(search) ||
-      post.category.toLowerCase().includes(search) ||
-      post.tags.some((tag) => tag.toLowerCase().includes(search));
-    return matchesCategory && matchesSearch;
-  });
+  useEffect(() => {
+    let isCurrent = true;
 
-  // Pagination
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
-  const startIndex = (currentPage - 1) * postsPerPage;
-  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage);
+    async function loadBlogs() {
+      setIsLoading(true);
+
+      const [blogsResult, recentResult] = await Promise.all([
+        fetchPublicBlogs({
+          page: currentPage,
+          limit: postsPerPage,
+          search: searchQuery.trim(),
+          category: selectedCategory === "All" ? "" : selectedCategory,
+        }),
+        fetchPublicBlogs({ page: 1, limit: 3 }),
+      ]);
+
+      if (!isCurrent) return;
+
+      setPosts(blogsResult.blogs);
+      setPagination(blogsResult.pagination);
+      setFacets(blogsResult.facets);
+      setRecentPosts(recentResult.blogs);
+      setIsLoading(false);
+    }
+
+    const timeout = window.setTimeout(loadBlogs, 250);
+
+    return () => {
+      isCurrent = false;
+      window.clearTimeout(timeout);
+    };
+  }, [currentPage, searchQuery, selectedCategory]);
+
+  const categories = useMemo(
+    () => [
+      { name: "All", count: facets.categories.reduce((sum, item) => sum + Number(item.count || 0), 0) },
+      ...(facets.categories || []),
+    ],
+    [facets.categories]
+  );
 
   const handleCategoryChange = (category) => {
     setSelectedCategory(category);
@@ -44,6 +74,25 @@ export default function BlogContent() {
   const handlePageChange = (page) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleNewsletterSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubscribing(true);
+    setNewsletterStatus({ type: "", message: "" });
+
+    try {
+      const data = await subscribeEmail(newsletterEmail, "blog-sidebar");
+      setNewsletterStatus({
+        type: "success",
+        message: data.message || "Subscribed successfully.",
+      });
+      setNewsletterEmail("");
+    } catch (error) {
+      setNewsletterStatus({ type: "error", message: error.message });
+    } finally {
+      setIsSubscribing(false);
+    }
   };
 
   return (
@@ -93,16 +142,38 @@ export default function BlogContent() {
             </div>
 
             {/* Blog Grid */}
-            {currentPosts.length > 0 ? (
+            {isLoading && !hasPosts ? (
+              <div className={styles.loadingState} aria-live="polite">
+                <div className={styles.loadingDots} aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </div>
+                <p>Loading articles</p>
+              </div>
+            ) : hasPosts ? (
               <>
-                <div className={styles.blogGrid}>
-                  {currentPosts.map((post) => (
-                    <BlogCard key={post.id} {...post} />
-                  ))}
+                <div className={styles.blogGridWrap}>
+                  <div className={`${styles.blogGrid} ${isLoading ? styles.refreshing : ""}`}>
+                    {posts.map((post) => (
+                      <BlogCard key={post.id} {...post} />
+                    ))}
+                  </div>
+
+                  {isLoading && (
+                    <div className={styles.refreshLoader} aria-live="polite">
+                      <div className={styles.loadingDots} aria-hidden="true">
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                      <p>Updating articles</p>
+                    </div>
+                  )}
                 </div>
 
                 {/* Pagination */}
-                {totalPages > 1 && (
+                {pagination.pages > 1 && (
                   <div className={styles.pagination}>
                     <button
                       className={styles.pageBtn}
@@ -113,7 +184,7 @@ export default function BlogContent() {
                       Previous
                     </button>
                     <div className={styles.pageNumbers}>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      {Array.from({ length: pagination.pages }, (_, i) => i + 1).map((page) => (
                         <button
                           key={page}
                           className={`${styles.pageNumber} ${
@@ -130,7 +201,7 @@ export default function BlogContent() {
                     <button
                       className={styles.pageBtn}
                       onClick={() => handlePageChange(currentPage + 1)}
-                      disabled={currentPage === totalPages}
+                      disabled={currentPage === pagination.pages}
                       aria-label="Next page"
                     >
                       Next
@@ -168,30 +239,34 @@ export default function BlogContent() {
             </div>
 
             {/* Recent Posts */}
-            <div className={styles.widget}>
-              <h3 className={styles.widgetTitle}>Recent Posts</h3>
-              <ul className={styles.recentList}>
-                {recentPosts.map((post) => (
-                  <li key={post.id} className={styles.recentItem}>
-                    <Link href={post.href} className={styles.recentLink}>
-                      <div className={styles.recentImage}>
-                        <Image
-                          src={post.image}
-                          alt={post.title}
-                          fill
-                          className={styles.recentImg}
-                          sizes="100px"
-                        />
-                      </div>
-                      <div className={styles.recentInfo}>
-                        <h4 className={styles.recentTitle}>{post.title}</h4>
-                        <span className={styles.recentDate}>{post.displayDate}</span>
-                      </div>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {recentPosts.length > 0 && (
+              <div className={styles.widget}>
+                <h3 className={styles.widgetTitle}>Recent Posts</h3>
+                <ul className={styles.recentList}>
+                  {recentPosts.map((post) => (
+                    <li key={post.id} className={styles.recentItem}>
+                      <Link href={post.href} className={styles.recentLink}>
+                        {post.image && (
+                          <div className={styles.recentImage}>
+                            <Image
+                              src={post.image}
+                              alt={post.title}
+                              fill
+                              className={styles.recentImg}
+                              sizes="100px"
+                            />
+                          </div>
+                        )}
+                        <div className={styles.recentInfo}>
+                          <h4 className={styles.recentTitle}>{post.title}</h4>
+                          <span className={styles.recentDate}>{post.displayDate}</span>
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Newsletter Widget */}
             <div className={`${styles.widget} ${styles.newsletterWidget}`}>
@@ -199,17 +274,24 @@ export default function BlogContent() {
               <p className={styles.newsletterText}>
                 Get the latest articles and tips delivered to your inbox.
               </p>
-              <form className={styles.newsletterForm} onSubmit={(e) => e.preventDefault()}>
+              <form className={styles.newsletterForm} onSubmit={handleNewsletterSubmit}>
                 <input
                   type="email"
                   placeholder="Your email"
                   className={styles.newsletterInput}
+                  value={newsletterEmail}
+                  onChange={(event) => setNewsletterEmail(event.target.value)}
                   required
                 />
-                <button type="submit" className={styles.newsletterBtn}>
-                  Subscribe
+                <button type="submit" className={styles.newsletterBtn} disabled={isSubscribing}>
+                  {isSubscribing ? "Subscribing..." : "Subscribe"}
                 </button>
               </form>
+              {newsletterStatus.message && (
+                <p className={`${styles.newsletterStatus} ${styles[newsletterStatus.type]}`}>
+                  {newsletterStatus.message}
+                </p>
+              )}
             </div>
           </aside>
         </div>

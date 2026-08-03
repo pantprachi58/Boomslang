@@ -1,7 +1,7 @@
 import { DollarIcon, PackageIcon, TagIcon, UsersIcon } from "@/components/admin/icons/AdminIcons";
 import styles from "./DashboardCard.module.css";
 
-export default function DashboardCard({ title, value, change, changeType, icon }) {
+export default function DashboardCard({ title, value, icon }) {
   const getIcon = () => {
     switch (icon) {
       case "revenue":
@@ -25,19 +25,6 @@ export default function DashboardCard({ title, value, change, changeType, icon }
       </div>
       <div className={styles.content}>
         <p className={styles.value}>{value}</p>
-        <span
-          className={`${styles.change} ${
-            changeType === "positive"
-              ? styles.positive
-              : changeType === "negative"
-              ? styles.negative
-              : styles.neutral
-          }`}
-        >
-          {changeType === "positive" && "↑ "}
-          {changeType === "negative" && "↓ "}
-          {change}
-        </span>
       </div>
     </div>
   );

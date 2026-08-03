@@ -19,9 +19,11 @@ export default function BlogCard({
       href={href}
       className={`${styles.card} ${tone === "light" ? styles.cardLight : ""}`}
     >
-      <div className={styles.imageWrap}>
-        <Image src={image} alt={title} fill className={styles.image} sizes="(max-width: 768px) 100vw, 25vw" />
-      </div>
+      {image && (
+        <div className={styles.imageWrap}>
+          <Image src={image} alt={title} fill className={styles.image} sizes="(max-width: 768px) 100vw, 25vw" />
+        </div>
+      )}
       <div className={styles.body}>
         {category && <span className={styles.category}>{category}</span>}
         <h3 className={styles.title}>{title}</h3>

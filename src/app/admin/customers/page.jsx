@@ -1,120 +1,130 @@
 "use client";
 
-import { useState } from "react";
-import { SearchIcon } from "@/components/icons/Icons";
-import { EyeIcon, MailEnvelopeIcon } from "@/components/admin/icons/AdminIcons";
+import { useEffect, useMemo, useState } from "react";
+import {
+  Eye,
+  Mail,
+  MapPin,
+  Phone,
+  RefreshCw,
+  Search,
+  ShoppingBag,
+  User,
+  X,
+} from "lucide-react";
+import { fetchAdminCustomers } from "@/lib/customersApi";
 import styles from "./Customers.module.css";
 
+const pageSize = 20;
+
+function formatDate(date) {
+  if (!date) return "-";
+  return new Intl.DateTimeFormat("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).format(new Date(date));
+}
+
+function formatPrice(amount) {
+  return `₹ ${Number(amount || 0).toLocaleString("en-IN")}`;
+}
+
+function formatAddress(address) {
+  if (!address) return "No address saved";
+  return [
+    address.addressLine1,
+    address.addressLine2,
+    address.landmark ? `Landmark: ${address.landmark}` : null,
+    `${address.city}, ${address.state} - ${address.pincode}`,
+  ].filter(Boolean).join(", ");
+}
+
 export default function CustomersPage() {
-  const [customers] = useState([
-    {
-      id: 1,
-      name: "John Doe",
-      email: "john@example.com",
-      phone: "+1 234 567 8900",
-      orders: 12,
-      totalSpent: "$1,248.88",
-      joined: "2023-05-15",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Jane Smith",
-      email: "jane@example.com",
-      phone: "+1 234 567 8901",
-      orders: 8,
-      totalSpent: "$892.34",
-      joined: "2023-06-20",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "Mike Johnson",
-      email: "mike@example.com",
-      phone: "+1 234 567 8902",
-      orders: 5,
-      totalSpent: "$456.78",
-      joined: "2023-08-10",
-      status: "active",
-    },
-    {
-      id: 4,
-      name: "Sarah Williams",
-      email: "sarah@example.com",
-      phone: "+1 234 567 8903",
-      orders: 15,
-      totalSpent: "$1,876.45",
-      joined: "2023-03-25",
-      status: "vip",
-    },
-    {
-      id: 5,
-      name: "David Brown",
-      email: "david@example.com",
-      phone: "+1 234 567 8904",
-      orders: 2,
-      totalSpent: "$189.98",
-      joined: "2024-01-05",
-      status: "inactive",
-    },
-  ]);
-
+  const [customers, setCustomers] = useState([]);
+  const [pagination, setPagination] = useState({ page: 1, limit: pageSize, total: 0, pages: 1 });
   const [searchTerm, setSearchTerm] = useState("");
+  const [submittedSearch, setSubmittedSearch] = useState("");
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredCustomers = customers.filter((customer) =>
-    customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    customer.email.toLowerCase().includes(searchTerm.toLowerCase())
+  async function loadCustomers(page = 1, search = submittedSearch) {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const response = await fetchAdminCustomers({
+        page,
+        limit: pageSize,
+        search: search || undefined,
+      });
+      setCustomers(response.customers);
+      setPagination(response.pagination);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadCustomers(1, "");
+  }, []);
+
+  const stats = useMemo(
+    () => ({
+      total: pagination.total || 0,
+      verified: customers.filter((customer) => customer.isEmailVerified).length,
+    }),
+    [customers, pagination.total]
   );
 
-  const getStatusClass = (status) => {
-    switch (status) {
-      case "active":
-        return styles.statusActive;
-      case "vip":
-        return styles.statusVip;
-      case "inactive":
-        return styles.statusInactive;
-      default:
-        return "";
-    }
-  };
+  function handleSearch(event) {
+    event.preventDefault();
+    const search = searchTerm.trim();
+    setSubmittedSearch(search);
+    loadCustomers(1, search);
+  }
 
   return (
     <div className={styles.customersPage}>
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Customers</h1>
-          <p className={styles.subtitle}>Manage your customer database</p>
+          <p className={styles.subtitle}>View registered users and customer order value.</p>
+        </div>
+        <button type="button" className={styles.refreshBtn} onClick={() => loadCustomers(pagination.page)}>
+          <RefreshCw aria-hidden="true" /> Refresh
+        </button>
+      </div>
+
+      {error && <p className={styles.errorMessage}>{error}</p>}
+
+      <div className={styles.statsGrid}>
+        <div>
+          <span>Total Customers</span>
+          <strong>{stats.total}</strong>
+        </div>
+        <div>
+          <span>Mail Verified</span>
+          <strong>{stats.verified}</strong>
         </div>
       </div>
 
-      <div className={styles.toolbar}>
+      <form className={styles.toolbar} onSubmit={handleSearch}>
         <div className={styles.search}>
-          <span className={styles.searchIcon}>
-            <SearchIcon />
-          </span>
+          <Search className={styles.searchIcon} aria-hidden="true" />
           <input
             type="search"
-            placeholder="Search customers..."
+            placeholder="Search name, email or mobile..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(event) => setSearchTerm(event.target.value)}
             className={styles.searchInput}
           />
         </div>
-
-        <div className={styles.stats}>
-          <div className={styles.stat}>
-            <span className={styles.statLabel}>Total Customers:</span>
-            <span className={styles.statValue}>{customers.length}</span>
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statLabel}>VIP:</span>
-            <span className={styles.statValue}>
-              {customers.filter((c) => c.status === "vip").length}
-            </span>
-          </div>
-        </div>
-      </div>
+        <button type="submit" className={styles.searchBtn}>Search</button>
+      </form>
 
       <div className={styles.tableCard}>
         <div className={styles.tableWrapper}>
@@ -125,46 +135,74 @@ export default function CustomersPage() {
                 <th>Contact</th>
                 <th>Orders</th>
                 <th>Total Spent</th>
+                <th>Latest Order</th>
                 <th>Joined</th>
                 <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {filteredCustomers.map((customer) => (
-                <tr key={customer.id}>
+              {isLoading && (
+                <tr>
+                  <td colSpan="8" className={styles.emptyCell}>Loading customers...</td>
+                </tr>
+              )}
+
+              {!isLoading && customers.length === 0 && (
+                <tr>
+                  <td colSpan="8" className={styles.emptyCell}>No customers found.</td>
+                </tr>
+              )}
+
+              {!isLoading && customers.map((customer) => (
+                <tr key={customer._id}>
                   <td>
                     <div className={styles.customerInfo}>
                       <div className={styles.avatar}>
-                        {customer.name.charAt(0)}
+                        {(customer.name || customer.email || "C").charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <div className={styles.customerName}>{customer.name}</div>
+                        <div className={styles.customerName}>{customer.name || "Customer"}</div>
+                        <div className={styles.addressCount}>{customer.addressCount} saved address{customer.addressCount === 1 ? "" : "es"}</div>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div className={styles.contact}>
                       <div>{customer.email}</div>
-                      <div className={styles.phone}>{customer.phone}</div>
+                      <div className={styles.phone}>{customer.mobile || "-"}</div>
                     </div>
                   </td>
-                  <td className={styles.orders}>{customer.orders}</td>
-                  <td className={styles.totalSpent}>{customer.totalSpent}</td>
-                  <td>{customer.joined}</td>
+                  <td className={styles.orders}>{customer.orders || 0}</td>
+                  <td className={styles.totalSpent}>{formatPrice(customer.totalSpent)}</td>
+                  <td>{formatDate(customer.latestOrderAt)}</td>
+                  <td>{formatDate(customer.joinedAt)}</td>
                   <td>
-                    <span className={`${styles.status} ${getStatusClass(customer.status)}`}>
-                      {customer.status}
+                    <span
+                      className={`${styles.status} ${
+                        customer.isEmailVerified ? styles.statusActive : styles.statusUnverified
+                      }`}
+                    >
+                      {customer.isEmailVerified ? "Mail Verified" : "Mail Pending"}
                     </span>
                   </td>
                   <td>
                     <div className={styles.actions}>
-                      <button className={styles.viewBtn} title="View details">
-                        <EyeIcon />
+                      <button
+                        type="button"
+                        className={styles.viewBtn}
+                        title="View details"
+                        onClick={() => setSelectedCustomer(customer)}
+                      >
+                        <Eye aria-hidden="true" />
                       </button>
-                      <button className={styles.emailBtn} title="Send email">
-                        <MailEnvelopeIcon />
-                      </button>
+                      <a
+                        className={styles.emailBtn}
+                        href={`mailto:${customer.email}`}
+                        title="Send email"
+                      >
+                        <Mail aria-hidden="true" />
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -173,6 +211,96 @@ export default function CustomersPage() {
           </table>
         </div>
       </div>
+
+      <div className={styles.pagination}>
+        <button
+          type="button"
+          className={styles.pageBtn}
+          disabled={pagination.page <= 1 || isLoading}
+          onClick={() => loadCustomers(pagination.page - 1)}
+        >
+          Previous
+        </button>
+        <span>Page {pagination.page || 1} of {pagination.pages || 1}</span>
+        <button
+          type="button"
+          className={styles.pageBtn}
+          disabled={pagination.page >= pagination.pages || isLoading}
+          onClick={() => loadCustomers(pagination.page + 1)}
+        >
+          Next
+        </button>
+      </div>
+
+      {selectedCustomer && (
+        <div className={styles.modalBackdrop}>
+          <div className={styles.modal}>
+            <div className={styles.modalHeader}>
+              <div>
+                <h2>{selectedCustomer.name || "Customer"}</h2>
+                <p>Joined {formatDate(selectedCustomer.joinedAt)}</p>
+              </div>
+              <button
+                type="button"
+                className={styles.iconBtn}
+                onClick={() => setSelectedCustomer(null)}
+                aria-label="Close"
+              >
+                <X aria-hidden="true" />
+              </button>
+            </div>
+
+            <div className={styles.detailGrid}>
+              <div className={styles.detailCard}>
+                <User aria-hidden="true" />
+                <span>Name</span>
+                <strong>{selectedCustomer.name || "-"}</strong>
+              </div>
+              <div className={styles.detailCard}>
+                <Mail aria-hidden="true" />
+                <span>Email</span>
+                <strong>{selectedCustomer.email}</strong>
+              </div>
+              <div className={styles.detailCard}>
+                <Phone aria-hidden="true" />
+                <span>Mobile</span>
+                <strong>{selectedCustomer.mobile || "-"}</strong>
+              </div>
+              <div className={styles.detailCard}>
+                <ShoppingBag aria-hidden="true" />
+                <span>Orders</span>
+                <strong>{selectedCustomer.orders || 0}</strong>
+              </div>
+              <div className={styles.detailCard}>
+                <ShoppingBag aria-hidden="true" />
+                <span>Total Spent</span>
+                <strong>{formatPrice(selectedCustomer.totalSpent)}</strong>
+              </div>
+              <div className={styles.detailCard}>
+                <MapPin aria-hidden="true" />
+                <span>Addresses</span>
+                <strong>{selectedCustomer.addressCount || 0}</strong>
+              </div>
+            </div>
+
+            <div className={styles.addressPanel}>
+              <h3>Saved Addresses</h3>
+              {selectedCustomer.addresses?.length ? (
+                <div className={styles.addressList}>
+                  {selectedCustomer.addresses.map((address) => (
+                    <div className={styles.addressCard} key={address._id}>
+                      <strong>{address.isDefault ? "Default Address" : "Address"}</strong>
+                      <p>{formatAddress(address)}</p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className={styles.emptyAddress}>No saved addresses.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

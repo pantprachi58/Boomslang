@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { SearchIcon } from "@/components/icons/Icons";
-import { BellIcon, HelpIcon, SettingsIcon, LogoutIcon } from "@/components/admin/icons/AdminIcons";
+import Link from "next/link";
+import { BellIcon, LogoutIcon } from "@/components/admin/icons/AdminIcons";
 import { UserIcon } from "@/components/icons/Icons";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/AuthProvider/AuthProvider";
@@ -29,17 +29,6 @@ export default function AdminHeader() {
 
   return (
     <header className={styles.header}>
-      <div className={styles.searchBar}>
-        <span className={styles.searchIcon}>
-          <SearchIcon />
-        </span>
-        <input
-          type="search"
-          placeholder="Search products, orders, customers..."
-          className={styles.searchInput}
-        />
-      </div>
-
       <div className={styles.actions}>
         <div className={styles.notificationWrapper}>
           <button
@@ -93,15 +82,9 @@ export default function AdminHeader() {
 
           {showProfile && (
             <div className={styles.dropdown}>
-              <div className={styles.profileDropdownItem}>
+              <Link href="/profile" className={styles.profileDropdownItem}>
                 <UserIcon /> My Profile
-              </div>
-              <div className={styles.profileDropdownItem}>
-                <SettingsIcon /> Settings
-              </div>
-              <div className={styles.profileDropdownItem}>
-                <HelpIcon /> Help & Support
-              </div>
+              </Link>
               <hr className={styles.divider} />
               <button
                 type="button"

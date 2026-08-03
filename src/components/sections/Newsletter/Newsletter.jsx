@@ -3,13 +3,31 @@
 import { useState } from "react";
 import Image from "next/image";
 import Container from "@/components/Container/Container";
+import { subscribeEmail } from "@/lib/subscribersApi";
 import styles from "./Newsletter.module.css";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
+  const [status, setStatus] = useState({ type: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSubmitting(true);
+    setStatus({ type: "", message: "" });
+
+    try {
+      const data = await subscribeEmail(email, "newsletter-banner");
+      setStatus({
+        type: "success",
+        message: data.message || "Subscribed successfully.",
+      });
+      setEmail("");
+    } catch (error) {
+      setStatus({ type: "error", message: error.message });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -37,10 +55,13 @@ export default function Newsletter() {
             className={styles.input}
             aria-label="Email address"
           />
-          <button type="submit" className={styles.button}>
-            Subscribe
+          <button type="submit" className={styles.button} disabled={isSubmitting}>
+            {isSubmitting ? "Subscribing..." : "Subscribe"}
           </button>
         </form>
+        {status.message && (
+          <p className={`${styles.status} ${styles[status.type]}`}>{status.message}</p>
+        )}
       </Container>
     </section>
   );

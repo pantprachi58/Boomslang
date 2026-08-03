@@ -37,13 +37,16 @@ export async function fetchMyOrders() {
   }
 }
 
-export async function fetchAdminOrders(status = "all") {
+export async function fetchAdminOrders(status = "all", params = {}) {
   try {
     const { data } = await api.get("/orders/admin", {
-      params: { status },
+      params: { status, ...params },
       headers: getAuthHeaders(),
     });
-    return data.data || [];
+    return {
+      orders: data.data || [],
+      pagination: data.pagination || { page: 1, limit: 10, total: 0, pages: 1 },
+    };
   } catch (error) {
     throw new Error(getErrorMessage(error, "Unable to load orders"));
   }

@@ -1,12 +1,13 @@
-.customersPage {
+.page {
   width: 100%;
 }
 
 .header,
 .toolbar,
-.customerInfo,
+.customerCell,
 .actions,
 .modalHeader,
+.modalActions,
 .pagination {
   display: flex;
   gap: 16px;
@@ -33,37 +34,47 @@
   line-height: 1.5;
 }
 
-.errorMessage {
+.status {
   margin-bottom: 18px;
-  border: 1px solid #fecaca;
   border-radius: var(--radius-sm);
-  background: #fef2f2;
-  color: #991b1b;
   padding: 12px 14px;
   font-size: 14px;
-  font-weight: var(--fw-semibold);
+  line-height: 1.5;
 }
 
-.statsGrid {
+.success {
+  border: 1px solid #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.error {
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.stats {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
   margin-bottom: 20px;
 }
 
-.statsGrid div,
-.tableCard,
+.stats div,
+.tableWrap,
 .modal {
   border: 1px solid rgba(124, 183, 41, 0.22);
   border-radius: var(--radius-md);
   background: var(--color-white);
 }
 
-.statsGrid div {
+.stats div {
   padding: 18px;
 }
 
-.statsGrid span,
+.stats span,
+.metaGrid span,
 .detailCard span {
   display: block;
   color: #667085;
@@ -72,7 +83,7 @@
   text-transform: uppercase;
 }
 
-.statsGrid strong {
+.stats strong {
   color: #111827;
   font-size: 28px;
   line-height: 1;
@@ -84,8 +95,8 @@
 }
 
 .search {
-  flex: 1;
   position: relative;
+  flex: 1;
   min-width: 260px;
 }
 
@@ -120,9 +131,11 @@
 .refreshBtn,
 .searchBtn,
 .viewBtn,
-.emailBtn,
+.deleteBtn,
 .pageBtn,
-.iconBtn {
+.iconBtn,
+.cancelBtn,
+.deleteConfirmBtn {
   min-height: 40px;
   border-radius: var(--radius-sm);
   display: inline-flex;
@@ -133,12 +146,12 @@
   font-weight: var(--fw-bold);
   cursor: pointer;
   white-space: nowrap;
-  text-decoration: none;
 }
 
 .refreshBtn,
 .pageBtn,
-.iconBtn {
+.iconBtn,
+.cancelBtn {
   border: 1px solid #d0d5dd;
   background: var(--color-white);
   color: #344054;
@@ -154,23 +167,19 @@
 
 .refreshBtn svg,
 .viewBtn svg,
-.emailBtn svg,
+.deleteBtn svg,
 .iconBtn svg {
   width: 17px;
   height: 17px;
 }
 
-.tableCard {
-  overflow: hidden;
-}
-
-.tableWrapper {
+.tableWrap {
   overflow-x: auto;
 }
 
 .table {
   width: 100%;
-  min-width: 1100px;
+  min-width: 1080px;
   border-collapse: collapse;
 }
 
@@ -181,7 +190,7 @@
   color: #111827;
   font-size: 14px;
   text-align: left;
-  vertical-align: middle;
+  vertical-align: top;
 }
 
 .table th {
@@ -196,72 +205,53 @@
   border-bottom: none;
 }
 
-.customerInfo {
+.customerCell {
   align-items: center;
+  min-width: 220px;
 }
 
-.avatar {
-  width: 42px;
-  height: 42px;
+.customerCell strong,
+.customerCell span {
+  display: block;
+}
+
+.customerCell span {
+  margin-top: 4px;
+  color: #667085;
+}
+
+.iconBox {
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-sm);
   background: #eef7e2;
   color: var(--color-primary-dark);
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  font-weight: var(--fw-bold);
 }
 
-.customerName {
-  color: #111827;
-  font-weight: var(--fw-bold);
+.iconBox svg {
+  width: 18px;
+  height: 18px;
 }
 
-.addressCount,
-.phone {
-  margin-top: 4px;
-  color: #667085;
-  font-size: 13px;
-}
-
-.contact {
-  display: flex;
-  flex-direction: column;
-}
-
-.orders {
-  font-weight: var(--fw-bold);
-}
-
-.totalSpent {
-  color: #166534;
-  font-weight: var(--fw-bold);
-}
-
-.status {
-  display: inline-flex;
+.emailBadge {
   min-height: 28px;
-  align-items: center;
   border-radius: var(--radius-pill);
-  padding: 0 10px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: var(--fw-bold);
-  text-transform: capitalize;
 }
 
-.statusActive {
+.sent {
   background: #eef7e2;
   color: var(--color-primary-dark);
 }
 
-.statusUnverified {
-  background: #fef3c7;
-  color: #92400e;
-}
-
-.statusInactive {
-  background: #f2f4f7;
-  color: #475467;
+.pending {
+  background: #fff7ed;
+  color: #c2410c;
 }
 
 .actions {
@@ -270,7 +260,7 @@
 }
 
 .viewBtn,
-.emailBtn {
+.deleteBtn {
   width: 40px;
   border: none;
 }
@@ -280,9 +270,11 @@
   color: #2563eb;
 }
 
-.emailBtn {
-  background: #eef7e2;
-  color: var(--color-primary-dark);
+.deleteBtn,
+.deleteConfirmBtn {
+  background: #dc2626;
+  color: var(--color-white);
+  border: none;
 }
 
 .emptyCell {
@@ -304,7 +296,8 @@
   font-weight: var(--fw-semibold);
 }
 
-.pageBtn:disabled {
+.pageBtn:disabled,
+.deleteConfirmBtn:disabled {
   opacity: 0.55;
   cursor: not-allowed;
 }
@@ -327,10 +320,14 @@
   padding: 24px;
 }
 
-.modalHeader {
+.smallModal {
+  width: min(460px, 100%);
+}
+
+.modalHeader,
+.modalActions {
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 22px;
 }
 
 .modalHeader h2 {
@@ -339,19 +336,25 @@
   font-size: 28px;
 }
 
-.detailGrid {
+.detailGrid,
+.metaGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
+  margin-top: 22px;
 }
 
 .detailCard,
-.addressPanel,
-.addressCard {
+.metaGrid div,
+.messageBox {
   border: 1px solid #e4e7ec;
   border-radius: var(--radius-sm);
   background: #fbfcfb;
   padding: 16px;
+}
+
+.wideMeta {
+  grid-column: 1 / -1;
 }
 
 .detailCard svg {
@@ -361,7 +364,8 @@
   color: var(--color-primary-dark);
 }
 
-.detailCard strong {
+.detailCard strong,
+.metaGrid strong {
   display: block;
   margin-top: 8px;
   color: #111827;
@@ -370,32 +374,31 @@
   word-break: break-word;
 }
 
-.addressPanel {
+.messageBox {
   margin-top: 14px;
 }
 
-.addressPanel h3 {
-  margin: 0 0 12px;
+.messageBox h3 {
+  margin: 0 0 10px;
   color: #111827;
   font-size: 18px;
 }
 
-.addressList {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.addressCard strong {
-  color: #111827;
-}
-
-.addressCard p,
-.emptyAddress {
-  margin: 8px 0 0;
+.messageBox p,
+.smallModal p {
+  margin: 0;
   color: #475467;
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.smallModal p {
+  margin: 14px 0 22px;
+}
+
+.deleteConfirmBtn {
+  padding: 0 16px;
 }
 
 @media (max-width: 768px) {
@@ -405,9 +408,9 @@
     flex-direction: column;
   }
 
-  .statsGrid,
+  .stats,
   .detailGrid,
-  .addressList {
+  .metaGrid {
     grid-template-columns: 1fr;
   }
 

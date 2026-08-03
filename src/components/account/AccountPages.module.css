@@ -474,6 +474,26 @@
   white-space: nowrap;
 }
 
+.orderTotals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.voucherBadge {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  border-radius: var(--radius-pill);
+  background: #eef7e2;
+  color: var(--color-primary-dark);
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+  white-space: nowrap;
+}
+
 .orderImage {
   width: 64px;
   height: 64px;
@@ -581,6 +601,10 @@
   .orderFooter {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .orderTotals {
+    align-items: flex-start;
   }
 }
 
