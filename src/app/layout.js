@@ -69,12 +69,10 @@ export default function RootLayout({ children }) {
       postalCode: "110095",
       addressCountry: "IN",
     },
-    sameAs: [
-      "https://www.instagram.com/yourprofile",
-      "https://www.facebook.com/yourpage",
-      "https://www.linkedin.com/company/yourcompany",
-      "https://www.youtube.com/@yourchannel",
-    ],
+     "sameAs": [
+    "https://www.instagram.com/boomslangnutritions/",
+    "https://www.facebook.com/boomslangnuitrations",
+  ]
   };
 
   const websiteSchema = {
