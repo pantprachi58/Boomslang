@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "@/components/Container/Container";
@@ -12,6 +12,7 @@ import { calculateCartTotals, hydrateCartItems } from "@/lib/cartHydration";
 import { createOrder } from "@/lib/ordersApi";
 import { validateVoucher } from "@/lib/vouchersApi";
 import { resolveAssetUrl } from "@/lib/assetUrl";
+import { buildCheckoutMetaParams, trackMetaEvent } from "@/lib/metaPixel";
 import styles from "./CheckoutContent.module.css";
 
 const states = [
@@ -97,6 +98,7 @@ export default function CheckoutContent() {
   const [appliedVoucher, setAppliedVoucher] = useState(null);
   const [voucherStatus, setVoucherStatus] = useState({ type: "", message: "" });
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
+  const initiateCheckoutKeyRef = useRef("");
 
   useEffect(() => {
     const mode = window.sessionStorage.getItem("boomslang-checkout-mode");
@@ -200,6 +202,41 @@ export default function CheckoutContent() {
       total: Math.max(grossTotal - discount, 0),
     };
   }, [appliedVoucher, checkoutTotals]);
+
+  useEffect(() => {
+    if (!isReady || submittedOrder || checkoutItems.length === 0) {
+      return;
+    }
+
+    if (checkoutMode === "cart" && isHydratingCart) {
+      return;
+    }
+
+    const eventKey = JSON.stringify({
+      mode: checkoutMode,
+      items: checkoutItems.map((item) => ({
+        id: item.id || `${item.slug}:${item.variantId || ""}`,
+        quantity: item.purchasableQuantity || item.quantity,
+      })),
+    });
+
+    if (initiateCheckoutKeyRef.current === eventKey) {
+      return;
+    }
+
+    initiateCheckoutKeyRef.current = eventKey;
+    trackMetaEvent(
+      "InitiateCheckout",
+      buildCheckoutMetaParams(checkoutItems, discountedCheckoutTotals)
+    );
+  }, [
+    checkoutItems,
+    checkoutMode,
+    discountedCheckoutTotals,
+    isHydratingCart,
+    isReady,
+    submittedOrder,
+  ]);
 
   const savedAddresses = user?.addresses || [];
   const selectedAddress =
@@ -349,14 +386,22 @@ export default function CheckoutContent() {
     try {
       const data = await createOrder(payload);
       const order = data.data;
+      const orderItems = order.items || checkoutItems;
+      const orderTotals = order.totals || discountedCheckoutTotals;
 
       setSubmittedOrder({
         orderId: order.orderNumber,
-        items: order.items,
-        totals: order.totals,
+        items: orderItems,
+        totals: orderTotals,
         payment: order.payment,
         voucher: order.voucher,
       });
+      trackMetaEvent(
+        "Purchase",
+        buildCheckoutMetaParams(orderItems, orderTotals, {
+          order_id: order.orderNumber,
+        })
+      );
       setSubmitted(true);
       setStatus({
         type: "success",

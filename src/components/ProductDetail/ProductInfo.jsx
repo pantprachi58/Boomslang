@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { MinusIcon, PlusIcon, ShippingIcon, CertifiedIcon, TrustIcon } from "./icons";
 import { useCart } from "@/components/CartProvider/CartProvider";
+import { buildProductMetaParams, trackMetaEvent } from "@/lib/metaPixel";
 import { getCartItemId } from "@/lib/productsApi";
 import styles from "./ProductInfo.module.css";
 
@@ -43,6 +44,9 @@ export default function ProductInfo({ product }) {
     id: itemId,
     slug: product.slug,
     variantId,
+    name: product.name,
+    variant: currentWeight?.name,
+    price: displayPrice,
     stock: availableStock,
   };
   const checkoutItem = {
@@ -59,6 +63,22 @@ export default function ProductInfo({ product }) {
     variant: currentWeight?.name,
     stock: availableStock,
   };
+
+  useEffect(() => {
+    const firstWeight = product.weights?.[0];
+    const firstVariantId = firstWeight?.id || "";
+
+    trackMetaEvent(
+      "ViewContent",
+      buildProductMetaParams({
+        id: getCartItemId(product.slug, firstVariantId),
+        slug: product.slug,
+        variantId: firstVariantId,
+        name: product.name,
+        price: firstWeight?.price ?? product.price ?? product.discountedPrice,
+      })
+    );
+  }, [product]);
 
   return (
     <div className={styles.info}>

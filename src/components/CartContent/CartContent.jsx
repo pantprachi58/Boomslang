@@ -155,7 +155,17 @@ export default function CartContent() {
                   <button
                     type="button"
                     className={styles.quantityBtn}
-                    onClick={() => addItem({ id: item.id, slug: item.slug, variantId: item.variantId, stock: item.stock })}
+                    onClick={() =>
+                      addItem({
+                        id: item.id,
+                        slug: item.slug,
+                        variantId: item.variantId,
+                        name: item.name,
+                        variant: item.variant,
+                        price: item.price,
+                        stock: item.stock,
+                      })
+                    }
                     aria-label={`Add one ${item.name}`}
                     disabled={item.isOutOfStock || item.quantity >= item.stock}
                   >

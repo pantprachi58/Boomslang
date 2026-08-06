@@ -8,6 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { buildProductMetaParams, trackMetaEvent } from "@/lib/metaPixel";
 
 const CART_STORAGE_KEY = "boomslang-cart";
 const CartContext = createContext(null);
@@ -100,6 +101,15 @@ export function CartProvider({ children }) {
     if (stock !== null && stock <= 0) {
       return;
     }
+
+    trackMetaEvent(
+      "AddToCart",
+      buildProductMetaParams({
+        ...item,
+        ...normalizedItem,
+        quantity: amount,
+      })
+    );
 
     setItems((currentItems) => {
       const existing = currentItems.find((cartItem) => cartItem.id === normalizedItem.id);

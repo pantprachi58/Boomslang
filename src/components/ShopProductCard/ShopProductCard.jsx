@@ -36,6 +36,8 @@ export default function ShopProductCard({
     id: itemId,
     slug,
     variantId,
+    name,
+    price: discountedPrice,
     stock: availableStock,
   };
 
